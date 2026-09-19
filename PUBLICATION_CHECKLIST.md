@@ -51,6 +51,14 @@ chargées et absence de débordement horizontal sur les pages contrôlées. Le
 PNG HGQ conserve ses proportions. Ces dimensions sont des contrôles de
 navigateur, distincts d'un test sur téléphone physique.
 
+Finition demandée ensuite : masthead centré avec logo seul, 440 px desktop et
+330 px mobile, navigation centrée en dessous, aucune répétition après les
+boutons d'accueil ni dans la page Studio. Fond du site noir `#000000`, variante
+du logo BB16 en PNG transparent préparée par imagegen ; original JPG conservé.
+HGQ utilise directement son alpha sans carré blanc CSS. Bleu maintenu à la
+valeur propriétaire `#0097D7`. Génération et validation : 12 pages, 7 assets.
+La transparence du nouveau PNG est observée (RGBA, alpha de 0 à 255).
+
 Les applications décrites sur ce site restent en développement ou en
 préparation. Aucune URL Store n'est affichée tant qu'une adresse publique
 réelle n'est pas confirmée.

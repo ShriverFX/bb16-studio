@@ -13,7 +13,7 @@ from urllib.parse import urlsplit
 
 SITE = Path(__file__).resolve().parent
 PAGES = ["index.html", "studio.html", "apps.html", "convertair.html", "doccipher.html", "hgq.html", "support.html", "contact.html", "privacy.html", "legal.html", "data-deletion.html", "404.html"]
-ASSETS = ["assets/branding/convertair-presentation.png", "assets/branding/doccipher-presentation.png", "assets/apps/convertair-icon-512.png", "assets/apps/doccipher-icon-512.png", "assets/branding/bb16-studio-logo.jpg", "assets/apps/hgq-logo.png"]
+ASSETS = ["assets/branding/convertair-presentation.png", "assets/branding/doccipher-presentation.png", "assets/apps/convertair-icon-512.png", "assets/apps/doccipher-icon-512.png", "assets/branding/bb16-studio-logo.jpg", "assets/apps/hgq-logo.png", "assets/branding/bb16-studio-logo-dark.png"]
 ORIGINAL_LOGOS = {
     "assets/branding/bb16-studio-logo.jpg": "ed2f01e3180471184daa5f6513df0a01c489ccd5f0523bca3ca99512e6c6700d",
     "assets/apps/hgq-logo.png": "531f93ab06abc92be87e4f1aaa102271f57c536f05f1f41bc825096e85fe5a9c",
@@ -73,9 +73,11 @@ def main() -> None:
         if raw[:8] != b"\x89PNG\r\n\x1a\n" or raw[12:16] != b"IHDR":
             raise SystemExit(f"BAD_PNG={asset}")
         width, height = struct.unpack(">II", raw[16:24])
-        expected = (709, 784) if asset.endswith("hgq-logo.png") else (1254, 1254) if asset.endswith("presentation.png") else (512, 512)
+        expected = (709, 784) if asset.endswith("hgq-logo.png") else (1254, 1254) if asset.endswith(("presentation.png", "logo-dark.png")) else (512, 512)
         if (width, height) != expected:
             raise SystemExit(f"BAD_DIMENSIONS={asset}:{width}x{height}")
+        if asset.endswith("logo-dark.png") and raw[25] != 6:
+            raise SystemExit(f"MISSING_RGBA={asset}")
     css = (SITE / "styles.css").read_text(encoding="utf-8")
     if "overflow-x" in css and "overflow-x: hidden" in css:
         raise SystemExit("UNSAFE_HORIZONTAL_CLIP=styles.css")

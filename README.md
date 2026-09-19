@@ -21,18 +21,29 @@ python .\build_site.py `
   --base-path '/bb16-studio/'
 ```
 
-La génération normale utilise les six assets déjà copiés dans ce dépôt. Elle
+La génération normale utilise les sept assets déjà copiés dans ce dépôt. Elle
 ne dépend d'aucun dépôt privé voisin. Pour actualiser volontairement ces
 copies depuis les projets source locaux, utiliser explicitement
 `python .\build_site.py --import-assets`.
 
 Le logo BB16 Studio fourni par le propriétaire est conservé sans modification
-dans `assets/branding/bb16-studio-logo.jpg` (1280 × 1280). Le bleu officiel confirmé par le propriétaire,
-`#0097D7`, est la couleur principale du site. Le logo HGQ transparent provient de
+dans `assets/branding/bb16-studio-logo.jpg` (1280 × 1280). La variante affichée,
+`assets/branding/bb16-studio-logo-dark.png` (1254 × 1254 RGBA), a été préparée
+avec l'outil intégré imagegen pour retirer le fond blanc et préserver les
+lettres blanches sur fond noir. L'alpha transparent est conservé. Le bleu
+officiel confirmé par le propriétaire, `#0097D7`, est la couleur principale du
+site. Le logo HGQ transparent provient de
 `HGQ/hgq/assets/images/Logo_hgq_fond_transparent.png` (709 × 784), également sans
 modification. Les empreintes des deux originaux sont vérifiées par le validateur.
-Le logo BB16 apparaît dans l'en-tête, l'accueil, la page Studio et les métadonnées
-du site ; HGQ utilise son logo sur l'accueil, le catalogue et sa fiche.
+Le logo BB16 est grand et centré dans l'en-tête, sans texte de marque ajouté
+à côté ; la navigation est centrée en dessous. HGQ utilise son logo sur
+l'accueil, le catalogue et sa fiche, sans fond blanc ajouté.
+
+Consigne utilisée avec l'outil imagegen intégré : retirer le papier blanc du
+logo fourni et produire un PNG réellement transparent, préserver la composition,
+les textures et les lettres blanches intentionnelles, employer le bleu
+`#0097D7`, sans ajout ni cadre, pour affichage sur fond noir. L'original reste
+disponible séparément et n'est pas remplacé par cette adaptation.
 
 Elle produit les pages HTML, `sitemap.xml`, `robots.txt` et `404.html`. Les
 liens internes sont préfixés par le chemin de base afin de fonctionner depuis
