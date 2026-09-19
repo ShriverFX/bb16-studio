@@ -37,7 +37,7 @@ jobs:
           rm -rf _site
           mkdir -p _site/assets/branding _site/assets/apps
           cp -- *.html styles.css robots.txt sitemap.xml _site/
-          cp -- assets/branding/*.png _site/assets/branding/
+          cp -- assets/branding/*.png assets/branding/*.jpg _site/assets/branding/
           cp -- assets/apps/*.png _site/assets/apps/
           test ! -e _site/site.config.json
           test ! -e _site/build_site.py

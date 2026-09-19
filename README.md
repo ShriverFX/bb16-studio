@@ -21,10 +21,18 @@ python .\build_site.py `
   --base-path '/bb16-studio/'
 ```
 
-La génération normale utilise les quatre assets déjà copiés dans ce dépôt. Elle
+La génération normale utilise les six assets déjà copiés dans ce dépôt. Elle
 ne dépend d'aucun dépôt privé voisin. Pour actualiser volontairement ces
 copies depuis les projets source locaux, utiliser explicitement
 `python .\build_site.py --import-assets`.
+
+Le logo BB16 Studio fourni par le propriétaire est conservé sans modification
+dans `assets/branding/bb16-studio-logo.jpg` (1280 × 1280). Son bleu saturé médian
+`#038DDF` est la couleur principale du site. Le logo HGQ transparent provient de
+`HGQ/hgq/assets/images/Logo_hgq_fond_transparent.png` (709 × 784), également sans
+modification. Les empreintes des deux originaux sont vérifiées par le validateur.
+Le logo BB16 apparaît dans l'en-tête, l'accueil, la page Studio et les métadonnées
+du site ; HGQ utilise son logo sur l'accueil, le catalogue et sa fiche.
 
 Elle produit les pages HTML, `sitemap.xml`, `robots.txt` et `404.html`. Les
 liens internes sont préfixés par le chemin de base afin de fonctionner depuis
