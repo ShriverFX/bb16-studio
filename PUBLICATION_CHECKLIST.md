@@ -59,6 +59,16 @@ HGQ utilise directement son alpha sans carré blanc CSS. Bleu maintenu à la
 valeur propriétaire `#0097D7`. Génération et validation : 12 pages, 7 assets.
 La transparence du nouveau PNG est observée (RGBA, alpha de 0 à 255).
 
+Ajout clair/sombre : sélecteur accessible sous la navigation sur les 12 pages,
+palette claire complète et permutation des logos JPG/PNG. Tests de comportement
+du script : préférence système, valeur enregistrée, choix explicite prioritaire,
+stockage indisponible, aria-pressed, favicon et événement inter-onglets PASS.
+Navigateur local : choix sombre maintenu après rechargement et navigation ;
+bascule claire au clavier observée ; catalogue clair à 390 px sans débordement,
+logos chargés, boutons d'au moins 44 px de hauteur. Revue indépendante sans
+anomalie. Le script est inclus dans l'artefact Pages ; CSS et JS sont versionnés
+par leur contenu pour éviter l'utilisation d'anciennes ressources.
+
 Les applications décrites sur ce site restent en développement ou en
 préparation. Aucune URL Store n'est affichée tant qu'une adresse publique
 réelle n'est pas confirmée.

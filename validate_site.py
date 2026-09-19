@@ -30,7 +30,7 @@ def main() -> None:
         parsed = urlsplit(site_url)
         if parsed.scheme != "https" or not parsed.netloc or parsed.path not in ("", "/"):
             raise SystemExit("BAD_SITE_URL=" + str(site_url))
-    missing = [p for p in PAGES + ASSETS + ["styles.css", "sitemap.xml", "robots.txt"] if not (SITE / p).is_file()]
+    missing = [p for p in PAGES + ASSETS + ["styles.css", "theme.js", "sitemap.xml", "robots.txt"] if not (SITE / p).is_file()]
     if missing:
         raise SystemExit("MISSING=" + ",".join(missing))
     bad_links = []
@@ -60,7 +60,7 @@ def main() -> None:
         if not all(f"<loc>{site_url.rstrip('/')}{base_path}" in (SITE / "sitemap.xml").read_text(encoding="utf-8") for _ in [0]):
             raise SystemExit("BAD_SITEMAP_CANONICAL")
     nested_404 = (SITE / "404.html").read_text(encoding="utf-8")
-    if f'href="{base_path}index.html"' not in nested_404 or f'href="{base_path}styles.css"' not in nested_404:
+    if f'href="{base_path}index.html"' not in nested_404 or not re.search(r'href="' + re.escape(base_path + 'styles.css') + r'(?:\?[^\"]*)?"', nested_404):
         raise SystemExit("BAD_NESTED_404_LINKS")
     for asset in ASSETS:
         raw = (SITE / asset).read_bytes()

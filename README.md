@@ -27,8 +27,9 @@ copies depuis les projets source locaux, utiliser explicitement
 `python .\build_site.py --import-assets`.
 
 Le logo BB16 Studio fourni par le propriétaire est conservé sans modification
-dans `assets/branding/bb16-studio-logo.jpg` (1280 × 1280). La variante affichée,
-`assets/branding/bb16-studio-logo-dark.png` (1254 × 1254 RGBA), a été préparée
+dans `assets/branding/bb16-studio-logo.jpg` (1280 × 1280), affiché en mode clair.
+La variante `assets/branding/bb16-studio-logo-dark.png` (1254 × 1254 RGBA),
+affichée en mode sombre, a été préparée
 avec l'outil intégré imagegen pour retirer le fond blanc et préserver les
 lettres blanches sur fond noir. L'alpha transparent est conservé. Le bleu
 officiel confirmé par le propriétaire, `#0097D7`, est la couleur principale du
@@ -38,6 +39,23 @@ modification. Les empreintes des deux originaux sont vérifiées par le validate
 Le logo BB16 est grand et centré dans l'en-tête, sans texte de marque ajouté
 à côté ; la navigation est centrée en dessous. HGQ utilise son logo sur
 l'accueil, le catalogue et sa fiche, sans fond blanc ajouté.
+
+## Apparence claire et sombre
+
+Le sélecteur « Clair / Sombre » sous la navigation change la palette de toutes
+les pages et affiche le logo adapté : JPG original sur blanc en clair, PNG
+transparent sur noir en sombre. Le logo garde la même taille et reste centré.
+Le bleu principal est toujours `#0097D7` ; les petits textes bleus sont assombris
+en clair pour leur contraste.
+
+`theme.js` applique le choix enregistré avant le rendu. La clé locale
+`bb16-theme` contient uniquement `light` ou `dark`, sans transmission réseau.
+Sans choix enregistré, le site suit la préférence du système, y compris ses
+changements. Si le stockage est bloqué, la bascule fonctionne dans la page
+courante, mais le choix ne peut pas être conservé après rechargement.
+Sans JavaScript, la feuille de style suit le système et le sélecteur est masqué.
+Le script et la feuille de style portent une version de contenu pour éviter
+de réutiliser une ancienne palette après déploiement.
 
 Consigne utilisée avec l'outil imagegen intégré : retirer le papier blanc du
 logo fourni et produire un PNG réellement transparent, préserver la composition,
