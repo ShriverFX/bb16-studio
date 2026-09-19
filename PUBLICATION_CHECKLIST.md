@@ -43,7 +43,7 @@ distingués de l'accès public confirmé depuis l'environnement utilisateur.
 
 Mise à jour de marque du 19 septembre 2026 : logo BB16 Studio original fourni
 par le propriétaire, logo HGQ transparent provenant de l'application, bleu
-principal `#038DDF` relevé dans le logo BB16. Génération et validation locales :
+principal `#0097D7` confirmé explicitement par le propriétaire. Génération et validation locales :
 12 pages, 6 assets, originaux identiques par SHA-256. Revue indépendante du
 diff sans anomalie. Navigateur local : accueil et catalogue en largeur desktop
 1440 px ; accueil, catalogue, Studio et HGQ en largeur mobile 390 px, images

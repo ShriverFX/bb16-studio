@@ -109,7 +109,7 @@ def document(title: str, description: str, active: str, body: str, config: dict,
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#038ddf">
+  <meta name="theme-color" content="#0097D7">
   <meta name="description" content="{escape(description)}">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="BB16 Studio">

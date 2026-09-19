@@ -4,9 +4,9 @@
   --navy-900: #0b1220;
   --navy-800: #131c2b;
   --navy-700: #1c2940;
-  /* Median saturated blue sampled from the original BB16 Studio logo. */
-  --brand-blue: #038ddf;
-  --brand-blue-rgb: 3, 141, 223;
+  /* Official BB16 Studio blue confirmed by the owner. */
+  --brand-blue: #0097D7;
+  --brand-blue-rgb: 0, 151, 215;
   --text: #f8fbff;
   --muted: #a8b7c9;
   --line: rgba(166, 193, 219, 0.18);

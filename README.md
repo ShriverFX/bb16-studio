@@ -27,8 +27,8 @@ copies depuis les projets source locaux, utiliser explicitement
 `python .\build_site.py --import-assets`.
 
 Le logo BB16 Studio fourni par le propriétaire est conservé sans modification
-dans `assets/branding/bb16-studio-logo.jpg` (1280 × 1280). Son bleu saturé médian
-`#038DDF` est la couleur principale du site. Le logo HGQ transparent provient de
+dans `assets/branding/bb16-studio-logo.jpg` (1280 × 1280). Le bleu officiel confirmé par le propriétaire,
+`#0097D7`, est la couleur principale du site. Le logo HGQ transparent provient de
 `HGQ/hgq/assets/images/Logo_hgq_fond_transparent.png` (709 × 784), également sans
 modification. Les empreintes des deux originaux sont vérifiées par le validateur.
 Le logo BB16 apparaît dans l'en-tête, l'accueil, la page Studio et les métadonnées
