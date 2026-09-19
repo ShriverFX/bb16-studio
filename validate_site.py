@@ -69,6 +69,9 @@ def main() -> None:
     if "overflow-x" in css and "overflow-x: hidden" in css:
         raise SystemExit("UNSAFE_HORIZONTAL_CLIP=styles.css")
     all_text = "\n".join((SITE / p).read_text(encoding="utf-8") for p in PAGES)
+    unresolved = sorted(set(re.findall(r"\{[A-Za-z_][A-Za-z0-9_]*\}", all_text)))
+    if unresolved:
+        raise SystemExit("UNRESOLVED_PLACEHOLDERS=" + ",".join(unresolved))
     forbidden = ["BEGIN " + "PRIVATE KEY", "AI" + "za", "service" + "Account", "google-services" + ".json", "key" + ".properties", "shriverfx" + "@gmail.com", "support" + "@hgq.app", "legal" + "@hgq.app", "preuves de release", "phase courante reste ouverte", "URL publique non configurée", "non prouvé"]
     leaked = [token for token in forbidden if token in all_text]
     if leaked:
