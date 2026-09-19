@@ -1,20 +1,21 @@
 # Checklist de publication — BB16 Studio
 
-Le site local est prêt pour revue. La publication reste bloquée jusqu'à la
-complétion des champs d'identité et du dépôt cible.
+Publication de la vitrine explicitement demandée par le propriétaire le
+19 septembre 2026. Les informations légales manquantes ne sont pas inventées ;
+leur complétion et la vérification du compte Organisation restent à suivre.
 
 ## Champs encore requis
 
 - [ ] Nom légal exact de l'éditeur.
 - [ ] Adresse publique de l'éditeur.
-- [ ] Propriétaire et nom exact du dépôt public GitHub Pages.
-- [ ] URL Pages finale ; régénérer avec `--site-url` et `--base-path`.
+- [x] Dépôt public dédié : `ShriverFX/bb16-studio`.
+- [x] URL configurée : `https://shriverfx.github.io/bb16-studio/`.
 
 ## Vérifications avant publication
 
-- [ ] `python build_site.py --site-url ... --base-path ...` exécuté avec les
+- [x] `python build_site.py --site-url ... --base-path ...` exécuté avec les
       valeurs réelles.
-- [ ] `python validate_site.py` retourne `SITE_VALIDATION_OK`.
+- [x] `python validate_site.py` retourne `SITE_VALIDATION_OK`.
 - [ ] GitHub Pages sert `index.html` en HTTPS avec HTTP 200.
 - [ ] Test mobile réel : navigation, focus clavier, aucune barre horizontale.
 - [ ] Test desktop réel : navigation, images, pages 404 et liens mailto.
