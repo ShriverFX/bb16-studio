@@ -1,0 +1,63 @@
+name: Deploy static site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Build
+        run: python3 build_site.py
+
+      - name: Validate source tree
+        run: python3 validate_site.py
+
+      - name: Assemble allowlisted artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf _site
+          mkdir -p _site/assets/branding _site/assets/apps
+          cp -- *.html styles.css robots.txt sitemap.xml _site/
+          cp -- assets/branding/*.png _site/assets/branding/
+          cp -- assets/apps/*.png _site/assets/apps/
+          test ! -e _site/site.config.json
+          test ! -e _site/build_site.py
+          test ! -e _site/validate_site.py
+          test ! -e _site/PUBLICATION_CHECKLIST.md
+          test ! -e _site/README.md
+          find _site -type f -print0 | sort -z | xargs -0 -n1 file | tee artifact-files.txt
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
