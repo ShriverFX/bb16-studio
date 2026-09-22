@@ -34,8 +34,11 @@ def main() -> None:
     if missing:
         raise SystemExit("MISSING=" + ",".join(missing))
     bad_links = []
+    duplicate_ids = []
     for page in PAGES:
         text = (SITE / page).read_text(encoding="utf-8")
+        ids = re.findall(r'\sid="([^"]+)"', text)
+        duplicate_ids.extend(f"{page}#{name}" for name in sorted(set(ids)) if ids.count(name) > 1)
         for link in re.findall(r'''(?:href|src)="([^"#]+)"''', text):
             if link.startswith(("mailto:", "https://", "http://")):
                 continue
@@ -50,6 +53,8 @@ def main() -> None:
             bad_links.append(f"{page}->styles.css missing")
     if bad_links:
         raise SystemExit("BAD_LINKS=" + ",".join(bad_links))
+    if duplicate_ids:
+        raise SystemExit("DUPLICATE_IDS=" + ",".join(duplicate_ids))
     doccipher = (SITE / "doccipher.html").read_text(encoding="utf-8")
     doccipher_privacy = (SITE / "doccipher-privacy.html").read_text(encoding="utf-8")
     if f'href="{base_path}doccipher-privacy.html"' not in doccipher:
@@ -102,6 +107,7 @@ def main() -> None:
     print(f"ASSETS={len(ASSETS)}")
     print("CANONICAL_OK")
     print("NESTED_404_LINKS_OK")
+    print("UNIQUE_IDS_OK")
 
 
 if __name__ == "__main__":
