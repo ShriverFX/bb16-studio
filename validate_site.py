@@ -12,7 +12,7 @@ from urllib.parse import urlsplit
 
 
 SITE = Path(__file__).resolve().parent
-PAGES = ["index.html", "studio.html", "apps.html", "convertair.html", "doccipher.html", "hgq.html", "support.html", "contact.html", "privacy.html", "legal.html", "data-deletion.html", "404.html"]
+PAGES = ["index.html", "studio.html", "apps.html", "convertair.html", "convertair-privacy.html", "doccipher.html", "doccipher-privacy.html", "hgq.html", "support.html", "contact.html", "privacy.html", "legal.html", "data-deletion.html", "404.html"]
 ASSETS = ["assets/branding/convertair-presentation.png", "assets/branding/doccipher-presentation.png", "assets/apps/convertair-icon-512.png", "assets/apps/doccipher-icon-512.png", "assets/branding/bb16-studio-logo.jpg", "assets/apps/hgq-logo.png", "assets/branding/bb16-studio-logo-dark.png"]
 ORIGINAL_LOGOS = {
     "assets/branding/bb16-studio-logo.jpg": "ed2f01e3180471184daa5f6513df0a01c489ccd5f0523bca3ca99512e6c6700d",
@@ -50,6 +50,14 @@ def main() -> None:
             bad_links.append(f"{page}->styles.css missing")
     if bad_links:
         raise SystemExit("BAD_LINKS=" + ",".join(bad_links))
+    doccipher = (SITE / "doccipher.html").read_text(encoding="utf-8")
+    doccipher_privacy = (SITE / "doccipher-privacy.html").read_text(encoding="utf-8")
+    if f'href="{base_path}doccipher-privacy.html"' not in doccipher:
+        raise SystemExit("MISSING_DOCCIPHER_PRIVACY_LINK")
+    if "bb16studio@gmail.com" not in doccipher_privacy or "mailto:bb16studio@gmail.com" not in doccipher_privacy:
+        raise SystemExit("BAD_DOCCIPHER_PRIVACY_CONTACT")
+    if "WebDAV or Nextcloud synchronisation is not available" not in doccipher_privacy:
+        raise SystemExit("MISSING_DOCCIPHER_CURRENT_SCOPE")
     if site_url:
         for page in PAGES:
             text = (SITE / page).read_text(encoding="utf-8")

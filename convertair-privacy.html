@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0097D7">
+  <meta name="description" content="Politique de confidentialité de l&#x27;application ConvertAir : traitement local des documents, réseau limité aux achats.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="BB16 Studio">
+  <meta property="og:title" content="Politique de confidentialité ConvertAir · BB16 Studio">
+  <meta property="og:description" content="Politique de confidentialité de l&#x27;application ConvertAir : traitement local des documents, réseau limité aux achats.">
+  <meta property="og:url" content="https://shriverfx.github.io/bb16-studio/convertair-privacy.html"><meta property="og:image" content="https://shriverfx.github.io/bb16-studio/assets/branding/bb16-studio-logo-dark.png"><link rel="canonical" href="https://shriverfx.github.io/bb16-studio/convertair-privacy.html">
+  <link id="site-icon" rel="icon" type="image/png" href="/bb16-studio/assets/branding/bb16-studio-logo-dark.png" data-dark="/bb16-studio/assets/branding/bb16-studio-logo-dark.png" data-light="/bb16-studio/assets/branding/bb16-studio-logo.jpg">
+  <script src="/bb16-studio/theme.js?v=4209e548ad6b"></script>
+  <link rel="stylesheet" href="/bb16-studio/styles.css?v=4209e548ad6b">
+  <title>Politique de confidentialité ConvertAir · BB16 Studio</title>
+</head>
+<body>
+  <a class="skip-link" href="#main">Aller au contenu</a>
+<header class="site-header">
+  <nav class="nav" aria-label="Navigation principale">
+    <a class="wordmark" href="/bb16-studio/index.html" aria-label="BB16 Studio — Accueil"><img class="wordmark-logo logo-dark" src="/bb16-studio/assets/branding/bb16-studio-logo-dark.png" alt="" width="1254" height="1254"><img class="wordmark-logo logo-light" src="/bb16-studio/assets/branding/bb16-studio-logo.jpg" alt="" width="1280" height="1280"></a>
+    <div class="nav-links"><a href="/bb16-studio/index.html">Accueil</a><a href="/bb16-studio/studio.html">Studio</a><a href="/bb16-studio/apps.html" aria-current="page">Apps</a><a href="/bb16-studio/support.html">Support</a></div>
+    <div class="theme-switch" role="group" aria-label="Apparence" hidden><button class="theme-option" type="button" data-set-theme="light" aria-pressed="false">Clair</button><button class="theme-option" type="button" data-set-theme="dark" aria-pressed="false">Sombre</button></div>
+  </nav>
+</header>
+  <main id="main"><section class="section"><div class="container prose">
+<p class="eyebrow">ConvertAir · application mobile</p>
+<h1>Politique de confidentialité</h1>
+<p class="lede">ConvertAir traite vos documents sur votre appareil. Cette page décrit ce que l'application fait réellement, et ce qu'elle ne fait pas.</p>
+<p class="meta">Dernière mise à jour : 21 septembre 2026 · <a href="#english">Read this page in English</a></p>
+
+<h2>Vos documents restent sur votre appareil</h2>
+<p>La numérisation, les conversions, l'assemblage, la compression, l'annotation, la signature et la reconnaissance de texte (OCR) s'exécutent sur votre téléphone. Aucun document, aucune image et aucun texte reconnu n'est transmis à BB16 Studio ni à un tiers.</p>
+<p>La reconnaissance de texte utilise des modèles embarqués dans l'application : elle a lieu sur l'appareil, et ConvertAir n'envoie aucune image à un serveur pour cela. La capture de documents est déléguée aux services Google Play installés sur votre téléphone ; ConvertAir ne transmet lui-même aucun document, mais ce traitement se déroule dans un composant Google, régi par la politique de confidentialité de Google et non par la nôtre.</p>
+
+<h2>La seule connexion réseau de l'application</h2>
+<p>ConvertAir ouvre une connexion réseau pour une seule raison : les achats. Cela couvre l'affichage des offres, l'achat et la restauration d'un achat. La licence est gérée par RevenueCat ; le paiement lui-même est réalisé par Google Play ou l'App Store. Aucun contenu de document ne passe par ce chemin.</p>
+<p>Le client RevenueCat est configuré en mode anonyme : aucun compte n'est créé, la collecte automatique d'identifiants d'appareil est désactivée, les diagnostics du SDK sont désactivés. L'identifiant utilisé est un identifiant anonyme produit par le SDK et rattaché à l'installation, pas à vous.</p>
+<p>Si aucune clé d'achat n'est configurée, l'application n'ouvre aucune connexion et reste gratuite.</p>
+
+<h2>Ce que l'application ne fait pas</h2>
+<ul>
+<li>Aucun compte, aucune inscription, aucune adresse email demandée.</li>
+<li>Aucun outil de mesure d'audience, de statistiques d'usage ou de rapport de plantage.</li>
+<li>Aucun identifiant publicitaire : la permission <code>com.google.android.gms.permission.AD_ID</code> n'est pas déclarée.</li>
+<li>Aucune publicité, aucune vente de données, aucun partage à des fins commerciales.</li>
+<li>Aucun suivi d'une application à l'autre ni d'un site à l'autre.</li>
+</ul>
+
+<h2>Permissions Android</h2>
+<p>Le manifeste de la version publiée déclare exactement trois entrées :</p>
+<ul>
+<li><code>android.permission.INTERNET</code> — les achats, et rien d'autre ;</li>
+<li><code>com.android.vending.BILLING</code> — la facturation Google Play ;</li>
+<li>une permission de signature interne à l'application, qui n'ouvre aucune capacité de l'appareil.</li>
+</ul>
+<p>Aucune permission de caméra, de localisation, de contacts, de microphone ou de stockage étendu n'est demandée. Les fichiers que vous ouvrez le sont par le sélecteur de fichiers du système ou par un partage entrant : l'application en reçoit un accès temporaire, le temps d'en faire une copie locale.</p>
+
+<h2>Sauvegarde et transfert d'appareil</h2>
+<p>La sauvegarde automatique d'Android est désactivée et les règles d'extraction excluent explicitement la sauvegarde vers le cloud et le transfert d'un appareil à l'autre. Les données de l'application ne sont donc pas téléversées vers un espace Google Drive ni recopiées vers un nouveau téléphone par ces canaux.</p>
+
+<h2>Ce qui est conservé sur votre appareil</h2>
+<p>Les fichiers que vous produisez, un historique local des opérations, vos préférences d'affichage et vos signatures enregistrées. Les images de signature sont chiffrées sur l'appareil. L'historique peut être purgé automatiquement au bout de 30 jours, de 90 jours, ou conservé, selon le réglage que vous choisissez dans l'écran Réglages. Désinstaller l'application supprime les données de son répertoire privé.</p>
+<p>Lorsque des polices supplémentaires sont nécessaires pour les écritures non latines, elles sont distribuées par le mécanisme de modules à la demande de Google Play. ConvertAir n'ouvre pas de connexion pour les récupérer.</p>
+
+<h2>Vos droits</h2>
+<p>BB16 Studio ne détient aucun fichier ni aucune donnée personnelle vous concernant au titre de ConvertAir : il n'y a rien, de notre côté, à exporter ou à supprimer. Vos données d'achat sont détenues par Google Play ou l'App Store et par RevenueCat, chacun selon sa propre politique. Pour toute question, écrivez à <a href="mailto:bb16studio@gmail.com">bb16studio@gmail.com</a>.</p>
+
+<h2>Modifications</h2>
+<p>Si le comportement de l'application change, cette page est mise à jour avec lui et la date ci-dessus change.</p>
+
+<hr>
+
+<div lang="en">
+<h2 id="english">English version</h2>
+<p class="lede">ConvertAir processes your documents on your device. This page describes what the app actually does, and what it does not do.</p>
+<p class="meta">Last updated: 21 September 2026 · <a href="#main">Lire cette page en français</a></p>
+
+<h3>Your documents stay on your device</h3>
+<p>Scanning, conversions, merging, compression, annotation, signing and text recognition (OCR) all run on your phone. No document, no image and no recognised text is sent to BB16 Studio or to any third party.</p>
+<p>Text recognition uses models bundled inside the app: it runs on the device, and ConvertAir sends no image to any server for it. Document capture is delegated to the Google Play services installed on your phone; ConvertAir itself transmits no document, but that step runs inside a Google component, governed by Google's privacy policy rather than ours.</p>
+
+<h3>The app's only network connection</h3>
+<p>ConvertAir opens a network connection for one reason: purchases. That covers showing the offers, buying, and restoring a purchase. Entitlements are handled by RevenueCat; the payment itself is carried out by Google Play or the App Store. No document content travels over that path.</p>
+<p>The RevenueCat client runs in anonymous mode: no account is created, automatic device-identifier collection is turned off, and SDK diagnostics are turned off. The identifier used is an anonymous one generated by the SDK and tied to the installation, not to you.</p>
+<p>If no purchase key is configured, the app opens no connection at all and stays free.</p>
+
+<h3>What the app does not do</h3>
+<ul>
+<li>No account, no sign-up, no email address requested.</li>
+<li>No analytics, usage measurement or crash-reporting tool.</li>
+<li>No advertising identifier: the <code>com.google.android.gms.permission.AD_ID</code> permission is not declared.</li>
+<li>No advertising, no sale of data, no sharing for commercial purposes.</li>
+<li>No tracking across apps or across websites.</li>
+</ul>
+
+<h3>Android permissions</h3>
+<p>The published build's manifest declares exactly three entries:</p>
+<ul>
+<li><code>android.permission.INTERNET</code> — purchases, and nothing else;</li>
+<li><code>com.android.vending.BILLING</code> — Google Play billing;</li>
+<li>an app-internal signature permission, which grants no device capability.</li>
+</ul>
+<p>No camera, location, contacts, microphone or broad storage permission is requested. Files you open come through the system file picker or through an incoming share: the app receives temporary access, just long enough to make a local copy.</p>
+
+<h3>Backup and device transfer</h3>
+<p>Android's automatic backup is disabled, and the data-extraction rules explicitly exclude both cloud backup and device-to-device transfer. The app's data is therefore not uploaded to a Google Drive space, nor copied to a new phone through those channels.</p>
+
+<h3>What is kept on your device</h3>
+<p>The files you produce, a local history of operations, your display preferences and your saved signatures. Signature images are encrypted on the device. History can be purged automatically after 30 days, after 90 days, or kept, depending on the setting you choose in the Settings screen. Uninstalling the app removes the data in its private directory.</p>
+<p>Font packs for non-Latin scripts are downloaded by the Play Store itself, outside the app.</p>
+
+<h3>Your rights</h3>
+<p>BB16 Studio holds no file and no personal data about you in connection with ConvertAir: there is nothing on our side to export or delete. Your purchase data is held by Google Play or the App Store and by RevenueCat, each under its own policy. For any question, write to <a href="mailto:bb16studio@gmail.com">bb16studio@gmail.com</a>.</p>
+
+<h3>Changes</h3>
+<p>If the app's behaviour changes, this page changes with it and the date above is updated.</p>
+</div>
+
+<div class="actions"><a class="button secondary" href="/bb16-studio/convertair.html">Retour à ConvertAir</a><a class="button" href="/bb16-studio/contact.html">Nous écrire</a></div>
+</div></section></main>
+  <footer class="footer"><div class="container footer-grid">
+  <span>© 2026 BB16 Studio · projets numériques indépendants</span>
+  <span class="footer-links"><a href="/bb16-studio/privacy.html">Confidentialité</a><a href="/bb16-studio/legal.html">Mentions légales</a><a href="/bb16-studio/contact.html">Contact</a></span>
+</div></footer>
+</body>
+</html>
