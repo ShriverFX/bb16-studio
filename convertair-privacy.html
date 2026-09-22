@@ -27,7 +27,7 @@
   <main id="main"><section class="section"><div class="container prose">
 <p class="eyebrow">ConvertAir · application mobile</p>
 <h1>Politique de confidentialité</h1>
-<p class="lede">ConvertAir traite vos documents sur votre appareil. Cette page décrit ce que l'application fait réellement, ce qu'elle ne fait pas, et les seules données qui en sortent : celles de vos achats.</p>
+<p class="lede">ConvertAir traite vos documents sur votre appareil. Cette page décrit ce que l'application fait réellement, ce qu'elle ne fait pas, et les seules données qui en sortent : celles liées aux achats.</p>
 <p class="meta">Dernière mise à jour : 22 septembre 2026 · <a href="#english">Read this page in English</a></p>
 
 <h2>Responsable du traitement</h2>
@@ -41,30 +41,35 @@
 <p>Un fichier ne quitte ConvertAir que lorsque vous le décidez : partage par la feuille de partage d'Android, enregistrement à l'emplacement que vous choisissez, ou impression. Il part alors vers l'application, le dossier ou le service d'impression que vous avez désigné, qui le traite selon ses propres règles. BB16 Studio n'en reçoit aucune copie.</p>
 
 <h2>La seule connexion réseau de l'application : les achats</h2>
-<p>ConvertAir ouvre une connexion réseau pour une seule raison : les achats. Cela couvre l'affichage des offres, l'achat et la restauration d'un achat. Le paiement est réalisé par Google Play. La vérification de l'achat et de votre accès Premium est confiée à RevenueCat, un prestataire qui agit pour le compte de BB16 Studio et sur ses instructions (sous-traitant au sens du RGPD). Aucun contenu de document ne passe par ce chemin.</p>
-<p>Lors de ces échanges, RevenueCat reçoit :</p>
+<p>ConvertAir n'ouvre de connexion réseau que pour les achats. À chaque lancement, si l'appareil est connecté, et à nouveau lorsque l'application revient au premier plan, ConvertAir vérifie l'état de votre accès Premium auprès de RevenueCat, même si vous n'avez rien acheté. L'affichage des offres, l'achat et la restauration d'un achat passent par le même chemin. Le paiement est réalisé par Google Play. La vérification de l'achat et de votre accès Premium est confiée à RevenueCat, un prestataire qui agit pour le compte de BB16 Studio et sur ses instructions (sous-traitant au sens du RGPD). Aucun contenu de document ne passe par ce chemin.</p>
+<p>À chacun de ces échanges, RevenueCat reçoit :</p>
 <ul>
-<li>le jeton d'achat (reçu) Google Play, le produit acheté, les dates de la transaction et l'état de votre accès Premium (actif ou expiré) ;</li>
-<li>un identifiant d'utilisateur aléatoire, créé par le SDK RevenueCat lors de la première utilisation ;</li>
-<li>des informations techniques jointes à chaque requête : la plateforme et la version d'Android, la version de l'application et celle du SDK ;</li>
+<li>un identifiant d'utilisateur aléatoire, créé par le SDK RevenueCat au premier lancement ;</li>
+<li>des informations techniques jointes à chaque requête : la plateforme et la version d'Android, le modèle et la marque de l'appareil, la ou les langues de l'appareil, le pays de votre compte Google Play, l'identifiant de l'application, la version de l'application et celle du SDK ;</li>
 <li>l'adresse IP de votre connexion, que reçoit tout serveur contacté et dont un pays approximatif peut être déduit.</li>
 </ul>
+<p>Lors d'un achat ou d'une restauration, RevenueCat reçoit en plus le jeton d'achat (reçu) Google Play, le produit acheté, son prix et sa devise, et les dates de la transaction. Il en déduit l'état de votre accès Premium (actif ou expiré).</p>
 <p>Cet identifiant ne contient ni votre nom ni votre adresse email, mais il n'est pas anonyme : il est associé à vos achats Google Play, eux-mêmes liés à votre compte Google, et une restauration d'achat peut le relier aux identifiants de vos autres installations. C'est une donnée pseudonyme. Aucun compte n'est créé, la collecte automatique d'identifiants d'appareil (identifiant publicitaire, identifiant Android) est désactivée, et les diagnostics du SDK sont désactivés.</p>
 <p>Comme pour tout achat sur le Play Store, Google Play reçoit votre compte Google, le produit et vos informations de paiement. Google traite ces données en tant que responsable distinct, selon sa propre politique de confidentialité. Dans sa console, Google Play fournit à BB16 Studio les informations de commande nécessaires à la gestion des ventes, notamment le numéro de commande, le produit, le prix et le pays d'achat. BB16 Studio ne voit jamais vos coordonnées bancaires.</p>
 
 <h2>Finalité et base légale</h2>
-<p>Les données d'achat servent uniquement à vous fournir, vérifier et restaurer ce que vous avez acheté. Ce traitement est nécessaire à l'exécution du contrat d'achat (article 6, paragraphe 1, point b, du RGPD). Elles ne servent ni à la publicité, ni au profilage, ni au suivi. Si vous nous écrivez, votre message et votre adresse email servent à vous répondre, sur la base de notre intérêt légitime à le faire, ou de nos obligations légales lorsque vous exercez vos droits.</p>
+<p>Les échanges avec RevenueCat répondent à deux finalités distinctes :</p>
+<ul>
+<li>vérifier votre accès Premium à chaque lancement connecté et à chaque retour au premier plan, pour toute installation, y compris si vous n'avez rien acheté : ce traitement est nécessaire à l'exécution du contrat d'utilisation de l'application (article 6, paragraphe 1, point b, du RGPD) ;</li>
+<li>traiter un achat ou une restauration : ce traitement est nécessaire à l'exécution du contrat d'achat (article 6, paragraphe 1, point b, du RGPD).</li>
+</ul>
+<p>Ces données ne servent ni à la publicité, ni au profilage, ni au suivi. Si vous nous écrivez, votre message et votre adresse email servent à vous répondre, sur la base de notre intérêt légitime à le faire, ou de nos obligations légales lorsque vous exercez vos droits.</p>
 
 <h2>Transfert hors de l'Union européenne</h2>
 <p>RevenueCat, Inc. est établie aux États-Unis, où les données d'achat décrites ci-dessus sont traitées. Ce transfert est encadré par les clauses contractuelles types de la Commission européenne, intégrées à l'accord de traitement des données de RevenueCat. Vous pouvez en demander une copie à <a href="mailto:bb16studio@gmail.com">bb16studio@gmail.com</a>.</p>
 
 <h2>Durée de conservation</h2>
-<p>Les données d'achat sont conservées par RevenueCat tant qu'elles servent à gérer et à restaurer votre achat, et supprimées si vous le demandez (voir « Vos droits »). Google Play conserve ses propres données de commande selon sa politique. Les données stockées sur votre appareil y restent jusqu'à ce que vous les supprimiez ou désinstalliez l'application.</p>
+<p>Les données d'achat sont conservées par RevenueCat tant qu'elles servent à gérer et à restaurer votre achat, et supprimées si vous le demandez (voir « Vos droits »). Si vous n'avez jamais acheté, la vérification à chaque lancement crée chez RevenueCat, pour le compte de BB16 Studio, une fiche pseudonyme limitée à l'identifiant et aux informations techniques décrites plus haut ; elle est conservée tant que l'application reste installée et contactée, et supprimée sur demande (voir « Vos droits »). Google Play conserve ses propres données de commande selon sa politique. Les données stockées sur votre appareil y restent jusqu'à ce que vous les supprimiez ou désinstalliez l'application.</p>
 
 <h2>Ce que l'application ne fait pas</h2>
 <ul>
 <li>Aucun compte, aucune inscription, aucune adresse email demandée.</li>
-<li>Aucun outil de mesure d'audience, de statistiques d'usage ou de rapport de plantage intégré à l'application.</li>
+<li>Aucun SDK de mesure d'audience, de statistiques d'usage ou de rapport de plantage n'est intégré à l'application ; les composants par lesquels les bibliothèques ML Kit de Google envoient des diagnostics en sont retirés.</li>
 <li>Aucun identifiant publicitaire : la permission <code>com.google.android.gms.permission.AD_ID</code> n'est pas déclarée.</li>
 <li>Aucune publicité, aucune vente de données, aucun partage à des fins commerciales.</li>
 <li>Aucun suivi d'une application à l'autre ni d'un site à l'autre.</li>
@@ -87,6 +92,7 @@
 
 <h2>Ce qui est conservé sur votre appareil</h2>
 <p>Les fichiers que vous produisez, un historique local des opérations, vos préférences d'affichage et vos signatures enregistrées, dans l'espace privé de l'application. Les images de signature sont chiffrées sur l'appareil. L'historique peut être purgé automatiquement au bout de 30 jours, de 90 jours, ou conservé, selon le réglage que vous choisissez dans l'écran Réglages.</p>
+<p>Pour fonctionner hors ligne, l'application y garde aussi l'état de vos achats : le dernier état connu de votre accès Premium et le compteur des opérations gratuites du jour, tous deux chiffrés, les dernières offres affichées avec leurs prix, et les données que le SDK RevenueCat conserve en cache, dont son identifiant. Rien de cela ne contient vos documents.</p>
 <p>Désinstaller ConvertAir efface cet espace privé, y compris les fichiers produits que vous n'avez ni partagés ni enregistrés ailleurs. Les copies enregistrées hors de l'application restent à l'emplacement choisi.</p>
 
 <h2>Polices supplémentaires, téléchargées par Google Play</h2>
@@ -97,8 +103,8 @@
 
 <h2>Vos droits</h2>
 <p>Vos documents, votre historique et vos signatures ne se trouvent que sur votre appareil : vous les consultez, les exportez et les supprimez vous-même, dans l'application ou en la désinstallant. BB16 Studio n'en détient aucune copie.</p>
-<p>Pour les données d'achat que RevenueCat traite pour le compte de BB16 Studio, vous pouvez demander l'accès, la rectification, l'effacement, la limitation ou la portabilité, et vous opposer au traitement lorsqu'il repose sur notre intérêt légitime. Écrivez à <a href="mailto:bb16studio@gmail.com">bb16studio@gmail.com</a> en indiquant votre numéro de commande Google Play : il commence par « GPA. » et figure dans l'email de reçu envoyé par Google Play. L'application ne vous demandant aucune identité, ce numéro est le seul moyen de retrouver votre achat. Le RGPD nous donne un mois pour vous répondre.</p>
-<p>Effacer ces données n'annule pas votre achat : Google Play le conserve, et une restauration ultérieure le retrouve, en transmettant de nouveau à RevenueCat les données décrites plus haut. Un abonnement se gère et s'annule dans Google Play.</p>
+<p>Pour les données que RevenueCat traite pour le compte de BB16 Studio, vous pouvez demander l'accès, la rectification, l'effacement, la limitation ou la portabilité, et vous opposer au traitement lorsqu'il repose sur notre intérêt légitime. Écrivez à <a href="mailto:bb16studio@gmail.com">bb16studio@gmail.com</a>. Si vous avez acheté, indiquez votre numéro de commande Google Play : il commence par « GPA. » et figure dans l'email de reçu envoyé par Google Play. Si vous n'avez jamais acheté, indiquez la date approximative et le modèle de votre appareil : l'application ne vous demandant aucune identité, ces éléments et l'identifiant propre à RevenueCat suffisent à retrouver votre fiche, sans numéro de commande. Le RGPD nous donne un mois pour vous répondre.</p>
+<p>Effacer ces données n'annule pas votre achat : Google Play le conserve, et une restauration le retrouve. Tant que l'application reste installée, chaque lancement avec une connexion transmet de nouveau à RevenueCat son identifiant et les informations techniques décrites plus haut. Un abonnement se gère et s'annule dans Google Play.</p>
 <p>Si vous estimez que vos droits ne sont pas respectés, vous pouvez introduire une réclamation auprès d'une autorité de protection des données, en France la <a href="https://www.cnil.fr/" rel="noopener">CNIL</a>.</p>
 
 <h2>Modifications</h2>
@@ -108,7 +114,7 @@
 
 <div lang="en">
 <h2 id="english">English version</h2>
-<p class="lede">ConvertAir processes your documents on your device. This page describes what the app actually does, what it does not do, and the only data that leaves it: your purchase data.</p>
+<p class="lede">ConvertAir processes your documents on your device. This page describes what the app actually does, what it does not do, and the only data that leaves it: data related to purchases.</p>
 <p class="meta">Last updated: 22 September 2026 · <a href="#main">Lire cette page en français</a></p>
 
 <h3>Data controller</h3>
@@ -122,30 +128,35 @@
 <p>A file leaves ConvertAir only when you decide so: sharing through the Android share sheet, saving to a location you choose, or printing. It then goes to the app, folder or print service you selected, which handles it under its own rules. BB16 Studio receives no copy.</p>
 
 <h3>The app's only network connection: purchases</h3>
-<p>ConvertAir opens a network connection for one reason: purchases. That covers showing the offers, buying, and restoring a purchase. The payment is carried out by Google Play. Checking the purchase and your Premium access is entrusted to RevenueCat, a provider acting on behalf of BB16 Studio and on its instructions (a processor under the GDPR). No document content travels over that path.</p>
-<p>During these exchanges, RevenueCat receives:</p>
+<p>ConvertAir opens a network connection only for purchases. Each time the app starts with a connection, and again when it returns to the foreground, ConvertAir checks your Premium access with RevenueCat, even if you have bought nothing. Showing the offers, buying and restoring a purchase use the same path. The payment is carried out by Google Play. Checking the purchase and your Premium access is entrusted to RevenueCat, a provider acting on behalf of BB16 Studio and on its instructions (a processor under the GDPR). No document content travels over that path.</p>
+<p>With each of these exchanges, RevenueCat receives:</p>
 <ul>
-<li>the Google Play purchase token (receipt), the product purchased, the transaction dates and the status of your Premium access (active or expired);</li>
-<li>a random user identifier, created by the RevenueCat SDK on first use;</li>
-<li>technical information attached to each request: the platform and Android version, the app version and the SDK version;</li>
+<li>a random user identifier, created by the RevenueCat SDK the first time the app starts;</li>
+<li>technical information attached to each request: the platform and Android version, the device model and brand, the device language or languages, the country of your Google Play account, the app identifier, the app version and the SDK version;</li>
 <li>the IP address of your connection, which any server contacted receives and from which an approximate country can be derived.</li>
 </ul>
+<p>When you buy or restore a purchase, RevenueCat also receives the Google Play purchase token (receipt), the product purchased, its price and currency, and the transaction dates. From these it determines the status of your Premium access (active or expired).</p>
 <p>This identifier contains neither your name nor your email address, but it is not anonymous: it is associated with your Google Play purchases, which are linked to your Google account, and restoring a purchase can link it to the identifiers of your other installations. It is pseudonymous data. No account is created, automatic collection of device identifiers (advertising ID, Android ID) is turned off, and SDK diagnostics are turned off.</p>
 <p>As with any Play Store purchase, Google Play receives your Google account, the product and your payment details. Google processes this data as a separate controller, under its own privacy policy. In its console, Google Play gives BB16 Studio the order information needed to manage sales, including the order number, product, price and country of purchase. BB16 Studio never sees your payment card details.</p>
 
 <h3>Purpose and legal basis</h3>
-<p>Purchase data is used only to provide, verify and restore what you bought. This processing is necessary for the performance of the purchase contract (GDPR Article 6(1)(b)). It is not used for advertising, profiling or tracking. If you write to us, your message and email address are used to answer you, on the basis of our legitimate interest in doing so, or of our legal obligations when you exercise your rights.</p>
+<p>Exchanges with RevenueCat serve two distinct purposes:</p>
+<ul>
+<li>checking your Premium access at every connected launch and every return to the foreground, for every installation, including if you have bought nothing: this processing is necessary for the performance of the contract for using the app (GDPR Article 6(1)(b));</li>
+<li>handling a purchase or a restore: this processing is necessary for the performance of the purchase contract (GDPR Article 6(1)(b)).</li>
+</ul>
+<p>This data is not used for advertising, profiling or tracking. If you write to us, your message and email address are used to answer you, on the basis of our legitimate interest in doing so, or of our legal obligations when you exercise your rights.</p>
 
 <h3>Transfer outside the European Union</h3>
 <p>RevenueCat, Inc. is based in the United States, where the purchase data described above is processed. This transfer is covered by the European Commission's standard contractual clauses, included in RevenueCat's data processing agreement. You can request a copy at <a href="mailto:bb16studio@gmail.com">bb16studio@gmail.com</a>.</p>
 
 <h3>Retention</h3>
-<p>Purchase data is kept by RevenueCat for as long as it is needed to manage and restore your purchase, and deleted if you ask (see "Your rights"). Google Play keeps its own order data under its policy. Data stored on your device stays there until you delete it or uninstall the app.</p>
+<p>Purchase data is kept by RevenueCat for as long as it is needed to manage and restore your purchase, and deleted if you ask (see "Your rights"). If you have never bought anything, the check made at every launch creates, at RevenueCat, on behalf of BB16 Studio, a pseudonymous record limited to the identifier and the technical information described above; it is kept for as long as the app stays installed and contacted, and deleted on request (see "Your rights"). Google Play keeps its own order data under its policy. Data stored on your device stays there until you delete it or uninstall the app.</p>
 
 <h3>What the app does not do</h3>
 <ul>
 <li>No account, no sign-up, no email address requested.</li>
-<li>No analytics, usage measurement or crash-reporting tool built into the app.</li>
+<li>No analytics, usage-measurement or crash-reporting SDK is built into the app; the components through which Google's ML Kit libraries send diagnostics are removed from it.</li>
 <li>No advertising identifier: the <code>com.google.android.gms.permission.AD_ID</code> permission is not declared.</li>
 <li>No advertising, no sale of data, no sharing for commercial purposes.</li>
 <li>No tracking across apps or across websites.</li>
@@ -168,6 +179,7 @@
 
 <h3>What is kept on your device</h3>
 <p>The files you produce, a local history of operations, your display preferences and your saved signatures, in the app's private storage. Signature images are encrypted on the device. History can be purged automatically after 30 days, after 90 days, or kept, depending on the setting you choose in the Settings screen.</p>
+<p>To work offline, the app also keeps the state of your purchases there: the last known status of your Premium access and the count of the day's free operations, both encrypted, the last offers shown with their prices, and the data the RevenueCat SDK keeps in its cache, including its identifier. None of this contains your documents.</p>
 <p>Uninstalling ConvertAir erases that private storage, including produced files that you have neither shared nor saved elsewhere. Copies saved outside the app remain where you put them.</p>
 
 <h3>Additional fonts, downloaded by Google Play</h3>
@@ -178,8 +190,8 @@
 
 <h3>Your rights</h3>
 <p>Your documents, history and signatures exist only on your device: you view, export and delete them yourself, in the app or by uninstalling it. BB16 Studio holds no copy of them.</p>
-<p>For the purchase data that RevenueCat processes on behalf of BB16 Studio, you can request access, rectification, erasure, restriction or portability, and object to processing based on our legitimate interest. Write to <a href="mailto:bb16studio@gmail.com">bb16studio@gmail.com</a> with your Google Play order number: it starts with "GPA." and appears in the receipt email sent by Google Play. Since the app asks for no identity, this number is the only way to find your purchase. The GDPR gives us one month to reply.</p>
-<p>Erasing this data does not cancel your purchase: Google Play keeps it, and a later restore finds it again, sending the data described above to RevenueCat once more. Subscriptions are managed and cancelled in Google Play.</p>
+<p>For the data that RevenueCat processes on behalf of BB16 Studio, you can request access, rectification, erasure, restriction or portability, and object to processing based on our legitimate interest. Write to <a href="mailto:bb16studio@gmail.com">bb16studio@gmail.com</a>. If you bought something, give your Google Play order number: it starts with "GPA." and appears in the receipt email sent by Google Play. If you never bought anything, give the approximate date and the model of your device: since the app asks for no identity, this and RevenueCat's own identifier are enough to find your record, with no order number needed. The GDPR gives us one month to reply.</p>
+<p>Erasing this data does not cancel your purchase: Google Play keeps it, and a restore finds it again. As long as the app stays installed, each launch with a connection sends its identifier and the technical information described above to RevenueCat again. Subscriptions are managed and cancelled in Google Play.</p>
 <p>If you believe your rights are not respected, you can lodge a complaint with a data protection authority; in France, the <a href="https://www.cnil.fr/" rel="noopener">CNIL</a>.</p>
 
 <h3>Changes</h3>

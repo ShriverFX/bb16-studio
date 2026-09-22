@@ -18,6 +18,18 @@ ORIGINAL_LOGOS = {
     "assets/branding/bb16-studio-logo.jpg": "ed2f01e3180471184daa5f6513df0a01c489ccd5f0523bca3ca99512e6c6700d",
     "assets/apps/hgq-logo.png": "531f93ab06abc92be87e4f1aaa102271f57c536f05f1f41bc825096e85fe5a9c",
 }
+# Privacy-policy statements that were once false or missing (site audit and
+# round-2 review of 22 September 2026). Each page is bilingual, so both halves
+# are pinned.
+# The legal-basis/retention/rights phrases below close the P2 found in round 2:
+# RevenueCat is contacted even by installs that never bought anything, but
+# those three sections used to cover only buyers.
+PRIVACY_COMMON_REQUIRED = ["GPA.", "sous-traitant", "processor", "pseudonyme", "pseudonymous", "le pays de votre compte Google Play", "the country of your Google Play account", "contrat d'utilisation de l'application", "performance of the contract for using the app", "modèle de votre appareil", "model of your device", "sans numéro de commande", "no order number needed"]
+PRIVACY_REQUIRED = {
+    "convertair-privacy.html": PRIVACY_COMMON_REQUIRED + ["même si vous n'avez rien acheté", "even if you have bought nothing"],
+    "doccipher-privacy.html": PRIVACY_COMMON_REQUIRED + ["USE_BIOMETRIC", "USE_FINGERPRINT", "WebDAV or Nextcloud synchronisation is not available"],
+}
+PRIVACY_FORBIDDEN = ["rien, de notre côté", "nothing on our side", "pas à vous", "not to you", "identifiant anonyme", "anonymous identifier", "identifiant d'achat anonyme", "anonymous purchase identifier", "leurs propres politiques", "under their own policies", "supprimant le coffre", "deleting the vault"]
 
 
 def main() -> None:
@@ -63,6 +75,14 @@ def main() -> None:
         raise SystemExit("BAD_DOCCIPHER_PRIVACY_CONTACT")
     if "WebDAV or Nextcloud synchronisation is not available" not in doccipher_privacy:
         raise SystemExit("MISSING_DOCCIPHER_CURRENT_SCOPE")
+    for page, required in PRIVACY_REQUIRED.items():
+        text = (SITE / page).read_text(encoding="utf-8")
+        missing_text = [phrase for phrase in required if phrase not in text]
+        if missing_text:
+            raise SystemExit(f"MISSING_PRIVACY_TEXT={page}:" + "|".join(missing_text))
+        stale_text = [phrase for phrase in PRIVACY_FORBIDDEN if phrase in text]
+        if stale_text:
+            raise SystemExit(f"FORBIDDEN_PRIVACY_TEXT={page}:" + "|".join(stale_text))
     if site_url:
         for page in PAGES:
             text = (SITE / page).read_text(encoding="utf-8")
@@ -108,6 +128,7 @@ def main() -> None:
     print("CANONICAL_OK")
     print("NESTED_404_LINKS_OK")
     print("UNIQUE_IDS_OK")
+    print("PRIVACY_TEXT_OK")
 
 
 if __name__ == "__main__":

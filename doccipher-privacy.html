@@ -34,45 +34,51 @@
 <p>Le responsable du traitement est BB16 Studio, éditeur de DocCipher. Pour toute question ou demande sur vos données, écrivez à <a href="mailto:bb16studio@gmail.com">bb16studio@gmail.com</a>. Cette politique couvre la version Android de DocCipher distribuée sur Google Play.</p>
 
 <h2>Documents et chiffrement local</h2>
-<p>Les documents importés ou numérisés, leurs aperçus, le texte reconnu par OCR, les dossiers, les tags et les données du coffre restent dans l'espace privé de l'application. Le coffre est chiffré sur l'appareil. BB16 Studio ne reçoit ni vos documents, ni leur contenu, ni votre mot de passe, ni votre matériel de récupération.</p>
-<p>La reconnaissance de texte (OCR) s'exécute sur l'appareil, avec des modèles embarqués dans l'application : aucune image et aucun texte ne sont envoyés à un serveur pour cela. La capture est déléguée au scanner de documents fourni par les services Google Play installés sur le téléphone : DocCipher ne transmet lui-même aucun document, mais cette étape s'exécute dans un composant Google régi par les règles de Google.</p>
+<p>Les documents importés, leurs aperçus, le texte reconnu par OCR, les dossiers, les tags et les données du coffre restent dans l'espace privé de l'application. Le coffre est chiffré sur l'appareil. BB16 Studio ne reçoit ni vos documents, ni leur contenu, ni votre mot de passe, ni votre matériel de récupération.</p>
+<p>La reconnaissance de texte (OCR) s'exécute sur l'appareil, avec des modèles embarqués dans l'application : aucune image et aucun texte ne sont envoyés à un serveur pour cela.</p>
 
 <h2>Ni serveur documentaire, ni synchronisation</h2>
 <p>BB16 Studio n'exploite aucun serveur qui héberge, analyse, synchronise ou sauvegarde vos documents. La synchronisation WebDAV ou Nextcloud n'est pas disponible dans cette version, pas plus qu'un autre stockage en ligne. Vos documents ne quittent l'appareil que par un export que vous déclenchez vous-même.</p>
 
 <h2>Exports et sauvegardes que vous choisissez</h2>
 <p>Un document ou une sauvegarde <code>.dcvault</code> ne quitte l'application que lorsque vous déclenchez explicitement un export et choisissez sa destination avec le sélecteur ou la feuille de partage du système. Une sauvegarde <code>.dcvault</code> reste chiffrée ; un document exporté en clair ne l'est plus et relève alors de la sécurité de la destination choisie.</p>
+<p>Le kit de récupération (votre phrase de récupération et son code QR) ne quitte l'application que si vous l'imprimez, l'enregistrez en PDF à l'emplacement de votre choix ou copiez la phrase. Il relève alors de l'imprimante, de la destination ou du presse-papiers que vous avez choisis.</p>
 <p>La sauvegarde automatique Android et le transfert automatique vers un nouvel appareil sont désactivés.</p>
 
 <h2>Déverrouillage biométrique</h2>
 <p>Si vous l'activez, le déverrouillage biométrique passe par l'invite du système Android. DocCipher ne reçoit que sa réponse, identité confirmée ou non : il n'accède à aucune empreinte, à aucune image de visage ni à aucun gabarit biométrique, qui restent dans la zone sécurisée de l'appareil. La biométrie ne remplace pas votre code PIN, qui reste nécessaire.</p>
 
 <h2>Achats facultatifs</h2>
-<p>DocCipher n'ouvre de connexion réseau que pour les achats facultatifs : afficher les offres, acheter, restaurer un achat. Vous pouvez utiliser DocCipher sans rien acheter. Le paiement est réalisé par Google Play. La vérification de l'achat et de votre accès Premium est confiée à RevenueCat, un prestataire qui agit pour le compte de BB16 Studio et sur ses instructions (sous-traitant au sens du RGPD). Aucun document, aucun mot de passe et aucune clé ne passent par ce chemin.</p>
-<p>Lors de ces échanges, RevenueCat reçoit :</p>
+<p>DocCipher n'ouvre de connexion réseau que pour les achats facultatifs : afficher les offres, acheter, restaurer un achat. Vous pouvez utiliser DocCipher sans rien acheter. Le paiement est réalisé par Google Play. La vérification de l'achat et de votre accès Premium est confiée à RevenueCat, un prestataire qui agit pour le compte de BB16 Studio et sur ses instructions (sous-traitant au sens du RGPD). Une fois RevenueCat contacté, l'application peut lui redemander l'état de votre accès Premium lorsqu'elle revient au premier plan, jusqu'à sa fermeture. Aucun document, aucun mot de passe et aucune clé ne passent par ce chemin.</p>
+<p>À chacun de ces échanges, RevenueCat reçoit :</p>
 <ul>
-<li>le jeton d'achat (reçu) Google Play, le produit acheté, les dates de la transaction et l'état de votre accès Premium (actif ou expiré) ;</li>
-<li>un identifiant d'utilisateur aléatoire, créé par le SDK RevenueCat lors de la première utilisation ;</li>
-<li>des informations techniques jointes à chaque requête : la plateforme et la version d'Android, la version de l'application et celle du SDK ;</li>
+<li>un identifiant d'utilisateur aléatoire, créé par le SDK RevenueCat la première fois que l'application le contacte ;</li>
+<li>des informations techniques jointes à chaque requête : la plateforme et la version d'Android, le modèle et la marque de l'appareil, la ou les langues de l'appareil, le pays de votre compte Google Play, l'identifiant de l'application, la version de l'application et celle du SDK ;</li>
 <li>l'adresse IP de votre connexion, que reçoit tout serveur contacté et dont un pays approximatif peut être déduit.</li>
 </ul>
+<p>Lors d'un achat ou d'une restauration, RevenueCat reçoit en plus le jeton d'achat (reçu) Google Play, le produit acheté, son prix et sa devise, et les dates de la transaction. Il en déduit l'état de votre accès Premium (actif ou expiré).</p>
 <p>Cet identifiant ne contient ni votre nom ni votre adresse email, mais il n'est pas anonyme : il est associé à vos achats Google Play, eux-mêmes liés à votre compte Google, et une restauration d'achat peut le relier aux identifiants de vos autres installations. C'est une donnée pseudonyme. Aucun compte n'est créé, la collecte automatique d'identifiants d'appareil (identifiant publicitaire, identifiant Android) est désactivée, et les diagnostics du SDK sont désactivés.</p>
 <p>Comme pour tout achat sur le Play Store, Google Play reçoit votre compte Google, le produit et vos informations de paiement. Google traite ces données en tant que responsable distinct, selon sa propre politique de confidentialité. Dans sa console, Google Play fournit à BB16 Studio les informations de commande nécessaires à la gestion des ventes, notamment le numéro de commande, le produit, le prix et le pays d'achat. BB16 Studio ne voit jamais vos coordonnées bancaires.</p>
 
 <h2>Finalité et base légale</h2>
-<p>Les données d'achat servent uniquement à vous fournir, vérifier et restaurer ce que vous avez acheté. Ce traitement est nécessaire à l'exécution du contrat d'achat (article 6, paragraphe 1, point b, du RGPD). Elles ne servent ni à la publicité, ni au profilage, ni au suivi. Si vous nous écrivez, votre message et votre adresse email servent à vous répondre, sur la base de notre intérêt légitime à le faire, ou de nos obligations légales lorsque vous exercez vos droits.</p>
+<p>Les échanges avec RevenueCat répondent à deux finalités distinctes :</p>
+<ul>
+<li>vérifier votre accès Premium dès que l'application contacte RevenueCat, y compris si vous n'avez rien acheté : ce traitement est nécessaire à l'exécution du contrat d'utilisation de l'application (article 6, paragraphe 1, point b, du RGPD) ;</li>
+<li>traiter un achat ou une restauration : ce traitement est nécessaire à l'exécution du contrat d'achat (article 6, paragraphe 1, point b, du RGPD).</li>
+</ul>
+<p>Ces données ne servent ni à la publicité, ni au profilage, ni au suivi. Si vous nous écrivez, votre message et votre adresse email servent à vous répondre, sur la base de notre intérêt légitime à le faire, ou de nos obligations légales lorsque vous exercez vos droits.</p>
 
 <h2>Transfert hors de l'Union européenne</h2>
 <p>RevenueCat, Inc. est établie aux États-Unis, où les données d'achat décrites ci-dessus sont traitées. Ce transfert est encadré par les clauses contractuelles types de la Commission européenne, intégrées à l'accord de traitement des données de RevenueCat. Vous pouvez en demander une copie à <a href="mailto:bb16studio@gmail.com">bb16studio@gmail.com</a>.</p>
 
 <h2>Durée de conservation</h2>
-<p>Les données d'achat sont conservées par RevenueCat tant qu'elles servent à gérer et à restaurer votre achat, et supprimées si vous le demandez (voir « Suppression et vos droits »). Google Play conserve ses propres données de commande selon sa politique. Le coffre et les autres données locales restent sur votre appareil jusqu'à ce que vous supprimiez le coffre ou désinstalliez l'application.</p>
+<p>Les données d'achat sont conservées par RevenueCat tant qu'elles servent à gérer et à restaurer votre achat, et supprimées si vous le demandez (voir « Suppression et vos droits »). Si vous n'avez jamais acheté mais que l'application a contacté RevenueCat, celui-ci conserve pour le compte de BB16 Studio une fiche pseudonyme limitée à l'identifiant et aux informations techniques décrites plus haut, tant qu'elle sert à ce contact, et la supprime sur demande (voir « Suppression et vos droits »). Google Play conserve ses propres données de commande selon sa politique. Vos documents restent sur votre appareil jusqu'à ce que vous les supprimiez dans l'application ; le coffre et les autres données locales, jusqu'à ce que vous effaciez les données de DocCipher dans les réglages Android ou désinstalliez l'application.</p>
 
 <h2>Ce que DocCipher ne fait pas</h2>
 <ul>
 <li>Aucun compte utilisateur DocCipher et aucune adresse email demandée.</li>
 <li>Aucune publicité, aucun identifiant publicitaire et aucune vente de données.</li>
-<li>Aucun outil d'analytics, de suivi d'usage ou de rapport de plantage intégré à l'application.</li>
+<li>Aucun SDK d'analytics, de suivi d'usage ou de rapport de plantage n'est intégré à l'application ; les composants par lesquels les bibliothèques ML Kit de Google envoient des diagnostics en sont retirés.</li>
 <li>Aucun suivi d'une application à l'autre ni d'un site à l'autre.</li>
 </ul>
 
@@ -88,11 +94,11 @@
 <li><code>android.permission.USE_FINGERPRINT</code>, limitée à Android 9 et aux versions antérieures — le même rôle sur ces versions ;</li>
 <li>une permission de signature interne à l'application, qui n'ouvre aucune capacité de l'appareil.</li>
 </ul>
-<p>Aucune permission de caméra, de localisation, de contacts, de microphone ou de stockage étendu n'est demandée : les fichiers passent par les sélecteurs du système et la capture par le composant des services Google Play.</p>
+<p>Aucune permission de caméra, de localisation, de contacts, de microphone ou de stockage étendu n'est demandée : les fichiers passent par les sélecteurs du système.</p>
 
 <h2>Suppression et vos droits</h2>
-<p>Vous pouvez supprimer les données locales en supprimant le coffre ou en désinstallant l'application. Une copie que vous avez exportée reste à l'emplacement choisi jusqu'à ce que vous l'y supprimiez. BB16 Studio ne peut pas extraire, déchiffrer ni restaurer votre coffre à distance.</p>
-<p>Pour les données d'achat que RevenueCat traite pour le compte de BB16 Studio, vous pouvez demander l'accès, la rectification, l'effacement, la limitation ou la portabilité, et vous opposer au traitement lorsqu'il repose sur notre intérêt légitime. Écrivez à <a href="mailto:bb16studio@gmail.com">bb16studio@gmail.com</a> en indiquant votre numéro de commande Google Play : il commence par « GPA. » et figure dans l'email de reçu envoyé par Google Play. L'application ne vous demandant aucune identité, ce numéro est le seul moyen de retrouver votre achat. Ne joignez jamais de document, de mot de passe, de clé ou de phrase de récupération. Le RGPD nous donne un mois pour vous répondre.</p>
+<p>Vous pouvez supprimer vos documents dans l'application. Pour effacer le coffre entier et les autres données locales, effacez les données de DocCipher dans les réglages Android ou désinstallez l'application. Une copie que vous avez exportée reste à l'emplacement choisi jusqu'à ce que vous l'y supprimiez. BB16 Studio ne peut pas extraire, déchiffrer ni restaurer votre coffre à distance.</p>
+<p>Pour les données que RevenueCat traite pour le compte de BB16 Studio, vous pouvez demander l'accès, la rectification, l'effacement, la limitation ou la portabilité, et vous opposer au traitement lorsqu'il repose sur notre intérêt légitime. Écrivez à <a href="mailto:bb16studio@gmail.com">bb16studio@gmail.com</a>. Si vous avez acheté, indiquez votre numéro de commande Google Play : il commence par « GPA. » et figure dans l'email de reçu envoyé par Google Play. Si vous n'avez jamais acheté mais que l'application a contacté RevenueCat, indiquez la date approximative et le modèle de votre appareil : l'application ne vous demandant aucune identité, ces éléments et l'identifiant propre à RevenueCat suffisent à retrouver votre fiche, sans numéro de commande. Ne joignez jamais de document, de mot de passe, de clé ou de phrase de récupération. Le RGPD nous donne un mois pour vous répondre.</p>
 <p>Effacer ces données n'annule pas votre achat : Google Play le conserve, et une restauration ultérieure le retrouve, en transmettant de nouveau à RevenueCat les données décrites plus haut. Un abonnement se gère et s'annule dans Google Play.</p>
 <p>Si vous estimez que vos droits ne sont pas respectés, vous pouvez introduire une réclamation auprès d'une autorité de protection des données, en France la <a href="https://www.cnil.fr/" rel="noopener">CNIL</a>.</p>
 
@@ -110,45 +116,51 @@
 <p>The data controller is BB16 Studio, publisher of DocCipher. For any question or request about your data, write to <a href="mailto:bb16studio@gmail.com">bb16studio@gmail.com</a>. This policy covers the Android version of DocCipher distributed on Google Play.</p>
 
 <h3>Documents and local encryption</h3>
-<p>Imported or scanned documents, previews, recognised text, folders, tags and vault data remain in the app's private storage. The vault is encrypted on the device. BB16 Studio receives neither your documents nor their content, your password or your recovery material.</p>
-<p>Text recognition (OCR) runs on the device, using models bundled in the app: no image and no text is sent to any server for it. Capture is delegated to the document scanner supplied by Google Play services on the phone: DocCipher itself sends no document, but this step runs in a Google component governed by Google's rules.</p>
+<p>Imported documents, previews, recognised text, folders, tags and vault data remain in the app's private storage. The vault is encrypted on the device. BB16 Studio receives neither your documents nor their content, your password or your recovery material.</p>
+<p>Text recognition (OCR) runs on the device, using models bundled in the app: no image and no text is sent to any server for it.</p>
 
 <h3>No document server, no synchronisation</h3>
 <p>BB16 Studio runs no server that hosts, analyses, synchronises or backs up your documents. WebDAV or Nextcloud synchronisation is not available in this version, and neither is any other online storage. Your documents leave the device only through an export you start yourself.</p>
 
 <h3>Exports and backups you choose</h3>
 <p>A document or <code>.dcvault</code> backup leaves the app only when you explicitly start an export and choose its destination through the system picker or share sheet. A <code>.dcvault</code> backup remains encrypted; a document exported in clear form is no longer encrypted and then depends on the security of your chosen destination.</p>
+<p>The recovery kit (your recovery phrase and its QR code) leaves the app only if you print it, save it as a PDF to a location you choose, or copy the phrase. It then depends on the printer, destination or clipboard you chose.</p>
 <p>Android automatic backup and automatic device-to-device transfer are disabled.</p>
 
 <h3>Biometric unlock</h3>
 <p>If you turn it on, biometric unlock uses the Android system prompt. DocCipher only receives its answer, identity confirmed or not: it has no access to any fingerprint, face image or biometric template, which stay in the device's secure area. Biometrics do not replace your PIN, which is still required.</p>
 
 <h3>Optional purchases</h3>
-<p>DocCipher opens a network connection only for optional purchases: showing offers, buying, restoring a purchase. You can use DocCipher without buying anything. The payment is carried out by Google Play. Checking the purchase and your Premium access is entrusted to RevenueCat, a provider acting on behalf of BB16 Studio and on its instructions (a processor under the GDPR). No document, password or key travels over this path.</p>
-<p>During these exchanges, RevenueCat receives:</p>
+<p>DocCipher opens a network connection only for optional purchases: showing offers, buying, restoring a purchase. You can use DocCipher without buying anything. The payment is carried out by Google Play. Checking the purchase and your Premium access is entrusted to RevenueCat, a provider acting on behalf of BB16 Studio and on its instructions (a processor under the GDPR). Once RevenueCat has been contacted, the app may check your Premium access with it again when the app returns to the foreground, until the app is closed. No document, password or key travels over this path.</p>
+<p>With each of these exchanges, RevenueCat receives:</p>
 <ul>
-<li>the Google Play purchase token (receipt), the product purchased, the transaction dates and the status of your Premium access (active or expired);</li>
-<li>a random user identifier, created by the RevenueCat SDK on first use;</li>
-<li>technical information attached to each request: the platform and Android version, the app version and the SDK version;</li>
+<li>a random user identifier, created by the RevenueCat SDK the first time the app contacts it;</li>
+<li>technical information attached to each request: the platform and Android version, the device model and brand, the device language or languages, the country of your Google Play account, the app identifier, the app version and the SDK version;</li>
 <li>the IP address of your connection, which any server contacted receives and from which an approximate country can be derived.</li>
 </ul>
+<p>When you buy or restore a purchase, RevenueCat also receives the Google Play purchase token (receipt), the product purchased, its price and currency, and the transaction dates. From these it determines the status of your Premium access (active or expired).</p>
 <p>This identifier contains neither your name nor your email address, but it is not anonymous: it is associated with your Google Play purchases, which are linked to your Google account, and restoring a purchase can link it to the identifiers of your other installations. It is pseudonymous data. No account is created, automatic collection of device identifiers (advertising ID, Android ID) is turned off, and SDK diagnostics are turned off.</p>
 <p>As with any Play Store purchase, Google Play receives your Google account, the product and your payment details. Google processes this data as a separate controller, under its own privacy policy. In its console, Google Play gives BB16 Studio the order information needed to manage sales, including the order number, product, price and country of purchase. BB16 Studio never sees your payment card details.</p>
 
 <h3>Purpose and legal basis</h3>
-<p>Purchase data is used only to provide, verify and restore what you bought. This processing is necessary for the performance of the purchase contract (GDPR Article 6(1)(b)). It is not used for advertising, profiling or tracking. If you write to us, your message and email address are used to answer you, on the basis of our legitimate interest in doing so, or of our legal obligations when you exercise your rights.</p>
+<p>Exchanges with RevenueCat serve two distinct purposes:</p>
+<ul>
+<li>checking your Premium access whenever the app contacts RevenueCat, including if you have bought nothing: this processing is necessary for the performance of the contract for using the app (GDPR Article 6(1)(b));</li>
+<li>handling a purchase or a restore: this processing is necessary for the performance of the purchase contract (GDPR Article 6(1)(b)).</li>
+</ul>
+<p>This data is not used for advertising, profiling or tracking. If you write to us, your message and email address are used to answer you, on the basis of our legitimate interest in doing so, or of our legal obligations when you exercise your rights.</p>
 
 <h3>Transfer outside the European Union</h3>
 <p>RevenueCat, Inc. is based in the United States, where the purchase data described above is processed. This transfer is covered by the European Commission's standard contractual clauses, included in RevenueCat's data processing agreement. You can request a copy at <a href="mailto:bb16studio@gmail.com">bb16studio@gmail.com</a>.</p>
 
 <h3>Retention</h3>
-<p>Purchase data is kept by RevenueCat for as long as it is needed to manage and restore your purchase, and deleted if you ask (see "Deletion and your rights"). Google Play keeps its own order data under its policy. The vault and other local data stay on your device until you delete the vault or uninstall the app.</p>
+<p>Purchase data is kept by RevenueCat for as long as it is needed to manage and restore your purchase, and deleted if you ask (see "Deletion and your rights"). If you have never bought anything but the app has contacted RevenueCat, it keeps, on behalf of BB16 Studio, a pseudonymous record limited to the identifier and the technical information described above, for as long as it serves that contact, and deletes it on request (see "Deletion and your rights"). Google Play keeps its own order data under its policy. Your documents stay on your device until you delete them in the app; the vault and other local data, until you clear DocCipher's data in Android settings or uninstall the app.</p>
 
 <h3>What DocCipher does not do</h3>
 <ul>
 <li>No DocCipher user account and no email address requested.</li>
 <li>No advertising, advertising identifier or sale of data.</li>
-<li>No analytics, usage tracking or crash-reporting tool built into the app.</li>
+<li>No analytics, usage-tracking or crash-reporting SDK is built into the app; the components through which Google's ML Kit libraries send diagnostics are removed from it.</li>
 <li>No tracking across apps or across websites.</li>
 </ul>
 
@@ -164,11 +176,11 @@
 <li><code>android.permission.USE_FINGERPRINT</code>, limited to Android 9 and earlier — the same role on those versions;</li>
 <li>an app-internal signature permission, which grants no device capability.</li>
 </ul>
-<p>No camera, location, contacts, microphone or broad storage permission is requested: files use system pickers and capture uses the Google Play services component.</p>
+<p>No camera, location, contacts, microphone or broad storage permission is requested: files use system pickers.</p>
 
 <h3>Deletion and your rights</h3>
-<p>You can remove local data by deleting the vault or uninstalling the app. A copy you exported remains at the destination you chose until you delete it there. BB16 Studio cannot remotely extract, decrypt or restore your vault.</p>
-<p>For the purchase data that RevenueCat processes on behalf of BB16 Studio, you can request access, rectification, erasure, restriction or portability, and object to processing based on our legitimate interest. Write to <a href="mailto:bb16studio@gmail.com">bb16studio@gmail.com</a> with your Google Play order number: it starts with "GPA." and appears in the receipt email sent by Google Play. Since the app asks for no identity, this number is the only way to find your purchase. Never attach a document, password, key or recovery phrase. The GDPR gives us one month to reply.</p>
+<p>You can delete your documents in the app. To erase the whole vault and other local data, clear DocCipher's data in Android settings or uninstall the app. A copy you exported remains at the destination you chose until you delete it there. BB16 Studio cannot remotely extract, decrypt or restore your vault.</p>
+<p>For the data that RevenueCat processes on behalf of BB16 Studio, you can request access, rectification, erasure, restriction or portability, and object to processing based on our legitimate interest. Write to <a href="mailto:bb16studio@gmail.com">bb16studio@gmail.com</a>. If you bought something, give your Google Play order number: it starts with "GPA." and appears in the receipt email sent by Google Play. If you never bought anything but the app contacted RevenueCat, give the approximate date and the model of your device: since the app asks for no identity, this and RevenueCat's own identifier are enough to find your record, with no order number needed. Never attach a document, password, key or recovery phrase. The GDPR gives us one month to reply.</p>
 <p>Erasing this data does not cancel your purchase: Google Play keeps it, and a later restore finds it again, sending the data described above to RevenueCat once more. Subscriptions are managed and cancelled in Google Play.</p>
 <p>If you believe your rights are not respected, you can lodge a complaint with a data protection authority; in France, the <a href="https://www.cnil.fr/" rel="noopener">CNIL</a>.</p>
 
