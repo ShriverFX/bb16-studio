@@ -62,7 +62,8 @@
     <h1>Retour de test ConvertAir</h1>
     <p><strong>Quelques actions, à votre rythme</strong></p>
     <p>Ouvrez ConvertAir, faites les actions ci-dessous, puis indiquez le résultat ici.</p>
-    <p>La liste est déjà préparée pour vous. Vous pouvez faire une pause.</p>
+    <p>La liste est déjà préparée pour vous. Pas besoin de tout faire d’un coup.</p>
+    <p><strong>Pour chaque test :</strong> faites l’action dans l’app, vérifiez le résultat, puis revenez cocher votre réponse sur cette page. Si vous ne trouvez pas un bouton ou ne comprenez pas une étape, choisissez « J’ai un problème » et expliquez-le en bas.</p>
     <p class="notice">Fichiers fictifs uniquement : ne mettez pas de documents privés dans votre retour.</p>
   </section>
 
@@ -127,14 +128,14 @@
 (function () {
   'use strict';
   var common = [
-    'Installer depuis Google Play et terminer l’onboarding.',
-    'Importer un fichier fictif, le convertir, puis ouvrir le résultat.',
-    'Partager le résultat puis fermer et rouvrir l’app.'
+    'Installez ConvertAir avec le lien Google Play reçu, puis ouvrez l’app. Suivez les écrans de bienvenue : vous devez arriver à l’écran principal.',
+    'Choisissez « Images vers PDF » et ajoutez une photo sans information privée. Lancez la conversion, puis ouvrez le PDF : la photo doit être visible et lisible.',
+    'Sur ce PDF, appuyez sur Partager : la liste des applications doit s’ouvrir. Annulez l’envoi, fermez puis rouvrez ConvertAir : l’app doit rester utilisable.'
   ];
   var variants = {
-    A: ['Ouvrir un PDF fictif et essayer les annotations.'],
-    B: ['Convertir une photo/image fictive en PDF, puis tester le partage Android entrant.'],
-    C: ['Essayer un fichier volumineux ou invalide, puis observer le mode hors connexion, le retour et l’abandon.']
+    A: ['Ouvrez un PDF sans information privée dans l’outil de signature. Ajoutez un texte ou une signature fictive, enregistrez et rouvrez le résultat : votre ajout doit être visible.'],
+    B: ['Dans la galerie de votre téléphone, choisissez une photo sans information privée, puis Partager → ConvertAir. Vérifiez que la photo arrive dans ConvertAir et peut être utilisée.'],
+    C: ['Activez le mode avion, puis refaites une conversion « Images vers PDF ». Vérifiez que le PDF s’ouvre. Désactivez ensuite le mode avion.']
   };
   var checklistGroups = [
     { id: 'pdf', label: 'Outils PDF', path: 'A', items: [
@@ -146,13 +147,50 @@
     { id: 'sign', label: 'Signer et remplir', path: 'A', items: [
       ['signature', 'Signature', 'signature'], ['text_box', 'Zone de texte', 'signature'], ['quick_date', 'Date', 'signature'], ['checks', 'Cases à cocher', 'signature']
     ] },
-    { id: 'ocr', label: 'OCR', path: 'B', items: [
+    { id: 'ocr', label: 'Reconnaître le texte d’une image', path: 'B', items: [
       ['searchable_pdf', 'PDF interrogeable', 'ocr'], ['extract_text', 'Extraire le texte', 'ocr']
     ] },
-    { id: 'edge', label: 'Cas limites à répartir', path: 'C', items: [
+    { id: 'edge', label: 'Utiliser l’app au quotidien', path: 'C', items: [
       ['scan', 'Scanner un document fictif', 'scan'], ['permissions', 'Permissions acceptées puis refusées', 'permission'], ['offline', 'Mode hors connexion', 'offline'], ['back_abandon', 'Retour et abandon', 'navigation'], ['kill_reopen', 'Forcer l’arrêt puis rouvrir', 'lifecycle'], ['invalid_large', 'Fichier invalide puis fichier volumineux', 'input_limits'], ['rotation_screen', 'Rotation et petit/grand écran', 'responsive'], ['usual_language', 'Langue habituelle', 'localization'], ['file_management', 'Gérer puis supprimer les fichiers fictifs', 'file_management']
     ] }
   ];
+  var testInstructions = {
+    batch: 'Ajoutez deux fichiers au même traitement. Lancez-le, puis ouvrez chaque résultat : les deux doivent être présents et lisibles.',
+    fusion: 'Choisissez deux PDF, puis fusionnez-les. Ouvrez le résultat : les pages des deux documents doivent apparaître dans l’ordre choisi.',
+    division: 'Choisissez un PDF de plusieurs pages et séparez-en quelques pages. Ouvrez le résultat : seules les pages choisies doivent être présentes.',
+    compression_recommandee: 'Choisissez un PDF contenant des images et lancez la compression. Le résultat doit rester lisible. Un fichier déjà optimisé peut ne pas devenir plus petit.',
+    rotation: 'Tournez une page d’un PDF, enregistrez puis rouvrez-le : la page doit garder la nouvelle orientation.',
+    recadrage: 'Réduisez les marges d’une page, enregistrez puis rouvrez le résultat : le cadrage choisi doit être conservé.',
+    pages_suppression_reorg: 'Dans une copie de PDF, changez l’ordre des pages ou supprimez une page. Rouvrez le résultat et vérifiez ce changement.',
+    filigrane: 'Ajoutez le texte TEST sur un PDF. Ouvrez le résultat : le texte doit apparaître sans rendre le document illisible.',
+    protection: 'Protégez un PDF fictif avec un mot de passe de test. Rouvrez-le : le bon mot de passe doit permettre la lecture, un mauvais doit être refusé.',
+    deverrouillage: 'Utilisez le PDF protégé du test précédent et son mot de passe. Déverrouillez-le, puis vérifiez que le résultat s’ouvre sans mot de passe.',
+    numerotation: 'Ajoutez des numéros de page à un PDF. Ouvrez le résultat : les numéros doivent être visibles et dans le bon ordre.',
+    metadonnees: 'Modifiez le titre ou l’auteur d’un PDF fictif. Enregistrez puis consultez à nouveau ces informations : votre modification doit être conservée.',
+    reparation: 'Si vous disposez d’un PDF de test abîmé, essayez de le réparer. Le résultat doit s’ouvrir, ou l’app doit expliquer clairement pourquoi elle ne peut pas le réparer.',
+    images_vers_pdf: 'Choisissez deux photos sans information privée et créez un PDF. Ouvrez-le : les deux photos doivent être présentes et lisibles.',
+    pdf_vers_images: 'Choisissez un PDF et transformez ses pages en images. Ouvrez les images obtenues : leur contenu doit correspondre aux pages choisies.',
+    image_convert: 'Choisissez une image et un autre format proposé par l’app. Ouvrez le résultat : l’image doit rester visible et utiliser le format choisi.',
+    texte_vers_pdf: 'Saisissez un court texte, avec des accents, puis créez un PDF. Ouvrez-le : le texte et les accents doivent être lisibles.',
+    svg_vers_pdf: 'Si vous avez un dessin de test au format SVG, transformez-le en PDF. Ouvrez le résultat : le dessin doit être visible.',
+    html_vers_pdf: 'Utilisez un fichier HTML de test, ou une adresse si l’app le propose. Créez le PDF puis ouvrez-le : son contenu doit être lisible.',
+    id_card: 'Utilisez une carte fictive avec TEST écrit au recto et au verso, jamais une vraie pièce d’identité. Suivez les étapes proposées et vérifiez que les deux faces figurent dans le résultat.',
+    signature: 'Ajoutez une signature fictive à un PDF. Enregistrez puis rouvrez-le : la signature doit rester à l’endroit choisi.',
+    text_box: 'Ajoutez le texte TEST dans un PDF. Enregistrez puis rouvrez-le : le texte doit être visible à l’endroit choisi.',
+    quick_date: 'Ajoutez une date avec l’outil proposé. Enregistrez puis rouvrez le PDF : la date doit être visible et correcte.',
+    checks: 'Ajoutez une coche dans une case d’un formulaire fictif. Enregistrez puis rouvrez-le : la coche doit rester visible.',
+    searchable_pdf: 'Utilisez une photo nette d’un texte imprimé fictif. Créez un PDF avec reconnaissance de texte, puis cherchez un mot dans le PDF avec un lecteur qui propose la recherche.',
+    extract_text: 'Utilisez une photo nette d’une phrase imprimée. Lancez la reconnaissance de texte et comparez le texte obtenu avec la photo : signalez les mots incorrects.',
+    scan: 'Photographiez une feuille portant le mot TEST. Vérifiez le cadrage, enregistrez puis ouvrez le document : il doit être lisible.',
+    permissions: 'Lors d’une demande d’accès à la caméra, essayez d’abord Refuser. L’app doit expliquer comment continuer. Autorisez ensuite l’accès dans les réglages du téléphone et réessayez.',
+    offline: 'Activez le mode avion et convertissez une image en PDF. Le résultat doit s’ouvrir. Pensez à désactiver le mode avion ensuite.',
+    back_abandon: 'Commencez une opération, puis utilisez le bouton Retour du téléphone. Vous devez pouvoir revenir à l’accueil et lancer une autre opération sans blocage.',
+    kill_reopen: 'Fermez ConvertAir depuis les applications récentes, puis rouvrez-la. Vos résultats déjà enregistrés doivent rester accessibles.',
+    invalid_large: 'Si vous avez un fichier de test abîmé puis un gros fichier sans données privées, essayez-les séparément. L’app doit produire un résultat ou un message clair, sans se fermer brutalement.',
+    rotation_screen: 'Tournez le téléphone pendant l’utilisation si l’écran le permet. Vérifiez que les textes et boutons restent accessibles. Vous n’avez pas besoin d’un deuxième téléphone.',
+    usual_language: 'Utilisez l’app dans votre langue habituelle. Signalez tout texte coupé, incompréhensible ou resté dans une autre langue. Ne testez pas une langue que vous ne connaissez pas.',
+    file_management: 'Retrouvez un résultat de test enregistré, ouvrez-le puis supprimez cette copie depuis l’app. Vérifiez qu’elle disparaît et que votre fichier d’origine est conservé.'
+  };
   var purchaseScenarios = [
       ['sandbox_success', 'Achat de test réussi'], ['sandbox_cancel', 'Achat de test annulé'], ['already_owned', 'Produit déjà possédé'], ['restore', 'Restaurer un achat'], ['restart_offline', 'Redémarrage puis hors connexion'], ['reinstall', 'Réinstallation'], ['refusal_error', 'Refus ou erreur'], ['pending', 'Achat en attente si affiché'], ['owner_refund_revoke', 'Remboursement/révocation — propriétaire uniquement']
   ];
@@ -204,7 +242,8 @@
       if (group.path !== selectedPath) return;
       var section = el('div', { class: 'checklist-group' }); section.appendChild(el('h3', {}, group.label));
       group.items.forEach(function (item, index) {
-        var id = 'check-' + item[0]; var row = el('div', { class: 'checklist-item' }); row.appendChild(el('div', {}, item[1]));
+        var id = 'check-' + item[0]; var row = el('div', { class: 'checklist-item' }); row.appendChild(el('strong', {}, item[1]));
+        row.appendChild(el('p', { class: 'small' }, testInstructions[item[0]]));
         var status = el('div', { class: 'status', role: 'radiogroup', 'aria-label': 'État outil ' + item[1] });
         statuses.forEach(function (pair, statusIndex) { var radioId = id + '-' + pair[0]; var radio = el('input', { type: 'radio', id: radioId, name: id, value: pair[0] }); radio.checked = (checklistState[id] || 'not_tested') === pair[0]; var label = el('label', { for: radioId }); label.appendChild(radio); label.appendChild(document.createTextNode(pair[1])); status.appendChild(label); });
         row.appendChild(status); section.appendChild(row);
