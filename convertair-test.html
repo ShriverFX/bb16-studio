@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Retour de test ConvertAir sans compte.">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Testeur ConvertAir</title>
+  <style>
+    :root { color-scheme: light; --ink:#17202a; --muted:#5a6872; --line:#d7dee3; --brand:#155eef; --soft:#eef4ff; --danger:#a32626; --ok:#126b42; }
+    * { box-sizing:border-box; }
+    body { margin:0; font:16px/1.45 system-ui,-apple-system,Segoe UI,sans-serif; color:var(--ink); background:#f7f9fb; }
+    main { max-width:760px; margin:auto; padding:20px 14px 56px; }
+    h1 { margin:0 0 8px; font-size:1.65rem; }
+    h2 { margin:0 0 12px; font-size:1.18rem; }
+    h3 { margin:16px 0 6px; font-size:1rem; }
+    p { margin:7px 0; }
+    .intro,.card { background:#fff; border:1px solid var(--line); border-radius:12px; padding:16px; margin:12px 0; box-shadow:0 1px 2px #17202a0d; }
+    .notice { color:var(--muted); font-size:.9rem; }
+    label { display:block; margin:11px 0 5px; font-weight:600; }
+    input, select, textarea, button { font:inherit; }
+    input, select, textarea { width:100%; border:1px solid #aeb9c1; border-radius:7px; padding:9px 10px; background:#fff; color:var(--ink); }
+    input[type="checkbox"], input[type="radio"] { width:auto; }
+    textarea { min-height:76px; resize:vertical; }
+    .grid { display:grid; gap:8px; }
+    @media (min-width:560px) { .grid.two { grid-template-columns:1fr 1fr; } }
+    .paths { display:grid; grid-template-columns:repeat(3,1fr); gap:7px; }
+    .paths label { margin:0; border:1px solid var(--line); border-radius:8px; padding:10px; cursor:pointer; background:#fff; }
+    .paths input { width:auto; margin-right:5px; }
+    .paths label:has(input:checked) { border-color:var(--brand); background:var(--soft); }
+    .task { border-top:1px solid var(--line); padding:13px 0 2px; }
+    .task:first-of-type { border-top:0; padding-top:0; }
+    .task-title { font-weight:650; }
+    .status { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+    .status label { font-weight:400; margin:0; }
+    .status input { width:auto; }
+    button { border:0; border-radius:7px; padding:10px 13px; color:#fff; background:var(--brand); cursor:pointer; font-weight:650; }
+    button.secondary { background:#41515e; }
+    button.danger { background:var(--danger); }
+    .paths label, .status label, button { min-height:44px; }
+    .eyebrow { color:var(--brand); font-size:.82rem; font-weight:750; letter-spacing:.08em; text-transform:uppercase; }
+    button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline:3px solid #8ab4ff; outline-offset:2px; }
+    .actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+    .error { color:var(--danger); font-weight:600; }
+    .success { color:var(--ok); font-weight:600; }
+    .summary { white-space:pre-wrap; border:1px solid var(--line); padding:10px; background:#fbfcfd; border-radius:7px; user-select:text; }
+    .hidden { display:none; }
+    .small { font-size:.88rem; }
+    .feedback { border:1px solid var(--line); padding:11px; border-radius:8px; margin-top:10px; }
+    footer { color:var(--muted); font-size:.85rem; margin-top:18px; }
+  </style>
+</head>
+<body>
+<main>
+  <section class="intro">
+    <div class="eyebrow">BB16 Studio</div>
+    <h1>Retour de test ConvertAir</h1>
+    <p><strong>4 étapes • 5 minutes</strong></p>
+    <p>Merci de tester quelques actions dans l’app et de décrire ce que vous observez. Aucun compte ni document n’est demandé.</p>
+    <p class="notice">Fichiers fictifs uniquement : ne mettez pas de documents privés dans votre retour.</p>
+  </section>
+
+  <form id="test-form" novalidate>
+    <section class="card">
+      <h2>Votre contexte de test</h2>
+      <div class="grid two">
+        <div><label for="nickname">Pseudo (facultatif)</label><input id="nickname" autocomplete="nickname" maxlength="60"></div>
+        <div><label for="device">Modèle de l’appareil</label><input id="device" required maxlength="120" placeholder="Ex. Pixel 7a"></div>
+        <div><label for="android">Version Android</label><input id="android" required maxlength="40" placeholder="Ex. 14"></div>
+        <div><label for="app-version">Version de l’app</label><input id="app-version" required maxlength="60" placeholder="Ex. 1.0.0"></div>
+      </div>
+      <h3>Parcours à essayer</h3>
+      <div class="paths" role="radiogroup" aria-label="Parcours">
+        <label><input type="radio" name="path" value="A"> A — PDF et annotations</label>
+        <label><input type="radio" name="path" value="B"> B — Photo/image vers PDF</label>
+        <label><input type="radio" name="path" value="C"> C — gros, invalides, offline</label>
+      </div>
+      <p id="path-help" class="notice">Choisissez le parcours que vous voulez essayer.</p>
+    </section>
+
+    <section class="card">
+      <h2>Tâches communes</h2>
+      <div id="common-tasks"></div>
+      <div id="variant-tasks"></div>
+    </section>
+
+    <section class="card">
+      <h2>Achat ou restauration (facultatif)</h2>
+      <p class="small">Uniquement si vous avez un compte autorisé pour ce test : vérifiez la mention d’achat de test. Ne saisissez pas de carte et ne payez rien. Sinon, ne testez pas cette partie.</p>
+      <label for="purchase-note">Observation facultative</label>
+      <textarea id="purchase-note" maxlength="800" placeholder="Ex. Non testé, ou mention observée dans l’app"></textarea>
+    </section>
+
+    <section class="card">
+      <h2>Signaler un problème</h2>
+      <p class="notice">Un feedback peut être ajouté sans remplir tout le formulaire. Les champs appareil, Android et version seront toutefois demandés lors de l’export.</p>
+      <div id="feedback-list"></div>
+      <button type="button" class="secondary" id="add-feedback">Ajouter un problème</button>
+    </section>
+
+    <section class="card">
+      <h2>Exporter le retour</h2>
+      <label><input type="checkbox" id="save-local"> Mémoriser localement ce formulaire sur cet appareil (facultatif)</label>
+      <div class="actions">
+        <button type="button" id="export">Terminer et télécharger mon retour</button>
+        <button type="button" class="secondary" id="copy-summary">Copier le résumé</button>
+        <button type="button" class="danger" id="reset">Réinitialiser</button>
+      </div>
+      <p id="message" role="status" aria-live="polite"></p>
+      <div id="summary" class="summary hidden" aria-label="Résumé sélectionnable"></div>
+      <p class="notice">Le fichier JSON peut ensuite être transmis à Lucas.</p>
+    </section>
+  </form>
+  <footer>Vos réponses restent sur cet appareil. Transmettez le fichier à Lucas à la fin.</footer>
+</main>
+<script>
+(function () {
+  'use strict';
+  var common = [
+    'Installer depuis Google Play et terminer l’onboarding.',
+    'Importer un fichier fictif, le convertir, puis ouvrir le résultat.',
+    'Partager le résultat puis fermer et rouvrir l’app.'
+  ];
+  var variants = {
+    A: ['Ouvrir un PDF fictif et essayer les annotations.'],
+    B: ['Convertir une photo/image fictive en PDF, puis tester le partage Android entrant.'],
+    C: ['Essayer un fichier volumineux ou invalide, puis observer offline, retour et abandon.']
+  };
+  var statuses = [['not_tested', 'Non testé'], ['ok', 'OK'], ['problem', 'Problème']];
+  var selectedPath = new URLSearchParams(window.location.search).get('parcours');
+  if (!variants[selectedPath]) selectedPath = 'A';
+  var form = document.getElementById('test-form');
+  var tasks = [];
+  var taskState = { common: {}, A: {}, B: {}, C: {} };
+  function el(tag, attrs, text) {
+    var node = document.createElement(tag);
+    Object.keys(attrs || {}).forEach(function (key) { node.setAttribute(key, attrs[key]); });
+    if (text !== undefined) node.textContent = text;
+    return node;
+  }
+  function renderTasks(shouldCapture) {
+    if (shouldCapture !== false) captureTaskState();
+    var commonBox = document.getElementById('common-tasks');
+    var variantBox = document.getElementById('variant-tasks');
+    commonBox.textContent = ''; variantBox.textContent = ''; tasks = [];
+    common.forEach(function (title, index) { appendTask(commonBox, 'common', index, title); });
+    variants[selectedPath].forEach(function (title, index) { appendTask(variantBox, selectedPath, index, title); });
+    document.querySelectorAll('input[name="path"]').forEach(function (radio) { radio.checked = radio.value === selectedPath; });
+  }
+  function appendTask(container, group, index, title) {
+      var id = group + '-task-' + (index + 1); tasks.push({ id: id, title: title });
+      var box = el('div', { class: 'task' });
+      var displayNumber = group === 'common' ? index + 1 : common.length + index + 1;
+      box.appendChild(el('div', { class: 'task-title' }, displayNumber + '. ' + title));
+      var status = el('div', { class: 'status', role: 'radiogroup', 'aria-label': 'État tâche ' + displayNumber + ' ' + group });
+      statuses.forEach(function (pair, statusIndex) {
+        var radioId = id + '-' + pair[0];
+        var radio = el('input', { type: 'radio', id: radioId, name: id, value: pair[0] });
+        radio.checked = (taskState[group][id] || 'not_tested') === pair[0];
+        var label = el('label', { for: radioId }); label.appendChild(radio); label.appendChild(document.createTextNode(pair[1])); status.appendChild(label);
+      });
+      box.appendChild(status);
+      container.appendChild(box);
+  }
+  function captureTaskState() {
+    tasks.forEach(function (task) { var selected = document.querySelector('input[name="' + task.id + '"]:checked'); if (selected) { var group = task.id.indexOf('common-') === 0 ? 'common' : task.id.charAt(0); taskState[group][task.id] = selected.value; } });
+  }
+  renderTasks();
+  document.querySelectorAll('input[name="path"]').forEach(function (radio) {
+    radio.addEventListener('change', function () { selectedPath = radio.value; renderTasks(); });
+  });
+  function value(id) { return document.getElementById(id).value.trim(); }
+  function collectFeedback() {
+    return Array.prototype.slice.call(document.querySelectorAll('.feedback')).map(function (box) {
+      return { summary: box.querySelector('[data-field="summary"]').value.trim(), steps: box.querySelector('[data-field="steps"]').value.trim(), expected: box.querySelector('[data-field="expected"]').value.trim(), observed: box.querySelector('[data-field="observed"]').value.trim(), blocking: box.querySelector('[data-field="blocking"]').checked, feeling: box.querySelector('[data-field="feeling"]').value.trim() };
+    });
+  }
+  function addFeedback() {
+    var box = el('div', { class: 'feedback' });
+    var fields = [['summary', 'Résumé du problème', 'Ex. Le bouton reste inactif'], ['steps', 'Étapes suivies', '1. Importer...'], ['expected', 'Attendu', 'Le résultat s’ouvre'], ['observed', 'Obtenu', 'Écran...'], ['feeling', 'Ressenti (facultatif)', 'Ex. confusion, rassurant...']];
+    fields.forEach(function (f, index) { var fieldId = 'feedback-' + Date.now() + '-' + index; box.appendChild(el('label', { for: fieldId }, f[1])); box.appendChild(el('textarea', { id: fieldId, 'data-field': f[0], maxlength: '1000', placeholder: f[2] })); });
+    var blockingId = 'feedback-' + Date.now() + '-blocking'; var label = el('label', { for: blockingId }); var check = el('input', { id: blockingId, type: 'checkbox', 'data-field': 'blocking' }); label.appendChild(check); label.appendChild(document.createTextNode(' Bloquant pour continuer')); box.appendChild(label);
+    var remove = el('button', { type: 'button', class: 'secondary' }, 'Supprimer ce problème'); remove.addEventListener('click', function () { box.remove(); }); box.appendChild(remove);
+    document.getElementById('feedback-list').appendChild(box);
+  }
+  document.getElementById('add-feedback').addEventListener('click', addFeedback);
+  function validate() {
+    var missing = []; [['device', 'modèle appareil'], ['android', 'version Android'], ['app-version', 'version app']].forEach(function (item) { if (!value(item[0])) missing.push(item[1]); });
+    if (!missing.length) return true;
+    show('À compléter pour exporter : ' + missing.join(', ') + '.', 'error'); return false;
+  }
+  function payload() {
+    captureTaskState();
+    return { schema_version: 1, app: 'ConvertAir', exported_at_utc: new Date().toISOString(), tester: { nickname: value('nickname'), device_model: value('device'), android_version: value('android'), app_version: value('app-version') }, path: selectedPath, task_states: taskState, tasks: tasks.map(function (task) { var selected = document.querySelector('input[name="' + task.id + '"]:checked'); return { id: task.id, title: task.title, status: selected ? selected.value : 'not_tested' }; }), purchase_note: value('purchase-note'), feedback: collectFeedback() };
+  }
+  function show(text, kind) { var message = document.getElementById('message'); message.textContent = text; message.className = kind || ''; }
+  function summaryText(data) { var lines = ['ConvertAir — parcours ' + data.path, 'Version app : ' + data.tester.app_version, 'Appareil : ' + data.tester.device_model + ' / Android ' + data.tester.android_version, '', 'Tâches :']; data.tasks.forEach(function (task) { lines.push('- ' + task.title + ' : ' + (task.status === 'ok' ? 'OK' : task.status === 'problem' ? 'problème' : 'non testé')); }); lines.push('', 'Note achat/restauration : ' + (data.purchase_note || 'aucune')); lines.push('', 'Problèmes signalés :'); if (!data.feedback.length) lines.push('- aucun'); data.feedback.forEach(function (bug, index) { lines.push((index + 1) + '. ' + (bug.summary || '(sans résumé)')); lines.push('   Étapes : ' + (bug.steps || '(non précisées)')); lines.push('   Attendu : ' + (bug.expected || '(non précisé)')); lines.push('   Obtenu : ' + (bug.observed || '(non précisé)')); lines.push('   Bloquant : ' + (bug.blocking ? 'oui' : 'non')); if (bug.feeling) lines.push('   Ressenti : ' + bug.feeling); }); return lines.join('\n'); }
+  function makeExport() {
+    if (!validate()) return;
+    var data = payload(); var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json;charset=utf-8' }); var url = URL.createObjectURL(blob); var link = el('a', { href: url, download: 'convertair-test-' + data.exported_at_utc.replace(/[:.]/g, '-') + '.json' }); link.style.display = 'none'; document.body.appendChild(link); link.click(); window.setTimeout(function () { URL.revokeObjectURL(url); link.remove(); }, 1000); renderSummary(data); show('Export JSON créé localement.', 'success'); saveIfOptedIn();
+  }
+  function renderSummary(data) { var box = document.getElementById('summary'); box.textContent = summaryText(data); box.classList.remove('hidden'); }
+  document.getElementById('export').addEventListener('click', makeExport);
+  document.getElementById('copy-summary').addEventListener('click', function () { if (!validate()) return; var text = summaryText(payload()); renderSummary(payload()); if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(function () { show('Résumé copié.', 'success'); }).catch(function () { show('Résumé affiché ci-dessous : sélectionnez-le puis copiez-le.', 'success'); }); else show('Résumé affiché ci-dessous : sélectionnez-le puis copiez-le.', 'success'); });
+  function saveIfOptedIn() { if (!document.getElementById('save-local').checked) return; try { localStorage.setItem('convertair-test-form', JSON.stringify(payload())); } catch (_) { show('Mémorisation locale indisponible.', 'error'); } }
+  function validStored(data) { return data && data.schema_version === 1 && data.app === 'ConvertAir' && data.tester && typeof data.tester.device_model === 'string' && typeof data.tester.android_version === 'string' && typeof data.tester.app_version === 'string' && ['A', 'B', 'C'].indexOf(data.path) !== -1 && Array.isArray(data.tasks) && Array.isArray(data.feedback); }
+  function restoreStored() { try { var raw = localStorage.getItem('convertair-test-form'); if (!raw) return; var data = JSON.parse(raw); if (!validStored(data)) { localStorage.removeItem('convertair-test-form'); return; } document.getElementById('save-local').checked = true; document.getElementById('nickname').value = data.tester.nickname || ''; document.getElementById('device').value = data.tester.device_model; document.getElementById('android').value = data.tester.android_version; document.getElementById('app-version').value = data.tester.app_version; document.getElementById('purchase-note').value = data.purchase_note || ''; selectedPath = data.path; ['common', 'A', 'B', 'C'].forEach(function (group) { if (data.task_states && data.task_states[group] && typeof data.task_states[group] === 'object') Object.keys(data.task_states[group]).forEach(function (id) { if (['not_tested', 'ok', 'problem'].indexOf(data.task_states[group][id]) !== -1) taskState[group][id] = data.task_states[group][id]; }); }); (data.tasks || []).forEach(function (task) { var group = task.id.indexOf('common-') === 0 ? 'common' : task.id.charAt(0); if (taskState[group] && !taskState[group][task.id]) taskState[group][task.id] = ['not_tested', 'ok', 'problem'].indexOf(task.status) !== -1 ? task.status : 'not_tested'; }); renderTasks(false); (data.feedback || []).forEach(function (bug) { addFeedback(); var boxes = document.querySelectorAll('.feedback'); var box = boxes[boxes.length - 1]; ['summary', 'steps', 'expected', 'observed', 'feeling'].forEach(function (key) { box.querySelector('[data-field="' + key + '"]').value = typeof bug[key] === 'string' ? bug[key] : ''; }); box.querySelector('[data-field="blocking"]').checked = bug.blocking === true; }); } catch (_) { try { localStorage.removeItem('convertair-test-form'); } catch (__) {} } }
+  function reset() { if (!window.confirm('Effacer le formulaire et la mémorisation locale ?')) return; try { localStorage.removeItem('convertair-test-form'); } catch (_) {} form.reset(); selectedPath = 'A'; taskState = { common: {}, A: {}, B: {}, C: {} }; renderTasks(false); document.getElementById('feedback-list').textContent = ''; document.getElementById('summary').classList.add('hidden'); show('Formulaire réinitialisé.', 'success'); }
+  document.getElementById('reset').addEventListener('click', reset);
+  document.getElementById('save-local').addEventListener('change', function () { if (this.checked) saveIfOptedIn(); else { try { localStorage.removeItem('convertair-test-form'); } catch (_) {} } });
+  form.addEventListener('input', saveIfOptedIn);
+  form.addEventListener('change', saveIfOptedIn);
+  restoreStored();
+}());
+</script>
+</body>
+</html>
