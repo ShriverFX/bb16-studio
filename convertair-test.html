@@ -60,8 +60,9 @@
   <section class="intro">
     <div class="eyebrow">BB16 Studio</div>
     <h1>Retour de test ConvertAir</h1>
-    <p><strong>4 étapes • 5 minutes</strong></p>
-    <p>Merci de tester quelques actions dans l’app et de décrire ce que vous observez. Aucun compte ni document n’est demandé.</p>
+    <p><strong>Quelques actions, à votre rythme</strong></p>
+    <p>Ouvrez ConvertAir, faites les actions ci-dessous, puis indiquez le résultat ici.</p>
+    <p>La liste est déjà préparée pour vous. Vous pouvez faire une pause.</p>
     <p class="notice">Fichiers fictifs uniquement : ne mettez pas de documents privés dans votre retour.</p>
   </section>
 
@@ -74,32 +75,25 @@
         <div><label for="android">Version Android</label><input id="android" required maxlength="40" placeholder="Ex. 14"></div>
         <div><label for="app-version">Version de l’app</label><input id="app-version" required maxlength="60" placeholder="Ex. 1.0.0"></div>
       </div>
-      <h3>Parcours à essayer</h3>
-      <div class="paths" role="radiogroup" aria-label="Parcours">
-        <label><input type="radio" name="path" value="A"> A — PDF et annotations</label>
-        <label><input type="radio" name="path" value="B"> B — Photo/image vers PDF</label>
-        <label><input type="radio" name="path" value="C"> C — gros, invalides, offline</label>
-      </div>
-      <p id="path-help" class="notice">Choisissez le parcours que vous voulez essayer.</p>
     </section>
 
     <section class="card">
-      <h2>Tâches communes</h2>
+      <h2>Pour commencer</h2>
       <div id="common-tasks"></div>
       <div id="variant-tasks"></div>
     </section>
 
     <section class="card">
-      <details>
-        <summary><strong>Checklist complète des outils (facultative)</strong></summary>
-        <p class="notice">Répartissez ces essais entre testeurs. Chaque outil reste « Non testé » jusqu’à une observation réelle.</p>
+      <details open>
+        <summary><strong>Vos autres tests</strong></summary>
+        <p class="notice">Voici les tests préparés pour vous. Utilisez des fichiers fictifs, essayez chaque outil puis ouvrez le résultat pour le vérifier. Vous pouvez faire une pause ; laissez « Pas encore testé » pour ce que vous n’avez pas essayé.</p>
         <div id="full-checklist"></div>
       </details>
     </section>
 
     <section class="card">
       <details>
-      <summary><strong>Achat et restauration sandbox (facultatif)</strong></summary>
+      <summary><strong>Achat et restauration (facultatif)</strong></summary>
       <p class="small">Uniquement si vous avez un compte autorisé pour ce test : vérifiez la mention d’achat de test. Ne saisissez pas de carte et ne payez rien. Sinon, ne testez pas cette partie.</p>
       <label for="purchase-note">Observation facultative</label>
       <textarea id="purchase-note" maxlength="800" placeholder="Ex. Non testé, ou mention observée dans l’app"></textarea>
@@ -140,7 +134,7 @@
   var variants = {
     A: ['Ouvrir un PDF fictif et essayer les annotations.'],
     B: ['Convertir une photo/image fictive en PDF, puis tester le partage Android entrant.'],
-    C: ['Essayer un fichier volumineux ou invalide, puis observer offline, retour et abandon.']
+    C: ['Essayer un fichier volumineux ou invalide, puis observer le mode hors connexion, le retour et l’abandon.']
   };
   var checklistGroups = [
     { id: 'pdf', label: 'Outils PDF', path: 'A', items: [
@@ -160,10 +154,10 @@
     ] }
   ];
   var purchaseScenarios = [
-    ['sandbox_success', 'Achat sandbox réussi'], ['sandbox_cancel', 'Achat sandbox annulé'], ['already_owned', 'Produit déjà possédé'], ['restore', 'Restaurer un achat'], ['restart_offline', 'Redémarrage puis offline'], ['reinstall', 'Réinstallation'], ['refusal_error', 'Refus ou erreur'], ['pending', 'Achat en attente si affiché'], ['owner_refund_revoke', 'Remboursement/révocation — owner uniquement']
+      ['sandbox_success', 'Achat de test réussi'], ['sandbox_cancel', 'Achat de test annulé'], ['already_owned', 'Produit déjà possédé'], ['restore', 'Restaurer un achat'], ['restart_offline', 'Redémarrage puis hors connexion'], ['reinstall', 'Réinstallation'], ['refusal_error', 'Refus ou erreur'], ['pending', 'Achat en attente si affiché'], ['owner_refund_revoke', 'Remboursement/révocation — propriétaire uniquement']
   ];
-  var statuses = [['not_tested', 'Non testé'], ['ok', 'OK'], ['problem', 'Problème']];
-  var selectedPath = new URLSearchParams(window.location.search).get('parcours');
+  var statuses = [['not_tested', 'Pas encore testé'], ['ok', 'Ça marche'], ['problem', 'J’ai un problème']];
+  var requestedPath = new URLSearchParams(window.location.search).get('parcours'); var selectedPath = ['A', 'B', 'C'].indexOf(requestedPath) >= 0 ? requestedPath : 'A';
   if (!variants[selectedPath]) selectedPath = 'A';
   var form = document.getElementById('test-form');
   var tasks = [];
@@ -207,10 +201,11 @@
   function renderChecklist() {
     var box = document.getElementById('full-checklist'); box.textContent = '';
     checklistGroups.forEach(function (group) {
-      var section = el('div', { class: 'checklist-group' }); section.appendChild(el('h3', {}, group.label + ' — parcours ' + group.path));
+      if (group.path !== selectedPath) return;
+      var section = el('div', { class: 'checklist-group' }); section.appendChild(el('h3', {}, group.label));
       group.items.forEach(function (item, index) {
         var id = 'check-' + item[0]; var row = el('div', { class: 'checklist-item' }); row.appendChild(el('div', {}, item[1]));
-        var status = el('div', { class: 'status', role: 'radiogroup', 'aria-label': 'État outil ' + item[1] + ' parcours ' + group.path });
+        var status = el('div', { class: 'status', role: 'radiogroup', 'aria-label': 'État outil ' + item[1] });
         statuses.forEach(function (pair, statusIndex) { var radioId = id + '-' + pair[0]; var radio = el('input', { type: 'radio', id: radioId, name: id, value: pair[0] }); radio.checked = (checklistState[id] || 'not_tested') === pair[0]; var label = el('label', { for: radioId }); label.appendChild(radio); label.appendChild(document.createTextNode(pair[1])); status.appendChild(label); });
         row.appendChild(status); section.appendChild(row);
       }); box.appendChild(section);
@@ -252,8 +247,8 @@
     return { schema_version: 1, app: 'ConvertAir', exported_at_utc: new Date().toISOString(), tester: { nickname: value('nickname'), device_model: value('device'), android_version: value('android'), app_version: value('app-version') }, path: selectedPath, task_states: taskState, tasks: tasks.map(function (task) { var selected = document.querySelector('input[name="' + task.id + '"]:checked'); return { id: task.id, title: task.title, status: selected ? selected.value : 'not_tested' }; }), checklist: checklistGroups.map(function (group) { return { id: group.id, label: group.label, path: group.path, items: group.items.map(function (item) { return { id: item[0], label: item[1], operation: item[2], status: checklistState['check-' + item[0]] || 'not_tested' }; }) }; }), purchase_note: value('purchase-note'), purchase_scenarios: purchaseScenarios.map(function (item) { return { id: item[0], label: item[1], status: purchaseState[item[0]] || 'not_tested' }; }), feedback: collectFeedback() };
   }
   function show(text, kind) { var message = document.getElementById('message'); message.textContent = text; message.className = kind || ''; }
-  function statusLabel(status) { return status === 'ok' ? 'OK' : status === 'problem' ? 'Problème' : 'Non testé'; }
-  function summaryText(data) { var lines = ['ConvertAir — parcours ' + data.path, 'Version app : ' + data.tester.app_version, 'Appareil : ' + data.tester.device_model + ' / Android ' + data.tester.android_version, '', 'Tâches :']; data.tasks.forEach(function (task) { lines.push('- ' + task.title + ' : ' + statusLabel(task.status)); }); lines.push('', 'Checklist outils :'); data.checklist.forEach(function (group) { group.items.forEach(function (item) { lines.push('- ' + item.label + ' : ' + statusLabel(item.status)); }); }); lines.push('', 'Scénarios achat/restauration :'); data.purchase_scenarios.forEach(function (scenario) { lines.push('- ' + scenario.label + ' : ' + statusLabel(scenario.status)); }); lines.push('Note achat/restauration : ' + (data.purchase_note || 'aucune')); lines.push('', 'Problèmes signalés :'); if (!data.feedback.length) lines.push('- aucun'); data.feedback.forEach(function (bug, index) { lines.push((index + 1) + '. ' + (bug.summary || '(sans résumé)')); lines.push('   Étapes : ' + (bug.steps || '(non précisées)')); lines.push('   Attendu : ' + (bug.expected || '(non précisé)')); lines.push('   Obtenu : ' + (bug.observed || '(non précisé)')); lines.push('   Bloquant : ' + (bug.blocking ? 'oui' : 'non')); if (bug.feeling) lines.push('   Ressenti : ' + bug.feeling); }); return lines.join('\n'); }
+  function statusLabel(status) { return status === 'ok' ? 'Ça marche' : status === 'problem' ? 'J’ai un problème' : 'Pas encore testé'; }
+  function summaryText(data) { var lines = ['Mon retour de test ConvertAir', 'Version app : ' + data.tester.app_version, 'Appareil : ' + data.tester.device_model + ' / Android ' + data.tester.android_version, '', 'Tâches :']; data.tasks.forEach(function (task) { lines.push('- ' + task.title + ' : ' + statusLabel(task.status)); }); lines.push('', 'Checklist outils :'); data.checklist.forEach(function (group) { group.items.forEach(function (item) { lines.push('- ' + item.label + ' : ' + statusLabel(item.status)); }); }); lines.push('', 'Scénarios achat/restauration :'); data.purchase_scenarios.forEach(function (scenario) { lines.push('- ' + scenario.label + ' : ' + statusLabel(scenario.status)); }); lines.push('Note achat/restauration : ' + (data.purchase_note || 'aucune')); lines.push('', 'Problèmes signalés :'); if (!data.feedback.length) lines.push('- aucun'); data.feedback.forEach(function (bug, index) { lines.push((index + 1) + '. ' + (bug.summary || '(sans résumé)')); lines.push('   Étapes : ' + (bug.steps || '(non précisées)')); lines.push('   Attendu : ' + (bug.expected || '(non précisé)')); lines.push('   Obtenu : ' + (bug.observed || '(non précisé)')); lines.push('   Bloquant : ' + (bug.blocking ? 'oui' : 'non')); if (bug.feeling) lines.push('   Ressenti : ' + bug.feeling); }); return lines.join('\n'); }
   function makeExport() {
     if (!validate()) return;
     var data = payload(); var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json;charset=utf-8' }); var url = URL.createObjectURL(blob); var link = el('a', { href: url, download: 'convertair-test-' + data.exported_at_utc.replace(/[:.]/g, '-') + '.json' }); link.style.display = 'none'; document.body.appendChild(link); link.click(); window.setTimeout(function () { URL.revokeObjectURL(url); link.remove(); }, 1000); renderSummary(data); show('Export JSON créé localement.', 'success'); saveIfOptedIn();
@@ -263,8 +258,8 @@
   document.getElementById('copy-summary').addEventListener('click', function () { if (!validate()) return; var text = summaryText(payload()); renderSummary(payload()); if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(function () { show('Résumé copié.', 'success'); }).catch(function () { show('Résumé affiché ci-dessous : sélectionnez-le puis copiez-le.', 'success'); }); else show('Résumé affiché ci-dessous : sélectionnez-le puis copiez-le.', 'success'); });
   function saveIfOptedIn() { if (!document.getElementById('save-local').checked) return; try { localStorage.setItem('convertair-test-form', JSON.stringify(payload())); } catch (_) { show('Mémorisation locale indisponible.', 'error'); } }
   function validStored(data) { return data && data.schema_version === 1 && data.app === 'ConvertAir' && data.tester && typeof data.tester.device_model === 'string' && typeof data.tester.android_version === 'string' && typeof data.tester.app_version === 'string' && ['A', 'B', 'C'].indexOf(data.path) !== -1 && Array.isArray(data.tasks) && Array.isArray(data.feedback); }
-  function restoreStored() { try { var raw = localStorage.getItem('convertair-test-form'); if (!raw) return; var data = JSON.parse(raw); if (!validStored(data)) { localStorage.removeItem('convertair-test-form'); return; } document.getElementById('save-local').checked = true; document.getElementById('nickname').value = data.tester.nickname || ''; document.getElementById('device').value = data.tester.device_model; document.getElementById('android').value = data.tester.android_version; document.getElementById('app-version').value = data.tester.app_version; document.getElementById('purchase-note').value = data.purchase_note || ''; selectedPath = data.path; ['common', 'A', 'B', 'C'].forEach(function (group) { if (data.task_states && data.task_states[group] && typeof data.task_states[group] === 'object') Object.keys(data.task_states[group]).forEach(function (id) { if (['not_tested', 'ok', 'problem'].indexOf(data.task_states[group][id]) !== -1) taskState[group][id] = data.task_states[group][id]; }); }); (data.tasks || []).forEach(function (task) { var group = task.id.indexOf('common-') === 0 ? 'common' : task.id.charAt(0); if (taskState[group] && !taskState[group][task.id]) taskState[group][task.id] = ['not_tested', 'ok', 'problem'].indexOf(task.status) !== -1 ? task.status : 'not_tested'; }); if (data.checklist) data.checklist.forEach(function (group) { group.items.forEach(function (item) { if (['not_tested', 'ok', 'problem'].indexOf(item.status) !== -1) checklistState['check-' + item.id] = item.status; }); }); if (data.purchase_scenarios) data.purchase_scenarios.forEach(function (item) { if (['not_tested', 'ok', 'problem'].indexOf(item.status) !== -1) purchaseState[item.id] = item.status; }); renderTasks(false); renderChecklist(); renderPurchaseScenarios(); (data.feedback || []).forEach(function (bug) { addFeedback(); var boxes = document.querySelectorAll('.feedback'); var box = boxes[boxes.length - 1]; ['summary', 'steps', 'expected', 'observed', 'feeling'].forEach(function (key) { box.querySelector('[data-field="' + key + '"]').value = typeof bug[key] === 'string' ? bug[key] : ''; }); box.querySelector('[data-field="blocking"]').checked = bug.blocking === true; }); } catch (_) { try { localStorage.removeItem('convertair-test-form'); } catch (__) {} } }
-  function reset() { if (!window.confirm('Effacer le formulaire et la mémorisation locale ?')) return; try { localStorage.removeItem('convertair-test-form'); } catch (_) {} form.reset(); selectedPath = 'A'; taskState = { common: {}, A: {}, B: {}, C: {} }; checklistState = {}; purchaseState = {}; renderTasks(false); renderChecklist(); renderPurchaseScenarios(); document.getElementById('feedback-list').textContent = ''; document.getElementById('summary').classList.add('hidden'); show('Formulaire réinitialisé.', 'success'); }
+  function restoreStored() { try { var raw = localStorage.getItem('convertair-test-form'); if (!raw) return; var data = JSON.parse(raw); if (!validStored(data)) { localStorage.removeItem('convertair-test-form'); return; } document.getElementById('save-local').checked = true; document.getElementById('nickname').value = data.tester.nickname || ''; document.getElementById('device').value = data.tester.device_model; document.getElementById('android').value = data.tester.android_version; document.getElementById('app-version').value = data.tester.app_version; document.getElementById('purchase-note').value = data.purchase_note || ''; selectedPath = ['A', 'B', 'C'].indexOf(requestedPath) >= 0 ? requestedPath : data.path; ['common', 'A', 'B', 'C'].forEach(function (group) { if (data.task_states && data.task_states[group] && typeof data.task_states[group] === 'object') Object.keys(data.task_states[group]).forEach(function (id) { if (['not_tested', 'ok', 'problem'].indexOf(data.task_states[group][id]) !== -1) taskState[group][id] = data.task_states[group][id]; }); }); (data.tasks || []).forEach(function (task) { var group = task.id.indexOf('common-') === 0 ? 'common' : task.id.charAt(0); if (taskState[group] && !taskState[group][task.id]) taskState[group][task.id] = ['not_tested', 'ok', 'problem'].indexOf(task.status) !== -1 ? task.status : 'not_tested'; }); if (data.checklist) data.checklist.forEach(function (group) { group.items.forEach(function (item) { if (['not_tested', 'ok', 'problem'].indexOf(item.status) !== -1) checklistState['check-' + item.id] = item.status; }); }); if (data.purchase_scenarios) data.purchase_scenarios.forEach(function (item) { if (['not_tested', 'ok', 'problem'].indexOf(item.status) !== -1) purchaseState[item.id] = item.status; }); renderTasks(false); renderChecklist(); renderPurchaseScenarios(); (data.feedback || []).forEach(function (bug) { addFeedback(); var boxes = document.querySelectorAll('.feedback'); var box = boxes[boxes.length - 1]; ['summary', 'steps', 'expected', 'observed', 'feeling'].forEach(function (key) { box.querySelector('[data-field="' + key + '"]').value = typeof bug[key] === 'string' ? bug[key] : ''; }); box.querySelector('[data-field="blocking"]').checked = bug.blocking === true; }); } catch (_) { try { localStorage.removeItem('convertair-test-form'); } catch (__) {} } }
+  function reset() { if (!window.confirm('Effacer le formulaire et la mémorisation locale ?')) return; try { localStorage.removeItem('convertair-test-form'); } catch (_) {} form.reset(); selectedPath = ['A', 'B', 'C'].indexOf(requestedPath) >= 0 ? requestedPath : 'A'; taskState = { common: {}, A: {}, B: {}, C: {} }; checklistState = {}; purchaseState = {}; renderTasks(false); renderChecklist(); renderPurchaseScenarios(); document.getElementById('feedback-list').textContent = ''; document.getElementById('summary').classList.add('hidden'); show('Formulaire réinitialisé.', 'success'); }
   document.getElementById('reset').addEventListener('click', reset);
   document.getElementById('save-local').addEventListener('change', function () { if (this.checked) saveIfOptedIn(); else { try { localStorage.removeItem('convertair-test-form'); } catch (_) {} } });
   form.addEventListener('input', saveIfOptedIn);
@@ -274,3 +269,5 @@
 </script>
 </body>
 </html>
+
+
