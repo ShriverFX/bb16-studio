@@ -100,6 +100,8 @@ VIDEOS: dict[str, list[tuple[str, str]]] = {
 
 # Icônes légères dérivées des icônes déjà publiées (assets/apps/*.png).
 ICONS: dict[str, tuple[str, tuple[int, int]]] = {
+    "assets/branding/bb16-studio-logo-light-256.webp": ("assets/branding/bb16-studio-logo.jpg", (256, 256)),
+    "assets/branding/bb16-studio-logo-dark-256.webp": ("assets/branding/bb16-studio-logo-dark.png", (256, 256)),
     "assets/apps/convertair-icon-192.webp": ("assets/apps/convertair-icon-512.png", (192, 192)),
     "assets/apps/doccipher-icon-192.webp": ("assets/apps/doccipher-icon-512.png", (192, 192)),
     "assets/apps/hgq-logo-192.webp": ("assets/apps/hgq-logo.png", (192, 212)),
@@ -125,6 +127,7 @@ def screen_size(app: str, width: int) -> tuple[int, int]:
 PRODUCTS: dict[str, dict] = {
     "convertair": {
         "name": "ConvertAir",
+        "headline": ("Tous vos documents.", "Un seul outil."),
         "icon": "assets/apps/convertair-icon-192.webp",
         "icon_size": (192, 192),
         "eyebrow": "Documents · Android",
@@ -171,6 +174,7 @@ PRODUCTS: dict[str, dict] = {
     },
     "doccipher": {
         "name": "DocCipher",
+        "headline": ("Vos papiers.", "Votre tranquillité."),
         "icon": "assets/apps/doccipher-icon-192.webp",
         "icon_size": (192, 192),
         "eyebrow": "Coffre documentaire · Android",
@@ -216,6 +220,7 @@ PRODUCTS: dict[str, dict] = {
     },
     "hgq": {
         "name": "HGQ",
+        "headline": ("La culture gaming.", "Le plaisir de jouer."),
         "icon": "assets/apps/hgq-logo-192.webp",
         "icon_size": (192, 212),
         "eyebrow": "Quiz multijoueur · Android",
@@ -271,11 +276,6 @@ def store_listing(config: dict, key: str) -> dict:
     return {"package": listing["package"], "published": listing.get("published") is True}
 
 
-def ratio_style(app: str) -> str:
-    w, h = screen_size(app, SCREEN_WIDTH)
-    return f"--screen-ratio: {w} / {h}; --screen-ratio-num: {w / h:.4f}"
-
-
 def screen_img(app: str, src: str, alt: str, eager: bool = False) -> str:
     w, h = screen_size(app, SCREEN_WIDTH)
     loading = 'fetchpriority="high"' if eager else 'loading="lazy"'
@@ -289,10 +289,19 @@ def video_tag(video: str) -> str:
     return f'<video data-src="{video}" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>'
 
 
+def phone_frame(inner: str, extra_class: str = "") -> str:
+    """Unique coque générique ; sa géométrie appartient uniquement au CSS partagé.
+
+    Les dimensions intrinsèques des médias restent celles des captures réelles.
+    Elles ne déterminent jamais la taille ni la forme du téléphone.
+    """
+    cls = f"phone {extra_class}".strip()
+    return f'<div class="{cls}" data-phone><div class="screen">{inner}</div></div>'
+
+
 def phone(app: str, src: str, alt: str, video: str | None = None, eager: bool = False, extra_class: str = "") -> str:
     inner = screen_img(app, src, alt, eager) + (video_tag(video) if video else "")
-    cls = f"phone {extra_class}".strip()
-    return f'<div class="{cls}"><div class="screen">{inner}</div></div>'
+    return phone_frame(inner, extra_class)
 
 
 def store_button(key: str, config: dict, verb: str = "rate") -> str:
@@ -352,13 +361,13 @@ def soon_block() -> str:
 
 def product_body(key: str, config: dict) -> str:
     p = PRODUCTS[key]
-    style = ratio_style(key)
     listing = store_listing(config, key)
     hero_cta = store_button(key, config, verb="get") if listing["published"] else ""
     points = "".join(f"<li>{escape(x)}</li>" for x in p["points"])
     hero_src, hero_alt = p["hero"]
     hero_icon = icon_tag(key, "hero-icon", lazy=False)
     eyebrow, name, lede = escape(p["eyebrow"]), escape(p["name"]), escape(p["lede"])
+    headline = "".join(f"<span>{escape(line)}</span>" for line in p["headline"])
     status, tour_title, grid_title = escape(p["status"]), escape(p["tour_title"]), escape(p["grid_title"])
     captures_note, pricing_intro = escape(p["captures_note"]), escape(p["pricing_intro"])
     soon = soon_block() if p["soon"] else ""
@@ -368,13 +377,13 @@ def product_body(key: str, config: dict) -> str:
     layers = []
     total = len(p["tour"])
     for i, (sid, title, text, src, video, alt) in enumerate(p["tour"], start=1):
-        steps.append(f'''<li class="tour-step" data-step id="etape-{sid}"><p class="step-index">{i:02d}</p><h3>{escape(title)}</h3><p>{escape(text)}</p>{phone(key, src, alt, video, extra_class="step-phone")}</li>''')
+        steps.append(f'''<li class="tour-step" data-step id="etape-{sid}"><div class="step-copy"><p class="step-index">{i:02d} <span>/ {total:02d}</span></p><h3>{escape(title)}</h3><p>{escape(text)}</p></div><div class="step-device">{phone(key, src, alt, video, extra_class="step-phone")}</div></li>''')
         active = " is-active" if i == 1 else ""
         layers.append(f'<div class="layer{active}" data-layer>{screen_img(key, src, "")}{video_tag(video)}</div>')
 
     cards = []
     for title, text, src, video, alt in p["grid"]:
-        cards.append(f'''<article class="feature-card" data-hover-video>{phone(key, src, alt, video, extra_class="mini")}<div class="feature-copy"><h3>{escape(title)}</h3><p>{escape(text)}</p></div></article>''')
+        cards.append(f'''<article class="feature-card" data-hover-video><div class="feature-copy"><h3>{escape(title)}</h3><p>{escape(text)}</p></div><div class="feature-device">{phone(key, src, alt, video)}</div><button class="preview-toggle" type="button" data-preview-toggle aria-pressed="false" hidden><span data-preview-label>Voir l'aperçu animé</span><span class="sr-only"> : {escape(title)}</span></button></article>''')
     also = ""
     if p["also"]:
         also = '<ul class="also-list">' + "".join(f"<li>{escape(x)}</li>" for x in p["also"]) + "</ul>"
@@ -394,42 +403,42 @@ def product_body(key: str, config: dict) -> str:
 
     faq = "".join(f'<details class="faq-item"><summary>{escape(q)}</summary><p>{escape(a)}</p></details>' for q, a in p["faq"])
 
-    return f'''<section class="product-hero" style="{style}"><div class="container product-hero-grid">
+    return f'''<nav class="product-nav" aria-label="Dans cette page"><div class="container product-nav-inner"><a class="product-nav-name" href="#presentation">{name}</a><div class="product-nav-links"><a href="#fonctions">Fonctions</a><a href="#apercus">Aperçus</a><a href="#prix">Prix</a><a href="#confidentialite">Confidentialité</a><a href="#faq">FAQ</a></div></div></nav>
+<section class="product-hero" id="presentation"><div class="container product-hero-grid">
   <div class="product-hero-copy">
-    {hero_icon}
-    <p class="eyebrow">{eyebrow}</p>
-    <h1>{name}</h1>
+    <div class="product-identity">{hero_icon}<div><p class="product-name">{name}</p><p class="eyebrow">{eyebrow}</p></div></div>
+    <h1>{headline}</h1>
     <p class="lede">{lede}</p>
     <ul class="hero-points">{points}</ul>
     <div class="actions">{hero_cta}<a class="button{secondary}" href="#fonctions">Voir les fonctions</a><a class="button secondary" href="#prix">Prix</a></div>
     <p class="hero-status"><span class="status pending">{status}</span></p>
   </div>
-  <div class="hero-device">{phone(key, hero_src, hero_alt, eager=True)}</div>
+  <figure class="hero-device">{phone(key, hero_src, hero_alt, eager=True)}<figcaption>Capture réelle de {name}</figcaption></figure>
 </div></section>
-<section class="section tour-section" id="fonctions" style="{style}"><div class="container">
-  <div class="section-head"><div><p class="eyebrow">Visite guidée</p><h2>{tour_title}</h2></div><p>Faites défiler : l'écran suit chaque fonction. {captures_note}</p></div>
+<section class="section tour-section" id="fonctions"><div class="container">
+  <div class="section-head"><div><p class="eyebrow">01 · Visite guidée</p><h2>{tour_title}</h2></div><div class="section-intro"><p>Découvrez chaque fonction au fil de la page. {captures_note}</p><button class="motion-toggle" type="button" data-motion-toggle aria-pressed="false" hidden>Mettre les aperçus en pause</button></div></div>
   <div class="tour" data-tour>
     <ol class="tour-steps">{"".join(steps)}</ol>
-    <div class="tour-stage" aria-hidden="true"><div class="tour-sticky"><div class="phone"><div class="screen">{"".join(layers)}</div></div><p class="tour-counter"><span data-counter>01</span> / {total:02d}</p></div></div>
+    <div class="tour-stage" aria-hidden="true"><div class="tour-sticky">{phone_frame("".join(layers))}<p class="tour-counter"><span data-counter>01</span> <span>/ {total:02d}</span></p></div></div>
   </div>
 </div></section>
-<section class="section alt" id="apercus" style="{style}"><div class="container">
-  <div class="section-head"><div><p class="eyebrow">En mouvement</p><h2>{grid_title}</h2></div><p class="hover-hint">Survolez une carte pour la voir en mouvement.</p><p class="touch-hint">Les aperçus s'animent lorsqu'ils apparaissent à l'écran.</p></div>
+<section class="section alt" id="apercus"><div class="container">
+  <div class="section-head"><div><p class="eyebrow">02 · En mouvement</p><h2>{grid_title}</h2></div><div class="section-intro"><p class="hover-hint">Survolez une carte ou lancez son aperçu animé.</p><p class="touch-hint">Les aperçus s'animent lorsqu'ils apparaissent à l'écran. Vous pouvez les mettre en pause.</p><p class="motion-hint">Animations désactivées : explorez les captures à votre rythme.</p></div></div>
   <div class="feature-grid">{"".join(cards)}</div>{also}
 </div></section>
 {soon}
 <section class="section" id="prix"><div class="container">
-  <div class="section-head"><div><p class="eyebrow">Prix</p><h2>Simple et affiché.</h2></div><p>{pricing_intro}</p></div>
+  <div class="section-head"><div><p class="eyebrow">03 · Prix</p><h2>Simple et affiché.</h2></div><p>{pricing_intro}</p></div>
   <div class="plan-grid">{"".join(plans)}</div>
   <p class="meta plan-note">Prix de référence en France. Le prix affiché par Google Play au moment de l'achat fait foi.</p>
 </div></section>
 <section class="section alt" id="confidentialite"><div class="container">
-  <div class="section-head"><div><p class="eyebrow">Confidentialité</p><h2>Ce qui reste chez vous.</h2></div></div>
+  <div class="section-head"><div><p class="eyebrow">04 · Confidentialité</p><h2>Ce qui reste chez vous.</h2></div></div>
   <div class="grid">{privacy}</div>
   <div class="actions">{privacy_actions}</div>
 </div></section>
 <section class="section" id="faq"><div class="container faq">
-  <p class="eyebrow">Questions fréquentes</p><h2>FAQ</h2>
+  <p class="eyebrow">05 · Questions fréquentes</p><h2>Tout ce qu'il faut savoir.</h2>
   {faq}
   <p class="meta">Une autre question ? <a href="contact.html">Écrivez-nous</a>.</p>
 </div></section>

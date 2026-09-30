@@ -1,96 +1,169 @@
-/* Pages produit : écran qui suit le défilement, aperçus vidéo au survol.
-   Aucune requête réseau hors des fichiers du site ; aucune donnée conservée.
-   Les vidéos ne sont chargées qu'au moment de les jouer, jamais quand
-   l'utilisateur demande moins d'animations : les captures restent fixes. */
+/* Local product interactions. Videos load only when visible and playing.
+   Reduced motion, explicit pause and hidden tabs always retain the still image. */
 (() => {
   'use strict';
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
   const fineHover = window.matchMedia('(hover: hover) and (pointer: fine)');
-  const wide = window.matchMedia('(min-width: 900px)');
+  const wide = window.matchMedia('(min-width: 900px) and (min-height: 760px)');
   const canObserve = 'IntersectionObserver' in window;
+  const videos = Array.from(document.querySelectorAll('video[data-src]'));
+  const tours = [];
+  const cards = [];
+  let paused = false;
+  const allowed = () => !reduce.matches && !paused && !document.hidden;
 
   function play(video) {
-    if (!video || reduce.matches) return;
+    if (!video || !allowed()) return;
     video.muted = true;
     if (!video.getAttribute('src') && video.dataset.src) video.src = video.dataset.src;
     const attempt = video.play();
-    if (attempt && attempt.catch) attempt.catch(() => { /* Lecture refusée : la capture reste affichée. */ });
+    if (attempt && attempt.catch) attempt.catch(() => { /* Keep the still image. */ });
   }
 
-  function stop(video, rewind) {
+  function stop(video, rewind = false) {
     if (!video) return;
     video.pause();
     video.classList.remove('is-playing');
     if (rewind && video.readyState > 0) {
-      try { video.currentTime = 0; } catch (_) { /* Rien à rembobiner. */ }
+      try { video.currentTime = 0; } catch (_) { /* Media may not be ready. */ }
     }
   }
 
-  document.querySelectorAll('video[data-src]').forEach(video => {
-    video.addEventListener('playing', () => video.classList.add('is-playing'));
+  function cardLabel(state) {
+    const playing = state.video && !state.video.paused && allowed();
+    state.button.setAttribute('aria-pressed', String(Boolean(playing)));
+    state.label.textContent = playing ? "Mettre l'aperçu en pause" : "Voir l'aperçu animé";
+  }
+
+  videos.forEach(video => {
+    video.addEventListener('playing', () => {
+      if (allowed()) video.classList.add('is-playing'); else stop(video);
+    });
     video.addEventListener('error', () => video.classList.remove('is-playing'));
   });
 
+  function syncTour(state) {
+    state.layers.forEach((layer, i) => {
+      const video = layer.querySelector('video');
+      if (i === state.active && wide.matches && state.visible && allowed()) play(video);
+      else stop(video);
+    });
+    state.inline.forEach(item => {
+      if (!wide.matches && item.visible && allowed()) play(item.video); else stop(item.video);
+    });
+  }
+
   document.querySelectorAll('[data-tour]').forEach(tour => {
-    const steps = Array.from(tour.querySelectorAll('[data-step]'));
-    const layers = Array.from(tour.querySelectorAll('[data-layer]'));
+    const state = { steps: Array.from(tour.querySelectorAll('[data-step]')),
+      layers: Array.from(tour.querySelectorAll('[data-layer]')), active: 0, visible: false,
+      inline: Array.from(tour.querySelectorAll('.step-phone')).map(phone =>
+        ({ phone, video: phone.querySelector('video'), visible: false })) };
     const counter = tour.querySelector('[data-counter]');
-    let active = -1;
-
     function activate(index) {
-      if (index === active || index < 0) return;
-      active = index;
-      steps.forEach((step, i) => step.classList.toggle('is-active', i === index));
+      if (index !== state.active) stop(state.layers[state.active].querySelector('video'), true);
+      state.active = index;
+      state.steps.forEach((step, i) => step.classList.toggle('is-active', i === index));
+      state.layers.forEach((layer, i) => layer.classList.toggle('is-active', i === index));
       if (counter) counter.textContent = String(index + 1).padStart(2, '0');
-      layers.forEach((layer, i) => {
-        layer.classList.toggle('is-active', i === index);
-        const video = layer.querySelector('video');
-        if (i === index && wide.matches) play(video); else stop(video, true);
-      });
+      syncTour(state);
     }
-
+    tours.push(state);
+    activate(0);
     if (!canObserve) return;
     const stepObserver = new IntersectionObserver(entries => {
-      entries.forEach(entry => { if (entry.isIntersecting) activate(steps.indexOf(entry.target)); });
-    }, { rootMargin: '-45% 0px -45% 0px' });
-    steps.forEach(step => stepObserver.observe(step));
-
-    // Téléphone : chaque étape porte son propre écran, joué quand il est visible.
-    const inlineObserver = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        const video = entry.target.querySelector('video');
-        if (entry.isIntersecting && !wide.matches) play(video); else stop(video, false);
+      if (!entries.some(entry => entry.isIntersecting)) return;
+      const positions = state.steps.map(step => {
+        const rect = step.getBoundingClientRect();
+        return Math.abs((rect.top + rect.bottom) / 2 - innerHeight / 2);
       });
-    }, { threshold: 0.6 });
-    tour.querySelectorAll('.step-phone').forEach(phone => inlineObserver.observe(phone));
-
-    wide.addEventListener('change', () => {
-      tour.querySelectorAll('video').forEach(video => stop(video, true));
-      const current = active;
-      active = -1;
-      activate(current < 0 ? 0 : current);
+      activate(positions.indexOf(Math.min(...positions)));
+    }, { rootMargin: '-35% 0px -35% 0px' });
+    state.steps.forEach(step => stepObserver.observe(step));
+    const stageObserver = new IntersectionObserver(entries => {
+      state.visible = entries[0].isIntersecting;
+      syncTour(state);
+    }, { threshold: .2 });
+    stageObserver.observe(tour.querySelector('.tour-sticky'));
+    state.inline.forEach(item => {
+      const observer = new IntersectionObserver(entries => {
+        item.visible = entries[0].isIntersecting;
+        syncTour(state);
+      }, { threshold: .55 });
+      observer.observe(item.phone);
     });
   });
 
-  document.querySelectorAll('[data-hover-video]').forEach(card => {
-    const video = card.querySelector('video');
-    card.addEventListener('pointerenter', () => { if (fineHover.matches) play(video); });
-    card.addEventListener('pointerleave', () => { if (fineHover.matches) stop(video, true); });
-  });
-
-  // Écrans tactiles : pas de survol, l'aperçu s'anime quand il est bien visible.
-  if (canObserve) {
-    const touchObserver = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (fineHover.matches) return;
-        const video = entry.target.querySelector('video');
-        if (entry.isIntersecting) play(video); else stop(video, false);
-      });
-    }, { threshold: 0.7 });
-    document.querySelectorAll('[data-hover-video]').forEach(card => touchObserver.observe(card));
+  function syncCard(state) {
+    const requested = state.manual === null ?
+      (fineHover.matches ? state.hover : true) : state.manual;
+    if (state.visible && requested && allowed()) play(state.video); else stop(state.video);
+    cardLabel(state);
   }
 
-  reduce.addEventListener('change', () => {
-    if (reduce.matches) document.querySelectorAll('video').forEach(video => stop(video, true));
+  document.querySelectorAll('[data-hover-video]').forEach(card => {
+    const state = { card, video: card.querySelector('video'),
+      button: card.querySelector('[data-preview-toggle]'), label: card.querySelector('[data-preview-label]'),
+      visible: !canObserve, hover: false, manual: null };
+    cards.push(state);
+    card.addEventListener('pointerenter', () => { state.hover = true; syncCard(state); });
+    card.addEventListener('pointerleave', () => { state.hover = false; syncCard(state); });
+    state.button.addEventListener('click', () => {
+      state.manual = state.video.paused;
+      syncCard(state);
+    });
+    ['playing', 'pause', 'error'].forEach(event => state.video.addEventListener(event, () => cardLabel(state)));
+    if (canObserve) {
+      const observer = new IntersectionObserver(entries => {
+        state.visible = entries[0].isIntersecting;
+        syncCard(state);
+      }, { threshold: .35 });
+      observer.observe(card.querySelector('.phone'));
+    }
   });
+
+  function refresh() {
+    document.querySelectorAll('[data-motion-toggle]').forEach(button => {
+      button.hidden = reduce.matches;
+      button.setAttribute('aria-pressed', String(paused));
+      button.textContent = paused ? 'Reprendre les aperçus' : 'Mettre les aperçus en pause';
+    });
+    cards.forEach(state => { state.button.hidden = reduce.matches; syncCard(state); });
+    tours.forEach(syncTour);
+    if (!allowed()) videos.forEach(video => stop(video));
+    document.documentElement.dataset.motion = reduce.matches || paused ? 'paused' : 'active';
+  }
+  document.querySelectorAll('[data-motion-toggle]').forEach(button => {
+    button.addEventListener('click', () => { paused = !paused; refresh(); });
+  });
+  [reduce, wide, fineHover].forEach(query => query.addEventListener('change', refresh));
+  document.addEventListener('visibilitychange', refresh);
+  refresh();
+
+  if (canObserve) {
+    // Reveal text only. Device geometry and screenshots never scale or tilt.
+    const revealObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: .1 });
+    document.querySelectorAll('.section-head, .step-copy, .feature-copy, .faq > h2').forEach(element => {
+      element.dataset.reveal = '';
+      revealObserver.observe(element);
+    });
+    document.documentElement.classList.add('motion-ready');
+    const links = Array.from(document.querySelectorAll('.product-nav-links a'));
+    const sections = links.map(link => document.querySelector(link.getAttribute('href')));
+    const sectionObserver = new IntersectionObserver(entries => {
+      entries.filter(entry => entry.isIntersecting).forEach(entry => {
+        links.forEach((link, i) => {
+          if (sections[i] === entry.target) link.setAttribute('aria-current', 'location');
+          else link.removeAttribute('aria-current');
+        });
+      });
+    }, { rootMargin: '-15% 0px -65% 0px' });
+    sections.forEach(section => sectionObserver.observe(section));
+  }
 })();

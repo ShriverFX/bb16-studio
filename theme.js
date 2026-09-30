@@ -24,7 +24,7 @@
     const icon = document.getElementById('site-icon');
     if (icon) {
       icon.href = icon.dataset[theme];
-      icon.type = theme === 'dark' ? 'image/png' : 'image/jpeg';
+      icon.type = icon.dataset[theme].endsWith('.webp') ? 'image/webp' : (theme === 'dark' ? 'image/png' : 'image/jpeg');
     }
   }
 

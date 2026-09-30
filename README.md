@@ -36,15 +36,19 @@ officiel confirmé par le propriétaire, `#0097D7`, est la couleur principale du
 site. Le logo HGQ transparent provient de
 `HGQ/hgq/assets/images/Logo_hgq_fond_transparent.png` (709 × 784), également sans
 modification. Les empreintes des deux originaux sont vérifiées par le validateur.
-Le logo BB16 est grand et centré dans l'en-tête, sans texte de marque ajouté
-à côté ; la navigation est centrée en dessous. HGQ utilise son logo sur
+Le logo BB16 est grand et centré sur les pages générales. Sur les trois pages
+produit, l'en-tête est compact : logo à gauche, navigation et choix du thème,
+puis navigation interne fixe au défilement. Les deux WebP de 256 px dérivés
+localement des logos d'origine réduisent leur poids de 1 942 245 à 69 516 octets,
+sans modifier les originaux. HGQ utilise son logo sur
 l'accueil, le catalogue et sa fiche, sans fond blanc ajouté.
 
 ## Apparence claire et sombre
 
-Le sélecteur « Clair / Sombre » sous la navigation change la palette de toutes
+Le sélecteur « Clair / Sombre » dans l'en-tête change la palette de toutes
 les pages et affiche le logo adapté : JPG original sur blanc en clair, PNG
-transparent sur noir en sombre. Le logo garde la même taille et reste centré.
+transparent sur noir en sombre (WebP locaux optimisés sur les pages produit).
+Le logo garde la même taille dans les deux thèmes.
 Le bleu principal est toujours `#0097D7` ; les petits textes bleus sont assombris
 en clair pour leur contraste.
 
@@ -81,6 +85,35 @@ cartes dont la vidéo se joue au survol (ou quand elles apparaissent sur un
 écran tactile), prix, confidentialité, FAQ et « Notez-nous sur le Store ».
 `product.js` pilote l'écran et les vidéos : elles ne sont chargées qu'au moment
 de les jouer, et jamais avec `prefers-reduced-motion` (captures fixes).
+
+Tous les téléphones passent par `phone_frame()` : coque générique de 280 ×
+568 px, écran de 264 × 528 px, rayons, bordure, ombre et caméra identiques dans
+l'introduction, la visite et les cartes des trois pages. Aucun ratio ni taille
+propre à une application ou une section. Les médias restent entiers grâce à
+`object-fit: contain`. Sous 360 px, le même repli de 248 × 504 px s'applique
+partout. Le téléphone de la visite devient fixe seulement lorsque la fenêtre
+est assez large et haute ; sinon les captures restent dans chaque étape.
+
+Les aperçus ont une pause globale et un bouton accessible au clavier par carte.
+Une page masquée arrête les vidéos ; un changement de préférence de réduction
+des animations les arrête immédiatement. Sans JavaScript, textes, captures,
+navigation interne et FAQ restent utilisables.
+
+La preuve visuelle et les interactions se reproduisent avec Playwright installé
+localement (aucune dépendance ajoutée au site livré) :
+
+```powershell
+# PLAYWRIGHT_MODULE et CHROMIUM_EXECUTABLE peuvent désigner les outils locaux.
+node .\scripts\capture_product_ux.cjs before  # avant toute modification
+python -B .\build_site.py
+python -B .\validate_site.py
+node .\scripts\capture_product_ux.cjs after
+```
+
+Les captures se trouvent dans `_apercu/before/` et `_apercu/after/`, avec les
+mesures JSON et la preuve d'interaction. `_apercu/comparatif-ux.html` permet de
+comparer les deux versions à largeur et thème identiques. Ce dossier reste
+local, exclu de Git par la règle existante.
 
 Les médias viennent de vraies captures lues dans les dépôts des apps
 (`SCREENS` dans `product_pages.py`). Pour les refaire, sur la machine source :

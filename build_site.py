@@ -77,7 +77,10 @@ def prefix_internal_links(markup: str, base_path: str) -> str:
     return re.sub(pattern, replace, markup)
 
 
-def header(active: str) -> str:
+def header(active: str, compact: bool = False) -> str:
+    dark_logo = "assets/branding/bb16-studio-logo-dark-256.webp" if compact else "assets/branding/bb16-studio-logo-dark.png"
+    light_logo = "assets/branding/bb16-studio-logo-light-256.webp" if compact else "assets/branding/bb16-studio-logo.jpg"
+    dark_size, light_size = (256, 256) if compact else (1254, 1280)
     links = []
     for href, label in NAV:
         current = ' aria-current="page"' if href == active else ""
@@ -85,7 +88,7 @@ def header(active: str) -> str:
     return f'''<a class="skip-link" href="#main">Aller au contenu</a>
 <header class="site-header">
   <nav class="nav" aria-label="Navigation principale">
-    <a class="wordmark" href="index.html" aria-label="BB16 Studio — Accueil"><img class="wordmark-logo logo-dark" src="assets/branding/bb16-studio-logo-dark.png" alt="" width="1254" height="1254"><img class="wordmark-logo logo-light" src="assets/branding/bb16-studio-logo.jpg" alt="" width="1280" height="1280"></a>
+    <a class="wordmark" href="index.html" aria-label="BB16 Studio — Accueil"><img class="wordmark-logo logo-dark" src="{dark_logo}" alt="" width="{dark_size}" height="{dark_size}"><img class="wordmark-logo logo-light" src="{light_logo}" alt="" width="{light_size}" height="{light_size}"></a>
     <div class="nav-links">{"".join(links)}</div>
     <div class="theme-switch" role="group" aria-label="Apparence" hidden><button class="theme-option" type="button" data-set-theme="light" aria-pressed="false">Clair</button><button class="theme-option" type="button" data-set-theme="dark" aria-pressed="false">Sombre</button></div>
   </nav>
@@ -100,6 +103,10 @@ def footer() -> str:
 
 
 def document(title: str, description: str, active: str, body: str, config: dict, filename: str, scripts: tuple[str, ...] = ()) -> str:
+    compact = "product.js" in scripts
+    dark_icon = "assets/branding/bb16-studio-logo-dark-256.webp" if compact else "assets/branding/bb16-studio-logo-dark.png"
+    light_icon = "assets/branding/bb16-studio-logo-light-256.webp" if compact else "assets/branding/bb16-studio-logo.jpg"
+    icon_type = "image/webp" if compact else "image/png"
     site_url = config.get("site_url")
     base_path = normalise_base(config.get("base_path", "/"))
     canonical = page_url(filename, site_url, base_path)
@@ -111,6 +118,7 @@ def document(title: str, description: str, active: str, body: str, config: dict,
     email = escape(config["contact_email"])
     asset_version = hashlib.sha256(CSS_PATH.read_bytes() + (SITE / "theme.js").read_bytes() + (SITE / "product.js").read_bytes()).hexdigest()[:12]
     extra_scripts = "".join(f'\n  <script src="{name}?v={asset_version}" defer></script>' for name in scripts)
+    body_class = ' class="product-page"' if "product.js" in scripts else ""
     raw = f'''<!doctype html>
 <html lang="fr">
 <head>
@@ -123,13 +131,13 @@ def document(title: str, description: str, active: str, body: str, config: dict,
   <meta property="og:title" content="{escape(title)} · BB16 Studio">
   <meta property="og:description" content="{escape(description)}">
   {og_url}{og_image_tag}{canonical_tag}
-  <link id="site-icon" rel="icon" type="image/png" href="assets/branding/bb16-studio-logo-dark.png" data-dark="{base_path}assets/branding/bb16-studio-logo-dark.png" data-light="{base_path}assets/branding/bb16-studio-logo.jpg">
+  <link id="site-icon" rel="icon" type="{icon_type}" href="{dark_icon}" data-dark="{base_path}{dark_icon}" data-light="{base_path}{light_icon}">
   <script src="theme.js?v={asset_version}"></script>
   <link rel="stylesheet" href="styles.css?v={asset_version}">{extra_scripts}
   <title>{escape(title)} · BB16 Studio</title>
 </head>
-<body>
-  {header(active)}
+<body{body_class}>
+  {header(active, compact)}
   <main id="main">{body}</main>
   {footer()}
 </body>

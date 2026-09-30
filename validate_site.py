@@ -48,12 +48,13 @@ PANIC_REQUIRED = ["Bientôt · inclus dans Premium", "Effacer les coffres prése
 OVERCLAIM_FORBIDDEN = ["militaire", "military", "déni plausible", "plausible deniability", "effacement définitif", "irrécupérable", "indétectable", "undetectable"]
 REFERRAL_FORBIDDEN = ["code parrain", "parrainez", "referral", "?ref=", "&ref=", "utm_", "invitez vos amis", "récompense contre"]
 TRACKER_FORBIDDEN = ["googletagmanager", "google-analytics", "gtag(", "fbq(", "plausible.io", "matomo", "hotjar", "clarity.ms", "<iframe"]
-# Budgets en octets (hors logos de l'en-tête, communs à tout le site).
+# Budgets en octets ; le budget initial inclut les logos des pages produit.
 VIDEO_MAX = 250_000
 PAGE_VIDEOS_MAX = 1_300_000
 PAGE_IMAGES_MAX = 600_000
 PAGE_INITIAL_MAX = 350_000
-HEADER_LOGOS = {"assets/branding/bb16-studio-logo.jpg", "assets/branding/bb16-studio-logo-dark.png"}
+HEADER_LOGOS = {"assets/branding/bb16-studio-logo.jpg", "assets/branding/bb16-studio-logo-dark.png",
+                "assets/branding/bb16-studio-logo-light-256.webp", "assets/branding/bb16-studio-logo-dark-256.webp"}
 
 
 def _local(base_path: str, link: str) -> Path:
@@ -119,9 +120,16 @@ def validate_products(config: dict, base_path: str) -> None:
     if "prefers-reduced-motion" not in css or "prefers-reduced-motion" not in script:
         raise SystemExit("MISSING_REDUCED_MOTION")
     shared = sum((SITE / name).stat().st_size for name in ("styles.css", "theme.js", "product.js"))
-    logos = sum((SITE / name).stat().st_size for name in HEADER_LOGOS)
     for page in PRODUCT_PAGES:
         text = texts[page]
+        if 'class="product-page"' not in text or 'class="product-nav"' not in text:
+            raise SystemExit(f"MISSING_PRODUCT_LAYOUT={page}")
+        frames = re.findall(r'<div class="phone[^"]*" data-phone><div class="screen">', text)
+        all_frames = re.findall(r'<div\b[^>]*\bclass="phone(?:\s[^"]*)?"[^>]*>', text)
+        if not frames or len(frames) != len(all_frames):
+            raise SystemExit(f"UNSHARED_PHONE_FRAME={page}")
+        if "--screen-ratio" in text:
+            raise SystemExit(f"APP_DEPENDENT_PHONE_GEOMETRY={page}")
         if f'src="{base_path}product.js?' not in text:
             raise SystemExit(f"MISSING_PRODUCT_SCRIPT={page}")
         videos = re.findall(r"<video[^>]*>", text)
@@ -141,23 +149,28 @@ def validate_products(config: dict, base_path: str) -> None:
             video_bytes += len(raw)
         image_bytes = 0
         eager_bytes = 0
+        header_bytes = 0
         seen = set()
         for tag in re.findall(r"<img[^>]+>", text):
             link = re.search(r'src="([^"]+)"', tag).group(1)
             rel = link[len(base_path):]
-            if rel in HEADER_LOGOS or link in seen:
+            if link in seen:
                 continue
             seen.add(link)
             size = _local(base_path, link).stat().st_size
             if rel.endswith(".webp") and _local(base_path, link).read_bytes()[8:12] != b"WEBP":
                 raise SystemExit(f"BAD_WEBP={link}")
+            if rel in HEADER_LOGOS:
+                header_bytes += size
+                continue
             image_bytes += size
             if 'loading="lazy"' not in tag:
                 eager_bytes += size
-        initial = len(text.encode("utf-8")) + shared + eager_bytes
+        # Product pages count both local header derivatives in their initial budget.
+        initial = len(text.encode("utf-8")) + shared + eager_bytes + header_bytes
         if video_bytes > PAGE_VIDEOS_MAX or image_bytes > PAGE_IMAGES_MAX or initial > PAGE_INITIAL_MAX:
             raise SystemExit(f"PAGE_TOO_HEAVY={page}:initial={initial},images={image_bytes},videos={video_bytes}")
-        print(f"WEIGHT {page}: initial={initial} images={image_bytes} videos={video_bytes} ({len(video_files)}) header_logos={logos}")
+        print(f"WEIGHT {page}: initial={initial} images={image_bytes} videos={video_bytes} ({len(video_files)}) header_logos={header_bytes}")
     print("PRODUCT_PAGES_OK")
 
 
