@@ -2,6 +2,7 @@
 (() => {
   'use strict';
   const root = document.documentElement;
+  root.classList.add('js');
   const storageKey = 'bb16-theme';
   const systemTheme = window.matchMedia('(prefers-color-scheme: dark)');
   const isTheme = value => value === 'light' || value === 'dark';

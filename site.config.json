@@ -9,5 +9,19 @@
   "duns": null,
   "github_pages_repository": "ShriverFX/bb16-studio",
   "custom_domain": null,
-  "social_profiles": {}
+  "social_profiles": {},
+  "store_listings": {
+    "convertair": {
+      "package": "com.bb16studio.convertair",
+      "published": false
+    },
+    "doccipher": {
+      "package": "com.bb16studio.doccipher",
+      "published": false
+    },
+    "hgq": {
+      "package": "com.hgq.app",
+      "published": false
+    }
+  }
 }

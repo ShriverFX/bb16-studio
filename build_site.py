@@ -12,6 +12,8 @@ from urllib.parse import urlsplit
 from pathlib import Path
 from html import escape
 
+import product_pages
+
 
 SITE = Path(__file__).resolve().parent
 BB16 = SITE.parents[1]
@@ -97,7 +99,7 @@ def footer() -> str:
 </div></footer>'''
 
 
-def document(title: str, description: str, active: str, body: str, config: dict, filename: str) -> str:
+def document(title: str, description: str, active: str, body: str, config: dict, filename: str, scripts: tuple[str, ...] = ()) -> str:
     site_url = config.get("site_url")
     base_path = normalise_base(config.get("base_path", "/"))
     canonical = page_url(filename, site_url, base_path)
@@ -107,7 +109,8 @@ def document(title: str, description: str, active: str, body: str, config: dict,
     og_image = page_url(og_asset, site_url, base_path)
     og_image_tag = f'<meta property="og:image" content="{escape(og_image)}">' if og_image else ""
     email = escape(config["contact_email"])
-    asset_version = hashlib.sha256(CSS_PATH.read_bytes() + (SITE / "theme.js").read_bytes()).hexdigest()[:12]
+    asset_version = hashlib.sha256(CSS_PATH.read_bytes() + (SITE / "theme.js").read_bytes() + (SITE / "product.js").read_bytes()).hexdigest()[:12]
+    extra_scripts = "".join(f'\n  <script src="{name}?v={asset_version}" defer></script>' for name in scripts)
     raw = f'''<!doctype html>
 <html lang="fr">
 <head>
@@ -122,7 +125,7 @@ def document(title: str, description: str, active: str, body: str, config: dict,
   {og_url}{og_image_tag}{canonical_tag}
   <link id="site-icon" rel="icon" type="image/png" href="assets/branding/bb16-studio-logo-dark.png" data-dark="{base_path}assets/branding/bb16-studio-logo-dark.png" data-light="{base_path}assets/branding/bb16-studio-logo.jpg">
   <script src="theme.js?v={asset_version}"></script>
-  <link rel="stylesheet" href="styles.css?v={asset_version}">
+  <link rel="stylesheet" href="styles.css?v={asset_version}">{extra_scripts}
   <title>{escape(title)} · BB16 Studio</title>
 </head>
 <body>
@@ -135,38 +138,18 @@ def document(title: str, description: str, active: str, body: str, config: dict,
     return prefix_internal_links(raw, base_path)
 
 
+PRODUCT_META = {
+    "convertair": ("ConvertAir", "ConvertAir : scanner, convertir, fusionner, signer et reconnaître le texte de vos documents sur votre téléphone Android."),
+    "doccipher": ("DocCipher", "DocCipher : un coffre chiffré sur votre téléphone pour vos papiers importants, sans compte ni serveur documentaire."),
+    "hgq": ("HGQ", "Hard Gamer Quiz : des duels en temps réel sur la culture jeu vidéo, bientôt sur Android."),
+}
+
+
 def product_page(kind: str, config: dict) -> tuple[str, str]:
-    if kind == "convertair":
-        title = "ConvertAir"
-        description = "Outils documentaires sur appareil, avec un parcours Android en préparation."
-        body = '''<section class="section"><div class="container product-layout">
-  <div class="prose"><p class="eyebrow">Application documentaire</p><h1>ConvertAir</h1>
-    <p class="lede">ConvertAir rassemble des outils de conversion, de création et de manipulation de documents directement sur l'appareil.</p>
-    <p><span class="status pending">Android V1 en préparation</span></p>
-    <h2>Une approche locale pour les documents</h2>
-    <p>Le projet vise les parcours de scan, conversion PDF et image, assemblage, compression, annotation, signature, OCR et gestion de fichiers locaux. Les documents sont traités sur le téléphone selon le périmètre courant du projet.</p>
-    <p>La connexion nécessaire aux achats reste distincte du traitement documentaire. ConvertAir est en préparation pour Android.</p>
-    <p>La <a href="convertair-privacy.html">politique de confidentialité de ConvertAir</a> décrit le périmètre réel de l'application : traitement sur l'appareil, réseau limité aux achats, permissions déclarées.</p>
-    <div class="actions"><a class="button secondary" href="convertair-privacy.html">Confidentialité ConvertAir</a><a class="button" href="contact.html">Contacter BB16 Studio</a></div>
-  </div>
-  <aside class="aside"><img class="poster" src="assets/branding/convertair-presentation.png" alt="Affiche de présentation ConvertAir montrant un document et des flèches de conversion"><dl class="facts"><div class="fact"><dt>Plateforme</dt><dd>Bientôt sur Android</dd></div><div class="fact"><dt>iOS</dt><dd>À l'étude</dd></div><div class="fact"><dt>Téléchargement</dt><dd>Disponible prochainement</dd></div></dl></aside>
-</div></section>'''
-    else:
-        title = "DocCipher"
-        description = "Coffre documentaire local-first chiffré, en développement pour Android."
-        body = '''<section class="section"><div class="container product-layout">
-  <div class="prose"><p class="eyebrow">Coffre documentaire</p><h1>DocCipher</h1>
-    <p class="lede">DocCipher explore un coffre documentaire local-first : vos papiers, votre clé et une sauvegarde que vous choisissez.</p>
-    <p><span class="status pending">Android en développement</span></p>
-    <h2>Chiffrement local et sauvegarde exportable</h2>
-    <p>Le projet travaille sur un format de coffre chiffré, des opérations locales et l'export ou l'import manuel d'une sauvegarde <code>.dcvault</code> via le sélecteur de fichiers. WebDAV et Nextcloud restent planifiés et ne sont pas disponibles dans l'application actuelle. DocCipher ne repose pas sur un backend documentaire BB16.</p>
-    <p>DocCipher est en développement pour Android. Le produit vise la conservation et l'export de documents avec un traitement local-first.</p>
-    <p>La <a href="doccipher-privacy.html">politique de confidentialité de DocCipher</a> décrit le chiffrement local, les exports choisis par l'utilisateur et la connexion limitée aux achats.</p>
-    <div class="actions"><a class="button secondary" href="doccipher-privacy.html">Confidentialité DocCipher</a><a class="button" href="contact.html">Contacter BB16 Studio</a></div>
-  </div>
-  <aside class="aside"><img class="poster" src="assets/branding/doccipher-presentation.png" alt="Affiche de présentation DocCipher avec un coffre documentaire stylisé"><dl class="facts"><div class="fact"><dt>Plateforme</dt><dd>En développement pour Android</dd></div><div class="fact"><dt>iOS</dt><dd>À l'étude</dd></div><div class="fact"><dt>Téléchargement</dt><dd>Disponible prochainement</dd></div></dl></aside>
-</div></section>'''
-    return title, document(title, description, f"{kind}.html", body, config, f"{kind}.html")
+    """Page produit premium : contenu et médias décrits dans product_pages.py."""
+    title, description = PRODUCT_META[kind]
+    body = product_pages.product_body(kind, config)
+    return title, document(title, description, "apps.html", body, config, f"{kind}.html", scripts=("product.js",))
 
 
 # ---------------------------------------------------------------------------
@@ -617,13 +600,14 @@ def pages(config: dict) -> dict[str, str]:
     email = escape(config["contact_email"])
     return {
         "index.html": document("Accueil", "BB16 Studio crée des applications sobres, locales et utiles.", "index.html", f'''<section class="hero"><div class="container hero-copy"><h1>Des outils qui respectent votre attention.</h1><p class="lede">Nous concevons des expériences utiles autour des documents, de la confidentialité et du jeu compétitif. Chaque projet avance avec des limites explicites.</p><div class="actions"><a class="button" href="apps.html">Découvrir les apps</a><a class="button secondary" href="studio.html">Notre approche</a></div></div></section>
-<section class="section alt"><div class="container"><div class="section-head"><div><p class="eyebrow">Projets en cours</p><h2>Trois produits, trois usages.</h2></div><p>Les pages produit présentent les applications et leur état de préparation.</p></div><div class="grid"><article class="card icon-card"><img class="app-icon" src="assets/apps/convertair-icon-512.png" alt="Icône ConvertAir"><div><h3>ConvertAir</h3><p>Outils documentaires sur appareil, avec une V1 Android en préparation.</p><p class="meta">Bientôt sur Android</p></div></article><article class="card icon-card"><img class="app-icon" src="assets/apps/doccipher-icon-512.png" alt="Icône DocCipher"><div><h3>DocCipher</h3><p>Coffre documentaire local-first chiffré, en développement.</p><p class="meta">En développement pour Android</p></div></article><article class="card icon-card"><img class="app-icon hgq-icon" src="assets/apps/hgq-logo.png" alt="Logo HGQ" width="709" height="784"><div><h3>HGQ</h3><p>Quiz multijoueur en temps réel autour de la culture jeu vidéo, avec comptes, amis et classements.</p><p class="meta">Bientôt sur Android</p></div></article></div></div></section>
-<section class="section"><div class="container"><div class="section-head"><div><p class="eyebrow">Écrire à l'équipe</p><h2>Une question sur un projet ?</h2></div><p>Le support public passe par une adresse unique. N'envoyez jamais de mot de passe, clé privée ou document sensible par email.</p></div><a class="email-box" href="mailto:{email}">{email}</a></div></section>''', config, "index.html"),
+<section class="section alt"><div class="container"><div class="section-head"><div><p class="eyebrow">Projets en cours</p><h2>Trois produits, trois usages.</h2></div><p>Les pages produit présentent les applications et leur état de préparation.</p></div><div class="grid"><article class="card icon-card"><img class="app-icon" src="assets/apps/convertair-icon-512.png" alt="Icône ConvertAir"><div><h3><a class="card-link" href="convertair.html">ConvertAir</a></h3><p>Scanner, convertir et signer vos documents, traités sur le téléphone.</p><p class="meta">Bientôt sur Android</p></div></article><article class="card icon-card"><img class="app-icon" src="assets/apps/doccipher-icon-512.png" alt="Icône DocCipher"><div><h3><a class="card-link" href="doccipher.html">DocCipher</a></h3><p>Un coffre chiffré sur le téléphone pour vos papiers importants.</p><p class="meta">En développement pour Android</p></div></article><article class="card icon-card"><img class="app-icon hgq-icon" src="assets/apps/hgq-logo.png" alt="Logo HGQ" width="709" height="784"><div><h3><a class="card-link" href="hgq.html">HGQ</a></h3><p>Quiz multijoueur en temps réel autour de la culture jeu vidéo, avec comptes, amis et classements.</p><p class="meta">Bientôt sur Android</p></div></article></div></div></section>
+{product_pages.home_rating_section(config)}
+<section class="section alt"><div class="container"><div class="section-head"><div><p class="eyebrow">Écrire à l'équipe</p><h2>Une question sur un projet ?</h2></div><p>Le support public passe par une adresse unique. N'envoyez jamais de mot de passe, clé privée ou document sensible par email.</p></div><a class="email-box" href="mailto:{email}">{email}</a></div></section>''', config, "index.html"),
         "studio.html": document("BB16 Studio", "L'approche BB16 Studio : produits locaux, privacy claire et décisions vérifiables.", "studio.html", '''<section class="section"><div class="container prose"><p class="eyebrow">L'atelier</p><h1>Le studio</h1><p class="lede">Un studio indépendant qui préfère les produits lisibles aux promesses bruyantes.</p><h2>Construire avec des limites claires</h2><p>Nous travaillons sur des applications où la confiance compte : documents personnels, données de compte, parties compétitives. Les fonctions sont décrites selon leur état réel.</p><div class="grid"><article class="card"><h3>Local d'abord</h3><p>Quand le produit le permet, les opérations sensibles restent sur l'appareil. Les connexions nécessaires sont isolées et expliquées.</p></article><article class="card"><h3>Privacy compréhensible</h3><p>Les pages de confidentialité distinguent le site, l'application et les services tiers. Aucune télémétrie marketing n'est ajoutée à ce site.</p></article><article class="card"><h3>Une mise en route progressive</h3><p>Chaque application est présentée avec son périmètre actuel et son prochain jalon.</p></article></div><div class="actions"><a class="button" href="apps.html">Voir les applications</a><a class="button secondary" href="contact.html">Nous contacter</a></div></div></section>''', config, "studio.html"),
         "apps.html": document("Applications", "Découvrez les projets applicatifs de BB16 Studio.", "apps.html", '''<section class="section"><div class="container"><p class="eyebrow">Catalogue</p><h1>Nos applications</h1><p class="lede">Chaque fiche indique le rôle du produit et son état de préparation.</p><div class="grid"><article class="card"><div class="icon-card"><img class="app-icon" src="assets/apps/convertair-icon-512.png" alt="Icône ConvertAir"><div><h2>ConvertAir</h2><p>Outils documentaires et PDF sur appareil.</p></div></div><p style="margin-top:1rem">Scanner, convertir, organiser et travailler sur des documents dans le périmètre Android V1.</p><p class="meta">Bientôt sur Android</p><div class="actions"><a class="button secondary" href="convertair.html">Lire la fiche</a></div></article><article class="card"><div class="icon-card"><img class="app-icon" src="assets/apps/doccipher-icon-512.png" alt="Icône DocCipher"><div><h2>DocCipher</h2><p>Coffre documentaire local-first.</p></div></div><p style="margin-top:1rem">Chiffrer, conserver et exporter des documents selon le format et les limites du projet.</p><p class="meta">En développement pour Android</p><div class="actions"><a class="button secondary" href="doccipher.html">Lire la fiche</a></div></article><article class="card"><div class="icon-card"><img class="app-icon hgq-icon" src="assets/apps/hgq-logo.png" alt="Logo HGQ" width="709" height="784"><div><h2>HGQ</h2><p>Quiz multijoueur temps réel.</p></div></div><p style="margin-top:1rem">Défier d'autres joueurs, progresser et jouer dans un environnement connecté.</p><p class="meta">Bientôt sur Android</p><div class="actions"><a class="button secondary" href="hgq.html">Lire la fiche</a></div></article></div></div></section>''', config, "apps.html"),
         "convertair.html": product_page("convertair", config)[1],
         "doccipher.html": product_page("doccipher", config)[1],
-        "hgq.html": document("HGQ", "Hard Gamer Quiz, quiz multijoueur temps réel édité par BB16 Studio.", "apps.html", '''<section class="section"><div class="container product-layout"><div class="prose"><p class="eyebrow">Jeu compétitif</p><h1>HGQ</h1><p class="lede">Hard Gamer Quiz est un quiz multijoueur temps réel autour de la culture jeu vidéo.</p><p><span class="status pending">Bientôt sur Android</span></p><h2>Jouer, progresser, défier</h2><p>Le projet comprend des comptes, des parties en temps réel, le mode solo, des amis, des profils, des résultats et des classements. Les parties classées sont validées côté serveur selon les règles du projet.</p><p>Les services de compte et de jeu appartiennent à l'application HGQ. La page de confidentialité de l'application reste la référence pour ses données et services.</p><h2>Données et suppression de compte</h2><p>La politique opérationnelle de l'application décrit les comptes, statistiques de jeu, données sociales et services tiers utilisés par HGQ. La suppression peut être demandée depuis le parcours de compte de l'application.</p><div class="actions"><a class="button" href="data-deletion.html">Suppression de compte</a><a class="button secondary" href="privacy.html">Privacy du site</a></div></div><aside class="aside"><img class="poster hgq-poster" src="assets/apps/hgq-logo.png" alt="Logo Hard Gamer Quiz : lettres HGQ et manette bleue" width="709" height="784"><div class="card"><h3>Disponibilité</h3><p>La fiche Android sera ajoutée lorsqu'elle sera publique.</p></div><div class="card" style="margin-top:1rem"><h3>Support</h3><p><a href="mailto:bb16studio@gmail.com">bb16studio@gmail.com</a></p></div></aside></div></section>''', config, "hgq.html"),
+        "hgq.html": product_page("hgq", config)[1],
         "support.html": document("Support", "Contacter le support public de BB16 Studio.", "support.html", f'''<section class="section"><div class="container prose"><p class="eyebrow">Aide et retours</p><h1>Support</h1><p class="lede">Une adresse publique pour les questions produit, les problèmes d'accès et les demandes liées aux données.</p><a class="email-box" href="mailto:{email}">{email}</a><h2>Pour obtenir une réponse utile</h2><ul><li>Indiquez l'application concernée : ConvertAir, DocCipher ou HGQ.</li><li>Décrivez le comportement observé et l'appareil ou la version si vous les connaissez.</li><li>Ne joignez jamais de mot de passe, clé privée, phrase de récupération, fichier de coffre ou document personnel.</li></ul><div class="callout"><p>Pour une suppression HGQ, utilisez d'abord le parcours dans l'application. Si vous avez perdu l'accès, la <a href="data-deletion.html">page de suppression</a> explique les informations minimales à fournir.</p></div><h2>Retour produit</h2><p>Les idées et signalements sont lus selon les capacités de l'équipe et l'état du projet. Un message reçu ne vaut pas promesse de fonctionnalité, de délai ou de publication.</p></div></section>''', config, "support.html"),
         "contact.html": document("Contact", "Coordonnées publiques de BB16 Studio.", "contact.html", f'''<section class="section"><div class="container prose"><p class="eyebrow">Parlons du produit</p><h1>Contact</h1><p class="lede">Pour une question générale, un retour utilisateur ou un sujet de confidentialité :</p><p><a class="email-box" href="mailto:{email}">{email}</a></p><h2>Quel message envoyer ?</h2><p>Un sujet précis, le nom du produit et les étapes reproductibles nous aideront à vous répondre. Pour la sécurité, restez descriptif et ne transmettez aucune donnée secrète.</p><h2>Identité légale</h2><p>Les informations légales publiques de l'éditeur seront ajoutées après validation par le propriétaire. Cette page affiche uniquement une adresse de contact confirmée ; elle ne constitue pas une identité légale complète.</p></div></section>''', config, "contact.html"),
         "privacy.html": document("Confidentialité", "Politique de confidentialité du site statique BB16 Studio.", "privacy.html", f'''<section class="section"><div class="container prose"><p class="eyebrow">Site web</p><h1>Confidentialité</h1><p class="lede">Ce site est un site statique de présentation. Il est conçu pour fonctionner sans compte et sans outil d'analyse marketing.</p><h2>Données du site</h2><p>BB16 Studio ne place pas de cookie analytique, de pixel publicitaire, de SDK de suivi ou de formulaire qui collecterait des données sur cette version du site. Le choix du mode clair ou sombre est mémorisé uniquement dans le navigateur, sans transmission à BB16 Studio. Un hébergeur peut traiter les journaux techniques nécessaires à la distribution HTTPS ; ces journaux relèvent de son propre fonctionnement et de ses règles publiques.</p><h2>Contact</h2><p>Si vous écrivez à <a href="mailto:{email}">{email}</a>, l'équipe reçoit les informations que vous choisissez d'inclure pour répondre à votre message. N'envoyez pas de secret ou de document sensible.</p><h2>Applications</h2><p>Cette page concerne le site BB16 Studio. Les applications ont leurs propres données, services tiers et parcours de suppression. Pour ConvertAir, consultez la <a href="convertair-privacy.html">confidentialité ConvertAir</a> ; pour DocCipher, la <a href="doccipher-privacy.html">confidentialité DocCipher</a>. Pour HGQ, la politique publiée par l'application est disponible sur <a href="https://hgq-prod.web.app/privacy" rel="noopener">hgq-prod.web.app/privacy</a>.</p><p>La <a href="data-deletion.html">page de suppression HGQ</a> du site reprend le parcours utilisateur connu et le canal de contact actuel.</p><h2>Mise à jour</h2><p>Cette page sera mise à jour lorsque l'identité légale, l'hébergement final ou les services du site changeront.</p></div></section>''', config, "privacy.html"),
@@ -658,6 +642,9 @@ def copy_assets(import_assets: bool = False) -> None:
             shutil.copy2(source, target)
         elif not target.is_file():
             raise FileNotFoundError(f"Asset local absent : {target}. Utilisez --import-assets sur la machine source.")
+    missing_media = [name for name in product_pages.MEDIA_FILES if not (SITE / name).is_file()]
+    if missing_media:
+        raise FileNotFoundError("Médias des pages produit absents : " + ", ".join(missing_media) + ". Lancez make_media.py sur la machine source.")
 
 
 def main() -> None:
@@ -682,6 +669,7 @@ def main() -> None:
     print(f"SITE_URL={config.get('site_url') or 'UNCONFIGURED'}")
     print("SITE_PAGES=13")
     print(f"SITE_ASSETS={len(ASSETS)}")
+    print(f"SITE_MEDIA={len(product_pages.MEDIA_FILES)}")
 
 
 if __name__ == "__main__":

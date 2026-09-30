@@ -68,8 +68,42 @@ liens internes sont préfixés par le chemin de base afin de fonctionner depuis
 une page 404 imbriquée.
 
 Le site n'embarque aucun code privé d'application, document interne, secret,
-fichier Firebase, configuration de paiement, capture d'écran ou donnée
-utilisateur.
+fichier Firebase, configuration de paiement ou donnée utilisateur. Les seules
+captures d'écran publiées sont celles des pages produit (voir plus bas),
+choisies sans adresse email ni donnée de compte visible.
+
+## Pages produit, vidéos et notation Store
+
+`convertair.html`, `doccipher.html` et `hgq.html` sont décrites dans
+`product_pages.py` (textes, prix, FAQ, captures, vidéos) : en-tête, visite
+guidée où l'écran d'un téléphone générique dessiné en CSS suit le défilement,
+cartes dont la vidéo se joue au survol (ou quand elles apparaissent sur un
+écran tactile), prix, confidentialité, FAQ et « Notez-nous sur le Store ».
+`product.js` pilote l'écran et les vidéos : elles ne sont chargées qu'au moment
+de les jouer, et jamais avec `prefers-reduced-motion` (captures fixes).
+
+Les médias viennent de vraies captures lues dans les dépôts des apps
+(`SCREENS` dans `product_pages.py`). Pour les refaire, sur la machine source :
+
+```powershell
+python .\make_media.py   # Pillow + ffmpeg ; WebP 540 px, MP4 H.264 432 px, sans son
+```
+
+Les captures HGQ de développement sont nettoyées des indicateurs de toucher
+d'Android ; rien d'autre n'est modifié. La génération normale et la CI n'ont
+besoin ni de Pillow ni de ffmpeg : elles vérifient seulement la présence des
+fichiers produits.
+
+Les boutons Google Play dépendent de `store_listings` dans
+`site.config.json` : tant que `published` vaut `false`, la page affiche
+« Bientôt sur Google Play » et aucun lien Store n'est écrit. Passer une app à
+`true` après sa publication, puis régénérer. Pas de parrainage ni de
+récompense contre un avis : le validateur le refuse.
+
+Le code de panique et le coffre leurre de DocCipher (décision D-0051) ne sont
+pas implémentés : ils n'apparaissent que dans le bloc « Bientôt, inclus dans
+Premium », avec la formulation bornée de la décision, et le validateur refuse
+toute mention hors de ce cadre.
 
 ## Pages
 

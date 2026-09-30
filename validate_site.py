@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import html
 import re
 import struct
 import json
@@ -32,6 +33,134 @@ PRIVACY_REQUIRED = {
 PRIVACY_FORBIDDEN = ["rien, de notre côté", "nothing on our side", "pas à vous", "not to you", "identifiant anonyme", "anonymous identifier", "identifiant d'achat anonyme", "anonymous purchase identifier", "leurs propres politiques", "under their own policies", "supprimant le coffre", "deleting the vault"]
 
 
+# ---------------------------------------------------------------------------
+# Pages produit premium (30 septembre 2026) : notation Store sans parrainage,
+# prix décidés, honnêteté sur les fonctions à venir, médias légers et différés.
+# ---------------------------------------------------------------------------
+PRODUCT_PAGES = ["convertair.html", "doccipher.html", "hgq.html"]
+PRODUCT_PRICES = {
+    "convertair.html": ["9,99 €", "par mois", "49,99 €", "par an", "119,99 €", "au lancement, puis 159,99 €", "3 opérations par jour"],
+    "doccipher.html": ["19,99 €", "paiement unique", "Jusqu'à 15 documents", "Pas d'abonnement"],
+    "hgq.html": ["3,99 €", "par mois", "24,99 €", "par an"],
+}
+# Formulation bornée imposée par la décision DocCipher D-0051.
+PANIC_REQUIRED = ["Bientôt · inclus dans Premium", "Effacer les coffres présents sur cet appareil. Vos sauvegardes externes ne sont pas supprimées.", "pas encore dans l'application", "il ne promet pas un effacement physique", "ne garantit pas qu'un observateur ignore son existence"]
+OVERCLAIM_FORBIDDEN = ["militaire", "military", "déni plausible", "plausible deniability", "effacement définitif", "irrécupérable", "indétectable", "undetectable"]
+REFERRAL_FORBIDDEN = ["code parrain", "parrainez", "referral", "?ref=", "&ref=", "utm_", "invitez vos amis", "récompense contre"]
+TRACKER_FORBIDDEN = ["googletagmanager", "google-analytics", "gtag(", "fbq(", "plausible.io", "matomo", "hotjar", "clarity.ms", "<iframe"]
+# Budgets en octets (hors logos de l'en-tête, communs à tout le site).
+VIDEO_MAX = 250_000
+PAGE_VIDEOS_MAX = 1_300_000
+PAGE_IMAGES_MAX = 600_000
+PAGE_INITIAL_MAX = 350_000
+HEADER_LOGOS = {"assets/branding/bb16-studio-logo.jpg", "assets/branding/bb16-studio-logo-dark.png"}
+
+
+def _local(base_path: str, link: str) -> Path:
+    return SITE / link[len(base_path):].split("?", 1)[0]
+
+
+def validate_products(config: dict, base_path: str) -> None:
+    listings = config.get("store_listings") or {}
+    for key in ("convertair", "doccipher", "hgq"):
+        listing = listings.get(key) or {}
+        if not re.fullmatch(r"[a-z][a-z0-9_]*(\.[a-z][a-z0-9_]*)+", str(listing.get("package", ""))) or not isinstance(listing.get("published"), bool):
+            raise SystemExit(f"BAD_STORE_LISTING={key}")
+    # Texte décodé : l'apostrophe échappée (&#x27;) ne doit pas masquer un contrôle.
+    texts = {page: html.unescape((SITE / page).read_text(encoding="utf-8")) for page in PAGES}
+    all_text = "\n".join(texts.values())
+    lowered = all_text.lower()
+    for token in REFERRAL_FORBIDDEN + TRACKER_FORBIDDEN:
+        if token.lower() in lowered:
+            raise SystemExit("FORBIDDEN_REFERRAL_OR_TRACKER=" + token)
+    for page, text in texts.items():
+        external = re.findall(r'''(?:src|data-src|poster)="(https?:[^"]+)"''', text) + re.findall(r'''<link[^>]+rel="(?:stylesheet|preload|modulepreload)"[^>]+href="(https?:[^"]+)"''', text)
+        if external:
+            raise SystemExit(f"EXTERNAL_RESOURCE={page}:" + ",".join(external))
+    for page in PRODUCT_PAGES + ["index.html"]:
+        text = texts[page]
+        if 'id="noter"' not in text or "Notez-nous sur le Store" not in text or "pas de parrainage" not in text:
+            raise SystemExit(f"MISSING_STORE_RATING={page}")
+    for key, listing in listings.items():
+        url = f"https://play.google.com/store/apps/details?id={listing['package']}"
+        pages_for_key = [f"{key}.html", "index.html"]
+        if listing["published"]:
+            missing = [p for p in pages_for_key if f'href="{url}"' not in texts[p]]
+            if missing:
+                raise SystemExit(f"MISSING_STORE_LINK={key}:" + ",".join(missing))
+        else:
+            if url in all_text:
+                raise SystemExit(f"UNPUBLISHED_STORE_LINK={key}")
+            if "Bientôt sur Google Play" not in texts[f"{key}.html"]:
+                raise SystemExit(f"MISSING_STORE_PENDING={key}")
+    if "play.google.com/store/apps/details" in all_text and not any(l["published"] for l in listings.values()):
+        raise SystemExit("STORE_LINK_WITHOUT_PUBLICATION")
+    for page, required in PRODUCT_PRICES.items():
+        missing = [phrase for phrase in required if phrase not in texts[page]]
+        if missing:
+            raise SystemExit(f"MISSING_PRICE={page}:" + "|".join(missing))
+    for token in OVERCLAIM_FORBIDDEN:
+        if token.lower() in lowered:
+            raise SystemExit("OVERCLAIM=" + token)
+    doccipher = texts["doccipher.html"]
+    soon = re.search(r'<section class="section" id="bientot">.*?</section>', doccipher, re.S)
+    if not soon or any(phrase not in soon.group(0) for phrase in PANIC_REQUIRED):
+        raise SystemExit("MISSING_PANIC_SOON_BLOCK")
+    outside = doccipher.replace(soon.group(0), "")
+    for match in re.finditer(r"panique|leurre", outside, re.I):
+        window = outside[max(0, match.start() - 200): match.end() + 200]
+        if not any(guard in window for guard in ("dès leur sortie", "Pas encore", "Bientôt")):
+            raise SystemExit("PANIC_CLAIMED_AS_AVAILABLE=" + window[:120])
+    for page, text in texts.items():
+        if page != "doccipher.html" and re.search(r"panique|coffre leurre", text, re.I):
+            raise SystemExit("PANIC_OUTSIDE_DOCCIPHER=" + page)
+    css = (SITE / "styles.css").read_text(encoding="utf-8")
+    script = (SITE / "product.js").read_text(encoding="utf-8")
+    if "prefers-reduced-motion" not in css or "prefers-reduced-motion" not in script:
+        raise SystemExit("MISSING_REDUCED_MOTION")
+    shared = sum((SITE / name).stat().st_size for name in ("styles.css", "theme.js", "product.js"))
+    logos = sum((SITE / name).stat().st_size for name in HEADER_LOGOS)
+    for page in PRODUCT_PAGES:
+        text = texts[page]
+        if f'src="{base_path}product.js?' not in text:
+            raise SystemExit(f"MISSING_PRODUCT_SCRIPT={page}")
+        videos = re.findall(r"<video[^>]*>", text)
+        if not videos:
+            raise SystemExit(f"MISSING_VIDEOS={page}")
+        for tag in videos:
+            if re.search(r"\ssrc=|autoplay|poster=", tag) or not all(a in tag for a in ('preload="none"', " muted", " playsinline", 'aria-hidden="true"', "data-src=")):
+                raise SystemExit(f"BAD_VIDEO_TAG={page}:{tag}")
+        video_files = sorted(set(re.findall(r'data-src="([^"]+\.mp4)"', text)))
+        video_bytes = 0
+        for link in video_files:
+            raw = _local(base_path, link).read_bytes()
+            if raw[4:8] != b"ftyp":
+                raise SystemExit(f"BAD_MP4={link}")
+            if len(raw) > VIDEO_MAX:
+                raise SystemExit(f"VIDEO_TOO_HEAVY={link}:{len(raw)}")
+            video_bytes += len(raw)
+        image_bytes = 0
+        eager_bytes = 0
+        seen = set()
+        for tag in re.findall(r"<img[^>]+>", text):
+            link = re.search(r'src="([^"]+)"', tag).group(1)
+            rel = link[len(base_path):]
+            if rel in HEADER_LOGOS or link in seen:
+                continue
+            seen.add(link)
+            size = _local(base_path, link).stat().st_size
+            if rel.endswith(".webp") and _local(base_path, link).read_bytes()[8:12] != b"WEBP":
+                raise SystemExit(f"BAD_WEBP={link}")
+            image_bytes += size
+            if 'loading="lazy"' not in tag:
+                eager_bytes += size
+        initial = len(text.encode("utf-8")) + shared + eager_bytes
+        if video_bytes > PAGE_VIDEOS_MAX or image_bytes > PAGE_IMAGES_MAX or initial > PAGE_INITIAL_MAX:
+            raise SystemExit(f"PAGE_TOO_HEAVY={page}:initial={initial},images={image_bytes},videos={video_bytes}")
+        print(f"WEIGHT {page}: initial={initial} images={image_bytes} videos={video_bytes} ({len(video_files)}) header_logos={logos}")
+    print("PRODUCT_PAGES_OK")
+
+
 def main() -> None:
     config = json.loads((SITE / "site.config.json").read_text(encoding="utf-8"))
     site_url = config.get("site_url")
@@ -42,7 +171,7 @@ def main() -> None:
         parsed = urlsplit(site_url)
         if parsed.scheme != "https" or not parsed.netloc or parsed.path not in ("", "/"):
             raise SystemExit("BAD_SITE_URL=" + str(site_url))
-    missing = [p for p in PAGES + ASSETS + ["styles.css", "theme.js", "sitemap.xml", "robots.txt"] if not (SITE / p).is_file()]
+    missing = [p for p in PAGES + ASSETS + ["styles.css", "theme.js", "product.js", "sitemap.xml", "robots.txt"] if not (SITE / p).is_file()]
     if missing:
         raise SystemExit("MISSING=" + ",".join(missing))
     bad_links = []
@@ -122,6 +251,7 @@ def main() -> None:
     leaked = [token for token in forbidden if token in all_text]
     if leaked:
         raise SystemExit("FORBIDDEN_PUBLIC_TEXT=" + ",".join(leaked))
+    validate_products(config, base_path)
     print("SITE_VALIDATION_OK")
     print(f"PAGES={len(PAGES)}")
     print(f"ASSETS={len(ASSETS)}")

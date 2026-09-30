@@ -35,10 +35,15 @@ jobs:
         run: |
           set -euo pipefail
           rm -rf _site
-          mkdir -p _site/assets/branding _site/assets/apps
-          cp -- *.html styles.css theme.js robots.txt sitemap.xml _site/
+          mkdir -p _site/assets/branding _site/assets/apps _site/assets/screens _site/assets/video
+          cp -- *.html styles.css theme.js product.js robots.txt sitemap.xml _site/
           cp -- assets/branding/*.png assets/branding/*.jpg _site/assets/branding/
-          cp -- assets/apps/*.png _site/assets/apps/
+          cp -- assets/apps/*.png assets/apps/*.webp _site/assets/apps/
+          cp -r -- assets/screens/. _site/assets/screens/
+          cp -r -- assets/video/. _site/assets/video/
+          test ! -e _site/product_pages.py
+          test ! -e _site/make_media.py
+          test ! -e _site/_apercu
           test ! -e _site/site.config.json
           test ! -e _site/build_site.py
           test ! -e _site/validate_site.py
