@@ -10,10 +10,11 @@ seulement) les réduit en WebP et en fabrique de courtes vidéos MP4 ; la
 génération normale du site n'en a pas besoin et vérifie seulement leur
 présence.
 
-HONNÊTETÉ — aucune fonction absente du code n'est présentée comme disponible.
+HONNÊTETÉ — aucune fonction non publiée n'est présentée comme disponible.
 Le code de panique et le coffre leurre de DocCipher (décision D-0051,
-PLANNED_NOT_IMPLEMENTED) apparaissent uniquement dans le bloc « Bientôt,
-inclus dans Premium », avec la formulation bornée de la décision.
+IMPLEMENTED_LOCAL_UNVALIDATED) sont annoncés pour le lancement, sous réserve
+des revues de sécurité et essais sur appareil encore requis. Leur formulation
+publique reste bornée par la décision.
 """
 
 from __future__ import annotations
@@ -132,7 +133,7 @@ PRODUCTS: dict[str, dict] = {
         "icon_size": (192, 192),
         "eyebrow": "Documents · Android",
         "lede": "Scanner, convertir, assembler, signer et reconnaître le texte de vos documents, directement sur votre téléphone.",
-        "status": "Android V1 en préparation",
+        "status": "Bientôt sur Android",
         "points": ["Traitement sur l'appareil", "Aucun compte à créer", "3 opérations gratuites par jour"],
         "hero": ("assets/screens/convertair/accueil.webp", "Écran d'accueil de ConvertAir : scanner un document, recettes de workflow et conversions"),
         "tour_title": "Tout le document, dans la main.",
@@ -159,7 +160,7 @@ PRODUCTS: dict[str, dict] = {
         ],
         "privacy": [
             ("Vos documents restent sur le téléphone", "Numérisation, conversions, signature et reconnaissance de texte s'exécutent sur l'appareil. BB16 Studio ne reçoit aucune copie."),
-            ("Le réseau ne sert qu'aux achats", "Google Play encaisse le paiement, RevenueCat vérifie l'accès Premium. Aucun contenu de document ne passe par ce chemin."),
+            ("Des services Store bornés", "Google Play encaisse le paiement, RevenueCat vérifie l'accès Premium. Après un résultat réussi affiché, l'API officielle Google Play peut proposer un avis. Aucun contenu de document ne passe par ces chemins."),
             ("Ni publicité, ni mesure d'audience", "Aucun compte, aucun identifiant publicitaire, aucun SDK d'analytics intégré à l'application."),
         ],
         "privacy_link": ("convertair-privacy.html", "Lire la politique de confidentialité de ConvertAir"),
@@ -179,7 +180,7 @@ PRODUCTS: dict[str, dict] = {
         "icon_size": (192, 192),
         "eyebrow": "Coffre documentaire · Android",
         "lede": "Vos papiers importants, chiffrés sur votre téléphone. Sans compte, sans serveur documentaire, avec une sauvegarde que vous choisissez.",
-        "status": "Android en développement",
+        "status": "Bientôt sur Android",
         "points": ["Coffre chiffré sur l'appareil", "Gratuit jusqu'à 15 documents", "Premium : 19,99 € une seule fois"],
         "hero": ("assets/screens/doccipher/coffre.webp", "Coffre DocCipher « Papiers de famille » : dix documents, parcours et échéances"),
         "tour_title": "Vos papiers, rangés et protégés.",
@@ -201,20 +202,20 @@ PRODUCTS: dict[str, dict] = {
         "pricing_intro": "Un seul achat, pour toujours. Pas d'abonnement.",
         "plans": [
             ("Gratuit", "0 €", "", ["Jusqu'à 15 documents", "Coffre chiffré sur l'appareil", "Sans compte"], False),
-            ("Premium", "19,99 €", "paiement unique", ["Plus de limite de 15 documents", "Des documents dans plusieurs coffres", "Code de panique et coffre leurre inclus dès leur sortie"], True),
+            ("Premium", "19,99 €", "paiement unique", ["Plus de limite de 15 documents", "Des documents dans plusieurs coffres", "Code de panique et coffre leurre prévus dès le lancement", "Droit Premium à vie, sans supplément pour ces protections"], True),
         ],
         "privacy": [
             ("Chiffré sur l'appareil", "Documents, aperçus, texte reconnu et données du coffre restent dans l'espace privé de l'application, chiffrés."),
             ("Ni compte, ni serveur documentaire", "BB16 Studio n'héberge, ne synchronise et ne sauvegarde aucun document. Vos documents ne sortent que par un export que vous déclenchez."),
-            ("Le réseau ne sert qu'aux achats", "Google Play encaisse, RevenueCat vérifie l'accès Premium. Aucun document, mot de passe ni clé ne passe par ce chemin."),
+            ("Aucun document dans les services tiers", "Google Play encaisse, RevenueCat vérifie l'accès Premium et l'API officielle Google Play peut proposer un avis après une réussite. Aucun document, coffre, mot de passe, PIN ni clé ne passe par ces chemins."),
         ],
         "privacy_link": ("doccipher-privacy.html", "Lire la politique de confidentialité de DocCipher"),
         "faq": [
             ("Et si j'oublie mon mot de passe ?", "Votre mot de passe maître n'est ni enregistré ni envoyé : personne, pas même BB16 Studio, ne peut le réinitialiser. Le kit de récupération (phrase et code QR), à imprimer ou enregistrer, sert à cela."),
             ("Mes documents sont-ils sauvegardés en ligne ?", "Non. Vous exportez vous-même une sauvegarde .dcvault chiffrée vers l'emplacement de votre choix. La synchronisation WebDAV ou Nextcloud n'est pas disponible dans cette version."),
             ("Premium est-il un abonnement ?", "Non : 19,99 € une seule fois. Sans achat, DocCipher reste utilisable jusqu'à 15 documents."),
-            ("Le code de panique est-il déjà disponible ?", "Pas encore. Il est décidé pour Premium et sera publié après ses revues de sécurité et ses essais sur appareil. Tant qu'il n'est pas dans l'application, il n'est pas vendu comme disponible."),
-            ("Quand DocCipher sera-t-il disponible ?", "DocCipher est en développement pour Android. Le lien Google Play apparaîtra sur cette page dès la publication."),
+            ("Le code de panique et le coffre leurre seront-ils présents au lancement ?", "Ils sont prévus dès le lancement et inclus dans le droit Premium à vie, sans supplément. Leur implémentation locale reste en validation : ils ne seront rendus disponibles que si les revues de sécurité et les essais sur appareil requis sont concluants."),
+            ("Quand DocCipher sera-t-il disponible ?", "DocCipher arrive bientôt sur Android. Il n'est pas encore disponible sur Google Play ; le lien apparaîtra sur cette page après sa publication."),
         ],
         "captures_note": "Captures de l'application en français, avec un coffre d'exemple.",
     },
@@ -348,14 +349,14 @@ def home_rating_section(config: dict) -> str:
 
 def soon_block() -> str:
     return '''<section class="section" id="bientot"><div class="container"><div class="soon">
-  <p class="soon-badge">Bientôt · inclus dans Premium</p>
-  <h2>Deux protections en préparation.</h2>
-  <p class="soon-intro">Elles sont décidées pour DocCipher Premium mais ne sont <strong>pas encore dans l'application</strong>. Elles arriveront après leurs revues de sécurité et leurs essais sur appareil. Nous les annonçons pour être transparents, pas pour les vendre avant l'heure.</p>
+  <p class="soon-badge">Prévu dès le lancement · inclus dans Premium</p>
+  <h2>Deux protections prévues dès le lancement.</h2>
+  <p class="soon-intro">Leur implémentation locale est en validation. Elles seront proposées au lancement seulement si les revues de sécurité et les essais sur appareil requis sont concluants. DocCipher n'est pas encore disponible sur Google Play.</p>
   <div class="soon-grid">
-    <article class="soon-item"><h3>Code de panique</h3><p>Un code PIN distinct, que vous définissez à l'avance et activez volontairement. Il déclenche une seule action : « Effacer les coffres présents sur cet appareil. Vos sauvegardes externes ne sont pas supprimées. »</p><p>Une erreur de saisie ordinaire ne le déclenche jamais. Il retire les coffres de l'application ; il ne promet pas un effacement physique du stockage du téléphone.</p></article>
-    <article class="soon-item"><h3>Coffre leurre</h3><p>Un second coffre au contenu anodin, à ouvrir si quelqu'un regarde par-dessus votre épaule ou vous demande d'ouvrir l'application.</p><p>La fonction est documentée publiquement : elle protège d'un regard, elle ne garantit pas qu'un observateur ignore son existence.</p></article>
+    <article class="soon-item"><h3>Code de panique</h3><p>Une option Premium que vous activez volontairement avec votre mot de passe maître, un code PIN distinct saisi deux fois, deux consentements et une confirmation de l'action irréversible. Vous choisissez certains coffres ou tous les coffres.</p><p>Le PIN armé déclenche un effacement logique des fichiers, clés locales, caches et miniatures des coffres choisis : « Effacer les coffres présents sur cet appareil. Vos sauvegardes externes ne sont pas supprimées. » Seule la saisie exacte du PIN de panique armé déclenche cette action. L'opération ne promet pas un effacement physique du stockage du téléphone.</p></article>
+    <article class="soon-item"><h3>Coffre leurre</h3><p>Un coffre local séparé, avec son propre PIN, ses propres clés et son propre contenu, à ouvrir si quelqu'un regarde par-dessus votre épaule ou vous demande d'ouvrir l'application.</p><p>La fonction est documentée publiquement : elle protège d'un regard occasionnel, elle ne garantit pas qu'un observateur ignore son existence ni qu'une analyse de l'appareil ne la distingue.</p></article>
   </div>
-  <p class="meta">Déjà Premium ? Ces deux fonctions seront incluses sans supplément.</p>
+  <p class="meta">Le droit Premium à vie inclut ces deux fonctions sans supplément.</p>
 </div></div></section>'''
 
 

@@ -27,11 +27,11 @@
   <main id="main"><section class="section"><div class="container prose">
 <p class="eyebrow">ConvertAir · application mobile</p>
 <h1>Politique de confidentialité</h1>
-<p class="lede">ConvertAir traite vos documents sur votre appareil. Cette page décrit ce que l'application fait réellement, ce qu'elle ne fait pas, et les seules données qui en sortent : celles liées aux achats.</p>
-<p class="meta">Dernière mise à jour : 22 septembre 2026 · <a href="#english">Read this page in English</a></p>
+<p class="lede">ConvertAir traite vos documents sur votre appareil. Cette page décrit ce que l'application fait réellement, ce qu'elle ne fait pas, les données d'achat qu'elle envoie et son recours borné aux services Google Play.</p>
+<p class="meta">Dernière mise à jour : 1er octobre 2026 · <a href="#english">Read this page in English</a></p>
 
 <h2>Responsable du traitement</h2>
-<p>Le responsable du traitement est BB16 Studio, éditeur de ConvertAir. Pour toute question ou demande sur vos données, écrivez à <a href="mailto:bb16studio@gmail.com">bb16studio@gmail.com</a>. Cette politique couvre la version Android de ConvertAir distribuée sur Google Play.</p>
+<p>Le responsable du traitement est BB16 Studio, éditeur de ConvertAir. Pour toute question ou demande sur vos données, écrivez à <a href="mailto:bb16studio@gmail.com">bb16studio@gmail.com</a>. Cette politique couvre la version Android de ConvertAir annoncée pour Google Play. L'application n'y est pas encore disponible.</p>
 
 <h2>Vos documents restent sur votre appareil</h2>
 <p>La numérisation, les conversions, l'assemblage, la compression, l'annotation, la signature et la reconnaissance de texte (OCR) s'exécutent sur votre téléphone. Aucun document, aucune image et aucun texte reconnu n'est transmis à BB16 Studio ni à un tiers.</p>
@@ -40,8 +40,8 @@
 <h2>Partage, enregistrement et impression</h2>
 <p>Un fichier ne quitte ConvertAir que lorsque vous le décidez : partage par la feuille de partage d'Android, enregistrement à l'emplacement que vous choisissez, ou impression. Il part alors vers l'application, le dossier ou le service d'impression que vous avez désigné, qui le traite selon ses propres règles. BB16 Studio n'en reçoit aucune copie.</p>
 
-<h2>La seule connexion réseau de l'application : les achats</h2>
-<p>ConvertAir n'ouvre de connexion réseau que pour les achats. À chaque lancement, si l'appareil est connecté, et à nouveau lorsque l'application revient au premier plan, ConvertAir vérifie l'état de votre accès Premium auprès de RevenueCat, même si vous n'avez rien acheté. L'affichage des offres, l'achat et la restauration d'un achat passent par le même chemin. Le paiement est réalisé par Google Play. La vérification de l'achat et de votre accès Premium est confiée à RevenueCat, un prestataire qui agit pour le compte de BB16 Studio et sur ses instructions (sous-traitant au sens du RGPD). Aucun contenu de document ne passe par ce chemin.</p>
+<h2>La seule connexion réseau ouverte par l'application : les achats</h2>
+<p>ConvertAir n'ouvre directement de connexion réseau que pour les achats. À chaque lancement, si l'appareil est connecté, et à nouveau lorsque l'application revient au premier plan, ConvertAir vérifie l'état de votre accès Premium auprès de RevenueCat, même si vous n'avez rien acheté. L'affichage des offres, l'achat et la restauration d'un achat passent par le même chemin. Le paiement est réalisé par Google Play. La vérification de l'achat et de votre accès Premium est confiée à RevenueCat, un prestataire qui agit pour le compte de BB16 Studio et sur ses instructions (sous-traitant au sens du RGPD). Aucun contenu de document ne passe par ce chemin.</p>
 <p>À chacun de ces échanges, RevenueCat reçoit :</p>
 <ul>
 <li>un identifiant d'utilisateur aléatoire, créé par le SDK RevenueCat au premier lancement ;</li>
@@ -78,8 +78,12 @@
 <h2>Rapports de plantage d'Android</h2>
 <p>Si vous avez accepté, dans les réglages de votre appareil, de partager les données d'utilisation et de diagnostic avec Google, Android peut envoyer à Google des rapports de plantage et de performance. Google Play les met à la disposition de BB16 Studio dans sa console (Android Vitals), sous forme de statistiques agrégées et de rapports techniques : modèle d'appareil, version d'Android, trace de l'erreur. Ce mécanisme appartient au système, pas à ConvertAir. Ces rapports ne contiennent ni vos documents, ni votre nom, ni votre adresse email, et vous pouvez les désactiver dans les réglages de l'appareil.</p>
 
+<h2>Avis dans Google Play</h2>
+<p>À partir du troisième résultat réussi réellement affiché, ConvertAir peut demander aux services Google Play installés sur l'appareil de proposer l'interface officielle de notation intégrée. La demande n'est jamais faite au démarrage, pendant un traitement, après une erreur ou après un lot partiellement réussi. Deux tentatives sont séparées d'au moins 60 jours ; si le service est indisponible ou échoue, l'application reste silencieuse. Google Play peut décider de ne rien afficher. ConvertAir ne reçoit ni note ni commentaire et ne sait pas si l'interface a été montrée. Aucun document, image, texte reconnu ou contenu saisi n'est transmis par cet appel.</p>
+<p>Le bouton « Noter l'application » des Réglages ouvre la fiche Store par un geste manuel séparé ; il n'utilise ni le compteur de succès ni le délai de 60 jours.</p>
+
 <h2>Permissions Android</h2>
-<p>Le manifeste de la version publiée déclare exactement trois entrées :</p>
+<p>Le manifeste du build Android préparé pour Google Play déclare exactement trois entrées :</p>
 <ul>
 <li><code>android.permission.INTERNET</code> — les achats, et rien d'autre ;</li>
 <li><code>com.android.vending.BILLING</code> — la facturation Google Play ;</li>
@@ -114,11 +118,11 @@
 
 <div lang="en">
 <h2 id="english">English version</h2>
-<p class="lede">ConvertAir processes your documents on your device. This page describes what the app actually does, what it does not do, and the only data that leaves it: data related to purchases.</p>
-<p class="meta">Last updated: 22 September 2026 · <a href="#main">Lire cette page en français</a></p>
+<p class="lede">ConvertAir processes your documents on your device. This page describes what the app actually does, what it does not do, the purchase data it sends and its bounded use of Google Play services.</p>
+<p class="meta">Last updated: 1 October 2026 · <a href="#main">Lire cette page en français</a></p>
 
 <h3>Data controller</h3>
-<p>The data controller is BB16 Studio, publisher of ConvertAir. For any question or request about your data, write to <a href="mailto:bb16studio@gmail.com">bb16studio@gmail.com</a>. This policy covers the Android version of ConvertAir distributed on Google Play.</p>
+<p>The data controller is BB16 Studio, publisher of ConvertAir. For any question or request about your data, write to <a href="mailto:bb16studio@gmail.com">bb16studio@gmail.com</a>. This policy covers the Android version of ConvertAir announced for Google Play. The app is not available there yet.</p>
 
 <h3>Your documents stay on your device</h3>
 <p>Scanning, conversions, merging, compression, annotation, signing and text recognition (OCR) all run on your phone. No document, no image and no recognised text is sent to BB16 Studio or to any third party.</p>
@@ -127,8 +131,8 @@
 <h3>Sharing, saving and printing</h3>
 <p>A file leaves ConvertAir only when you decide so: sharing through the Android share sheet, saving to a location you choose, or printing. It then goes to the app, folder or print service you selected, which handles it under its own rules. BB16 Studio receives no copy.</p>
 
-<h3>The app's only network connection: purchases</h3>
-<p>ConvertAir opens a network connection only for purchases. Each time the app starts with a connection, and again when it returns to the foreground, ConvertAir checks your Premium access with RevenueCat, even if you have bought nothing. Showing the offers, buying and restoring a purchase use the same path. The payment is carried out by Google Play. Checking the purchase and your Premium access is entrusted to RevenueCat, a provider acting on behalf of BB16 Studio and on its instructions (a processor under the GDPR). No document content travels over that path.</p>
+<h3>The only network connection opened by the app: purchases</h3>
+<p>ConvertAir directly opens a network connection only for purchases. Each time the app starts with a connection, and again when it returns to the foreground, ConvertAir checks your Premium access with RevenueCat, even if you have bought nothing. Showing the offers, buying and restoring a purchase use the same path. The payment is carried out by Google Play. Checking the purchase and your Premium access is entrusted to RevenueCat, a provider acting on behalf of BB16 Studio and on its instructions (a processor under the GDPR). No document content travels over that path.</p>
 <p>With each of these exchanges, RevenueCat receives:</p>
 <ul>
 <li>a random user identifier, created by the RevenueCat SDK the first time the app starts;</li>
@@ -165,8 +169,12 @@
 <h3>Android crash reports</h3>
 <p>If you agreed, in your device settings, to share usage and diagnostics data with Google, Android may send crash and performance reports to Google. Google Play makes them available to BB16 Studio in its console (Android Vitals), as aggregated statistics and technical reports: device model, Android version, error trace. This mechanism belongs to the system, not to ConvertAir. These reports contain none of your documents, nor your name or email address, and you can turn them off in your device settings.</p>
 
+<h3>Reviews in Google Play</h3>
+<p>From the third successful result actually shown, ConvertAir may ask the Google Play services installed on the device to offer the official in-app review interface. It never makes this request at startup, during processing, after an error or after a partially successful batch. Attempts are at least 60 days apart; if the service is unavailable or fails, the app stays silent. Google Play may decide to show nothing. ConvertAir receives neither a rating nor a comment and cannot tell whether the interface was shown. No document, image, recognised text or user-entered content is sent by this call.</p>
+<p>The “Rate the app” button in Settings opens the Store listing through a separate manual gesture; it uses neither the success counter nor the 60-day delay.</p>
+
 <h3>Android permissions</h3>
-<p>The published build's manifest declares exactly three entries:</p>
+<p>The Android build prepared for Google Play declares exactly three manifest entries:</p>
 <ul>
 <li><code>android.permission.INTERNET</code> — purchases, and nothing else;</li>
 <li><code>com.android.vending.BILLING</code> — Google Play billing;</li>

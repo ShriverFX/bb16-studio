@@ -21,7 +21,7 @@ python .\build_site.py `
   --base-path '/bb16-studio/'
 ```
 
-La génération normale utilise les sept assets déjà copiés dans ce dépôt. Elle
+La génération normale utilise uniquement les assets déjà copiés dans ce dépôt. Elle
 ne dépend d'aucun dépôt privé voisin. Pour actualiser volontairement ces
 copies depuis les projets source locaux, utiliser explicitement
 `python .\build_site.py --import-assets`.
@@ -133,10 +133,44 @@ Les boutons Google Play dépendent de `store_listings` dans
 `true` après sa publication, puis régénérer. Pas de parrainage ni de
 récompense contre un avis : le validateur le refuse.
 
-Le code de panique et le coffre leurre de DocCipher (décision D-0051) ne sont
-pas implémentés : ils n'apparaissent que dans le bloc « Bientôt, inclus dans
-Premium », avec la formulation bornée de la décision, et le validateur refuse
-toute mention hors de ce cadre.
+ConvertAir et DocCipher sont présentés globalement comme « Bientôt sur
+Android » tant que leur fiche Google Play n'est pas publiée. Pour DocCipher,
+le code de panique et le coffre leurre de la décision D-0051 sont
+`IMPLEMENTED_LOCAL_UNVALIDATED` et prévus dès le lancement dans le droit
+Premium à vie, sans supplément. Le site borne cette annonce : effacement
+logique des seuls coffres locaux choisis, sauvegardes externes conservées,
+coffre leurre séparé et public, aucune garantie absolue. Leur disponibilité
+publique reste conditionnée aux revues de sécurité et aux essais sur appareil.
+
+La politique DocCipher décrit aussi la demande d'avis par l'API officielle
+Google Play après une réussite, jamais au démarrage, pendant un traitement ou
+après un échec, avec au moins 90 jours entre deux demandes locales. Google
+Play décide si la carte apparaît ; DocCipher ne reçoit ni la note, ni le
+commentaire, ni le score.
+
+ConvertAir utilise le même canal Store avec ses propres bornes vérifiées dans
+le code : seulement après un résultat réussi affiché, à partir du troisième,
+jamais au démarrage, pendant un traitement, après une erreur ou un lot
+partiellement réussi, et au plus une tentative tous les 60 jours. Le bouton
+manuel des Réglages ouvre séparément la fiche Store.
+
+## Artefact GitHub Pages borné
+
+L'export de publication est produit par un script Python standard-library,
+identique sous Windows et Linux :
+
+```powershell
+python .\export_site.py --output _site
+```
+
+Le script accepte uniquement `_site` comme cible et copie une allowlist exacte
+des pages, fichiers racine et assets référencés par les sources de génération.
+Les deux WebP de branding font partie de l'artefact. Il refuse les entrées ou
+extensions imprévues et les liens locaux cassés (`href`, `src`,
+`data-src`, ressources CSS), compare l'arbre produit au manifeste exact et
+affiche le nombre de fichiers, le nombre de liens vérifiés et l'empreinte de
+l'artefact. Les sources Python, la configuration, les documents de travail et
+`_apercu` ne sont pas exportés. Le workflow Pages utilise ce même script.
 
 ## Pages
 
@@ -152,10 +186,14 @@ développement.
 
 ```powershell
 python .\validate_site.py
+python -m unittest -v .\test_site_gates.py
+python .\export_site.py --output _site
 ```
 
 La validation vérifie les pages attendues, les liens locaux, les assets, les
 liens canoniques, les liens depuis une 404 imbriquée, l'absence de secrets
-connus et l'absence de scroll horizontal dans la feuille de style. Elle ne
-publie pas le site et ne remplace pas la confirmation des informations
-d'identité encore attendues.
+connus, les annonces Coming soon, les formulations bornées PC-2/PC-3 et avis
+Google Play, ainsi que l'absence de scroll horizontal dans la feuille de
+style. Elle ne publie pas le site et ne remplace ni une revue de sécurité
+indépendante, ni un essai Android/Pixel/Play, ni la confirmation des
+informations d'identité encore attendues.

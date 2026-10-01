@@ -27,15 +27,84 @@ ORIGINAL_LOGOS = {
 # those three sections used to cover only buyers.
 PRIVACY_COMMON_REQUIRED = ["GPA.", "sous-traitant", "processor", "pseudonyme", "pseudonymous", "le pays de votre compte Google Play", "the country of your Google Play account", "contrat d'utilisation de l'application", "performance of the contract for using the app", "modèle de votre appareil", "model of your device", "sans numéro de commande", "no order number needed"]
 PRIVACY_REQUIRED = {
-    "convertair-privacy.html": PRIVACY_COMMON_REQUIRED + ["même si vous n'avez rien acheté", "even if you have bought nothing"],
-    "doccipher-privacy.html": PRIVACY_COMMON_REQUIRED + ["USE_BIOMETRIC", "USE_FINGERPRINT", "WebDAV or Nextcloud synchronisation is not available"],
+    "convertair-privacy.html": PRIVACY_COMMON_REQUIRED + [
+        "même si vous n'avez rien acheté",
+        "even if you have bought nothing",
+        "version Android de ConvertAir annoncée pour Google Play",
+        "L'application n'y est pas encore disponible",
+        "Android version of ConvertAir announced for Google Play",
+        "The app is not available there yet",
+        "troisième résultat réussi réellement affiché",
+        "jamais faite au démarrage, pendant un traitement, après une erreur ou après un lot partiellement réussi",
+        "séparées d'au moins 60 jours",
+        "si le service est indisponible ou échoue, l'application reste silencieuse",
+        "services Google Play installés sur l'appareil",
+        "ConvertAir ne reçoit ni note ni commentaire",
+        "Aucun document, image, texte reconnu ou contenu saisi n'est transmis par cet appel",
+        "geste manuel séparé",
+        "il n'utilise ni le compteur de succès ni le délai de 60 jours",
+        "third successful result actually shown",
+        "never makes this request at startup, during processing, after an error or after a partially successful batch",
+        "at least 60 days apart",
+        "if the service is unavailable or fails, the app stays silent",
+        "Google Play services installed on the device",
+        "ConvertAir receives neither a rating nor a comment",
+        "No document, image, recognised text or user-entered content is sent by this call",
+        "separate manual gesture",
+        "it uses neither the success counter nor the 60-day delay",
+    ],
+    "doccipher-privacy.html": PRIVACY_COMMON_REQUIRED + [
+        "USE_BIOMETRIC",
+        "USE_FINGERPRINT",
+        "WebDAV or Nextcloud synchronisation is not available",
+        "version Android de DocCipher annoncée pour Google Play",
+        "L'application n'y est pas encore disponible",
+        "Android version of DocCipher announced for Google Play",
+        "The app is not available there yet",
+        "Code de panique et coffre leurre prévus au lancement",
+        "PIN distinct saisi deux fois, deux consentements",
+        "confirmation de l'action irréversible",
+        "Seule la saisie exacte du PIN de panique armé déclenche ensuite",
+        "suppression logique des fichiers, clés locales, caches et miniatures des coffres choisis",
+        "ne garantit pas l'écrasement physique du stockage",
+        "Les sauvegardes exportées, copies cloud et autres sauvegardes externes ne sont pas supprimées",
+        "coffre local séparé, avec son propre PIN, ses propres clés et son propre contenu",
+        "documentée publiquement",
+        "API officielle Google Play In-App Review",
+        "après la protection réussie d'un document ou la réussite d'une sauvegarde",
+        "jamais faite au démarrage, pendant un traitement, après un échec ni depuis les écrans de code de panique ou de coffre leurre",
+        "délai local d'au moins 90 jours",
+        "DocCipher ne reçoit ni la note, ni le commentaire, ni le score",
+        "Aucun document, coffre, PIN ou texte saisi ne passe par ce canal",
+        "Panic PIN and decoy vault planned for launch",
+        "distinct PIN entered twice, two consent steps",
+        "confirmation of the irreversible action",
+        "Only entering the exact armed panic PIN then triggers",
+        "logical deletion of the selected vaults' files, local keys, caches and thumbnails",
+        "does not guarantee physical overwriting of storage",
+        "Exported backups, cloud copies and other external backups are not deleted",
+        "separate local vault with its own PIN, keys and content",
+        "publicly documented",
+        "official Google Play In-App Review API",
+        "after a document has been protected successfully or a backup has completed successfully",
+        "never requests a review at startup, during processing, after a failure or from the panic-PIN or decoy-vault screens",
+        "local delay of at least 90 days",
+        "DocCipher receives neither the rating, the comment nor the score",
+        "No document, vault, PIN or user-entered text passes through this channel",
+    ],
 }
 PRIVACY_FORBIDDEN = ["rien, de notre côté", "nothing on our side", "pas à vous", "not to you", "identifiant anonyme", "anonymous identifier", "identifiant d'achat anonyme", "anonymous purchase identifier", "leurs propres politiques", "under their own policies", "supprimant le coffre", "deleting the vault"]
+COMING_SOON_PRIVACY_FORBIDDEN = [
+    "distribuée sur Google Play",
+    "distributed on Google Play",
+    "manifeste de la version publiée",
+    "published build's manifest",
+]
 
 
 # ---------------------------------------------------------------------------
-# Pages produit premium (30 septembre 2026) : notation Store sans parrainage,
-# prix décidés, honnêteté sur les fonctions à venir, médias légers et différés.
+# Pages produit premium (1er octobre 2026) : notation Store sans parrainage,
+# prix décidés, annonce Coming soon bornée, médias légers et différés.
 # ---------------------------------------------------------------------------
 PRODUCT_PAGES = ["convertair.html", "doccipher.html", "hgq.html"]
 PRODUCT_PRICES = {
@@ -44,10 +113,34 @@ PRODUCT_PRICES = {
     "hgq.html": ["3,99 €", "par mois", "24,99 €", "par an"],
 }
 # Formulation bornée imposée par la décision DocCipher D-0051.
-PANIC_REQUIRED = ["Bientôt · inclus dans Premium", "Effacer les coffres présents sur cet appareil. Vos sauvegardes externes ne sont pas supprimées.", "pas encore dans l'application", "il ne promet pas un effacement physique", "ne garantit pas qu'un observateur ignore son existence"]
+PANIC_REQUIRED = [
+    "Prévu dès le lancement · inclus dans Premium",
+    "implémentation locale est en validation",
+    "code PIN distinct saisi deux fois, deux consentements",
+    "confirmation de l'action irréversible",
+    "Seule la saisie exacte du PIN de panique armé déclenche cette action",
+    "Vous choisissez certains coffres ou tous les coffres",
+    "effacement logique des fichiers, clés locales, caches et miniatures",
+    "Effacer les coffres présents sur cet appareil. Vos sauvegardes externes ne sont pas supprimées.",
+    "ne promet pas un effacement physique",
+    "coffre local séparé, avec son propre PIN, ses propres clés et son propre contenu",
+    "La fonction est documentée publiquement",
+    "ne garantit pas qu'un observateur ignore son existence",
+    "droit Premium à vie inclut ces deux fonctions sans supplément",
+]
+CONVERTAIR_REVIEW_REQUIRED = [
+    "Des services Store bornés",
+    "Après un résultat réussi affiché",
+    "l'API officielle Google Play peut proposer un avis",
+    "Aucun contenu de document ne passe par ces chemins",
+]
 OVERCLAIM_FORBIDDEN = ["militaire", "military", "déni plausible", "plausible deniability", "effacement définitif", "irrécupérable", "indétectable", "undetectable"]
 REFERRAL_FORBIDDEN = ["code parrain", "parrainez", "referral", "?ref=", "&ref=", "utm_", "invitez vos amis", "récompense contre"]
 TRACKER_FORBIDDEN = ["googletagmanager", "google-analytics", "gtag(", "fbq(", "plausible.io", "matomo", "hotjar", "clarity.ms", "<iframe"]
+CSS_URL = re.compile(r'''url\(\s*["']?([^"')]+)''', re.IGNORECASE)
+CSS_IMPORT = re.compile(
+    r'''@import\s+(?:url\(\s*)?["']?([^"')\s;]+)''', re.IGNORECASE
+)
 # Budgets en octets ; le budget initial inclut les logos des pages produit.
 VIDEO_MAX = 250_000
 PAGE_VIDEOS_MAX = 1_300_000
@@ -61,12 +154,24 @@ def _local(base_path: str, link: str) -> Path:
     return SITE / link[len(base_path):].split("?", 1)[0]
 
 
+def validate_css_resources(css: str) -> None:
+    for link in sorted(set(CSS_URL.findall(css) + CSS_IMPORT.findall(css))):
+        parsed = urlsplit(html.unescape(link.strip()))
+        if parsed.scheme or parsed.netloc or link.startswith("//"):
+            raise SystemExit("EXTERNAL_CSS_RESOURCE=" + link)
+        if "\\" in parsed.path:
+            raise SystemExit("BAD_CSS_RESOURCE_PATH=" + link)
+
+
 def validate_products(config: dict, base_path: str) -> None:
     listings = config.get("store_listings") or {}
     for key in ("convertair", "doccipher", "hgq"):
         listing = listings.get(key) or {}
         if not re.fullmatch(r"[a-z][a-z0-9_]*(\.[a-z][a-z0-9_]*)+", str(listing.get("package", ""))) or not isinstance(listing.get("published"), bool):
             raise SystemExit(f"BAD_STORE_LISTING={key}")
+    for key in ("convertair", "doccipher", "hgq"):
+        if listings[key]["published"]:
+            raise SystemExit(f"COMING_SOON_MARKED_PUBLISHED={key}")
     # Texte décodé : l'apostrophe échappée (&#x27;) ne doit pas masquer un contrôle.
     texts = {page: html.unescape((SITE / page).read_text(encoding="utf-8")) for page in PAGES}
     all_text = "\n".join(texts.values())
@@ -94,12 +199,31 @@ def validate_products(config: dict, base_path: str) -> None:
                 raise SystemExit(f"UNPUBLISHED_STORE_LINK={key}")
             if "Bientôt sur Google Play" not in texts[f"{key}.html"]:
                 raise SystemExit(f"MISSING_STORE_PENDING={key}")
+    for page in ("index.html", "apps.html"):
+        for key, name in (("convertair", "ConvertAir"), ("doccipher", "DocCipher")):
+            card = re.search(
+                rf'<article class="card[^>]*>.*?{name}.*?</article>', texts[page], re.S
+            )
+            if not card or "Bientôt sur Android" not in card.group(0):
+                raise SystemExit(f"MISSING_COMING_SOON={page}:{key}")
+    for key in ("convertair", "doccipher"):
+        if "Bientôt sur Android" not in texts[f"{key}.html"]:
+            raise SystemExit(f"MISSING_PRODUCT_COMING_SOON={key}")
     if "play.google.com/store/apps/details" in all_text and not any(l["published"] for l in listings.values()):
         raise SystemExit("STORE_LINK_WITHOUT_PUBLICATION")
     for page, required in PRODUCT_PRICES.items():
         missing = [phrase for phrase in required if phrase not in texts[page]]
         if missing:
             raise SystemExit(f"MISSING_PRICE={page}:" + "|".join(missing))
+    missing_convertair_review = [
+        phrase
+        for phrase in CONVERTAIR_REVIEW_REQUIRED
+        if phrase not in texts["convertair.html"]
+    ]
+    if missing_convertair_review:
+        raise SystemExit(
+            "MISSING_CONVERTAIR_REVIEW_CLAIM=" + "|".join(missing_convertair_review)
+        )
     for token in OVERCLAIM_FORBIDDEN:
         if token.lower() in lowered:
             raise SystemExit("OVERCLAIM=" + token)
@@ -110,12 +234,13 @@ def validate_products(config: dict, base_path: str) -> None:
     outside = doccipher.replace(soon.group(0), "")
     for match in re.finditer(r"panique|leurre", outside, re.I):
         window = outside[max(0, match.start() - 200): match.end() + 200]
-        if not any(guard in window for guard in ("dès leur sortie", "Pas encore", "Bientôt")):
+        if not any(guard in window for guard in ("prévus dès le lancement", "validation", "Bientôt")):
             raise SystemExit("PANIC_CLAIMED_AS_AVAILABLE=" + window[:120])
     for page, text in texts.items():
-        if page != "doccipher.html" and re.search(r"panique|coffre leurre", text, re.I):
+        if page not in {"doccipher.html", "doccipher-privacy.html"} and re.search(r"panique|coffre leurre", text, re.I):
             raise SystemExit("PANIC_OUTSIDE_DOCCIPHER=" + page)
     css = (SITE / "styles.css").read_text(encoding="utf-8")
+    validate_css_resources(css)
     script = (SITE / "product.js").read_text(encoding="utf-8")
     if "prefers-reduced-motion" not in css or "prefers-reduced-motion" not in script:
         raise SystemExit("MISSING_REDUCED_MOTION")
@@ -193,15 +318,23 @@ def main() -> None:
         text = (SITE / page).read_text(encoding="utf-8")
         ids = re.findall(r'\sid="([^"]+)"', text)
         duplicate_ids.extend(f"{page}#{name}" for name in sorted(set(ids)) if ids.count(name) > 1)
-        for link in re.findall(r'''(?:href|src)="([^"#]+)"''', text):
+        for link in re.findall(r'''(?:href|src|data-src|data-dark|data-light)="([^"#]+)"''', text):
             if link.startswith(("mailto:", "https://", "http://")):
                 continue
             if not link.startswith(base_path):
                 bad_links.append(f"{page}->unprefixed:{link}")
                 continue
             relative = link[len(base_path):].split("?", 1)[0]
+            if "\\" in relative:
+                bad_links.append(f"{page}->backslash:{link}")
+                continue
             target = (SITE / relative).resolve()
-            if not str(target).startswith(str(SITE.resolve())) or not target.is_file():
+            try:
+                target.relative_to(SITE.resolve())
+            except ValueError:
+                bad_links.append(f"{page}->outside:{link}")
+                continue
+            if not target.is_file():
                 bad_links.append(f"{page}->{link}")
         if "styles.css" not in text:
             bad_links.append(f"{page}->styles.css missing")
@@ -225,6 +358,14 @@ def main() -> None:
         stale_text = [phrase for phrase in PRIVACY_FORBIDDEN if phrase in text]
         if stale_text:
             raise SystemExit(f"FORBIDDEN_PRIVACY_TEXT={page}:" + "|".join(stale_text))
+        availability_overclaims = [
+            phrase for phrase in COMING_SOON_PRIVACY_FORBIDDEN if phrase in text
+        ]
+        if availability_overclaims:
+            raise SystemExit(
+                f"PRIVACY_STORE_AVAILABILITY_OVERCLAIM={page}:"
+                + "|".join(availability_overclaims)
+            )
     if site_url:
         for page in PAGES:
             text = (SITE / page).read_text(encoding="utf-8")
