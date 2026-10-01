@@ -3,3 +3,4 @@ __pycache__/
 _site/
 artifact-files.txt
 _apercu/
+tests/node_modules/

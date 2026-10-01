@@ -33,6 +33,16 @@ jobs:
       - name: Test publication gates
         run: python3 -m unittest -v test_site_gates.py
 
+      - name: Set up Node for feedback form tests
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Test local feedback form behaviour
+        run: |
+          npm ci --prefix tests --ignore-scripts --no-audit --no-fund --engine-strict
+          npm test --prefix tests
+
       - name: Assemble and validate allowlisted artifact
         run: python3 export_site.py --output _site
 

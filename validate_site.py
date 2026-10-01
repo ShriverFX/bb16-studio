@@ -8,12 +8,14 @@ import re
 import struct
 import json
 import hashlib
+from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urlsplit
 
 
 SITE = Path(__file__).resolve().parent
 PAGES = ["index.html", "studio.html", "apps.html", "convertair.html", "convertair-privacy.html", "doccipher.html", "doccipher-privacy.html", "hgq.html", "support.html", "contact.html", "privacy.html", "legal.html", "data-deletion.html", "404.html"]
+FEEDBACK_PAGES = ("convertair-test.html", "doccipher-test.html")
 ASSETS = ["assets/branding/convertair-presentation.png", "assets/branding/doccipher-presentation.png", "assets/apps/convertair-icon-512.png", "assets/apps/doccipher-icon-512.png", "assets/branding/bb16-studio-logo.jpg", "assets/apps/hgq-logo.png", "assets/branding/bb16-studio-logo-dark.png"]
 ORIGINAL_LOGOS = {
     "assets/branding/bb16-studio-logo.jpg": "ed2f01e3180471184daa5f6513df0a01c489ccd5f0523bca3ca99512e6c6700d",
@@ -299,6 +301,41 @@ def validate_products(config: dict, base_path: str) -> None:
     print("PRODUCT_PAGES_OK")
 
 
+class FeedbackMarkup(HTMLParser):
+    def __init__(self) -> None:
+        super().__init__()
+        self.elements: list[tuple[str, dict]] = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        self.elements.append((tag, dict(attrs)))
+
+
+def validate_feedback_markup(text: str, page: str) -> None:
+    markup = FeedbackMarkup()
+    markup.feed(text)
+    robots = [attrs.get("content", "") for tag, attrs in markup.elements
+              if tag == "meta" and attrs.get("name") == "robots"]
+    if not any(set(value.lower().split(",")) >= {"noindex", "nofollow"}
+               for value in robots):
+        raise SystemExit(f"FEEDBACK_INDEXING_NOT_DISABLED={page}")
+    ids = [attrs["id"] for _, attrs in markup.elements if attrs.get("id")]
+    if len(ids) != len(set(ids)):
+        raise SystemExit(f"FEEDBACK_DUPLICATE_IDS={page}")
+    if not any(tag == "form" for tag, _ in markup.elements):
+        raise SystemExit(f"FEEDBACK_FORM_MISSING={page}")
+    for tag, attrs in markup.elements:
+        if (tag == "form" and attrs.get("action")) or tag == "iframe":
+            raise SystemExit(f"FEEDBACK_COLLECTION_FORBIDDEN={page}")
+        if tag == "input" and attrs.get("type", "").lower() in {"file", "password"}:
+            raise SystemExit(f"FEEDBACK_SENSITIVE_INPUT_FORBIDDEN={page}")
+        if (tag == "script" and attrs.get("src")) or (tag == "img" and attrs.get("src")):
+            raise SystemExit(f"FEEDBACK_EXTERNAL_RESOURCE_FORBIDDEN={page}")
+    if re.search(r"\b(?:fetch\s*\(|XMLHttpRequest|WebSocket|sendBeacon\s*\(|eval\s*\()", text):
+        raise SystemExit(f"FEEDBACK_NETWORK_OR_EVAL_FORBIDDEN={page}")
+    for css in re.findall(r"<style[^>]*>(.*?)</style>", text, re.DOTALL):
+        validate_css_resources(css)
+
+
 def main() -> None:
     config = json.loads((SITE / "site.config.json").read_text(encoding="utf-8"))
     site_url = config.get("site_url")
@@ -406,6 +443,8 @@ def main() -> None:
     if leaked:
         raise SystemExit("FORBIDDEN_PUBLIC_TEXT=" + ",".join(leaked))
     validate_products(config, base_path)
+    for page in FEEDBACK_PAGES:
+        validate_feedback_markup((SITE / page).read_text(encoding="utf-8"), page)
     print("SITE_VALIDATION_OK")
     print(f"PAGES={len(PAGES)}")
     print(f"ASSETS={len(ASSETS)}")
@@ -413,6 +452,7 @@ def main() -> None:
     print("NESTED_404_LINKS_OK")
     print("UNIQUE_IDS_OK")
     print("PRIVACY_TEXT_OK")
+    print(f"LOCAL_FEEDBACK_PAGES_OK={len(FEEDBACK_PAGES)}")
 
 
 if __name__ == "__main__":

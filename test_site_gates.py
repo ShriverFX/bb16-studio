@@ -17,6 +17,33 @@ import validate_site
 
 
 class SiteGateMutationTests(unittest.TestCase):
+    def test_feedback_pages_reject_automatic_collection(self) -> None:
+        for page in validate_site.FEEDBACK_PAGES:
+            text = (validate_site.SITE / page).read_text(encoding="utf-8")
+            validate_site.validate_feedback_markup(text, page)
+            for insertion in (
+                '<form action="https://example.invalid/collect">',
+                '<iframe src="https://example.invalid/collect"></iframe>',
+                '<script>fetch("https://example.invalid/collect")</script>',
+                '<script src="https://example.invalid/code.js"></script>',
+                '<input type="password">',
+                '<input type="file">',
+            ):
+                with self.subTest(page=page, insertion=insertion):
+                    with self.assertRaises(SystemExit):
+                        validate_site.validate_feedback_markup(text + insertion, page)
+
+    def test_feedback_pages_reject_missing_noindex_and_duplicate_ids(self) -> None:
+        for page in validate_site.FEEDBACK_PAGES:
+            text = (validate_site.SITE / page).read_text(encoding="utf-8")
+            with self.subTest(page=page):
+                with self.assertRaisesRegex(SystemExit, "FEEDBACK_INDEXING_NOT_DISABLED"):
+                    validate_site.validate_feedback_markup(
+                        text.replace('content="noindex,nofollow"', 'content="index,follow"'), page
+                    )
+                with self.assertRaisesRegex(SystemExit, "FEEDBACK_DUPLICATE_IDS"):
+                    validate_site.validate_feedback_markup(text + '<div id="test-form"></div>', page)
+
     def assert_removal_is_rejected(
         self, page: str, phrase: str, expected_error: str
     ) -> None:
@@ -128,7 +155,9 @@ class SiteGateMutationTests(unittest.TestCase):
             path.relative_to(export_site.SITE).as_posix()
             for path in export_site.publication_files()
         }
-        self.assertEqual(len(names), 73)
+        self.assertEqual(len(names), 75)
+        self.assertIn("convertair-test.html", names)
+        self.assertIn("doccipher-test.html", names)
         self.assertIn("assets/branding/bb16-studio-logo-light-256.webp", names)
         self.assertIn("assets/branding/bb16-studio-logo-dark-256.webp", names)
         for forbidden in (

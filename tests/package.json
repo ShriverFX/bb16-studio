@@ -1,0 +1,7 @@
+{
+  "name": "bb16-feedback-form-tests",
+  "private": true,
+  "scripts": { "test": "node --test test_feedback_form.cjs" },
+  "engines": { "node": ">=24.0.0" },
+  "devDependencies": { "jsdom": "28.1.0" }
+}

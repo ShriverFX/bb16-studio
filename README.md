@@ -182,11 +182,28 @@ Les pages produit décrivent l'état connu avec prudence. Elles n'affichent pas
 de faux lien de téléchargement ; les applications sont en préparation ou en
 développement.
 
+## Retours des testeurs
+
+Les pages `convertair-test.html` et `doccipher-test.html` sont des formulaires
+statiques indépendants, inclus explicitement dans l'export Pages. Elles sont
+accessibles par lien direct et portent `noindex,nofollow` ; aucun backend ne
+collecte les réponses. Les testeurs téléchargent leur JSON ou copient leur
+résumé, puis le transmettent à Lucas. La mémorisation dans le navigateur est
+facultative et distincte pour chaque app. Aucun PIN, mot de passe, document
+ou pièce jointe n'est demandé.
+
+Les tests panique DocCipher sont facultatifs, avec des coffres fictifs jetables,
+et un avertissement d'effacement local irréversible. Les réponses non données
+restent non testées ; une réponse testeur ne devient pas une preuve de CI,
+d'achat ou de disponibilité Store.
+
 ## Vérification
 
 ```powershell
 python .\validate_site.py
 python -m unittest -v .\test_site_gates.py
+npm ci --prefix tests --ignore-scripts --no-audit --no-fund --engine-strict
+npm test --prefix tests
 python .\export_site.py --output _site
 ```
 
