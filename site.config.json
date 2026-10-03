@@ -1,14 +1,14 @@
 {
   "site_name": "BB16 Studio",
-  "site_url": "https://shriverfx.github.io",
-  "base_path": "/bb16-studio/",
+  "site_url": "https://bb16studio.com",
+  "base_path": "/",
   "contact_email": "bb16studio@gmail.com",
   "legal_name": null,
   "public_address": null,
   "public_phone": null,
   "duns": null,
   "github_pages_repository": "ShriverFX/bb16-studio",
-  "custom_domain": null,
+  "custom_domain": "bb16studio.com",
   "social_profiles": {
     "instagram": "https://www.instagram.com/bb16studio/",
     "tiktok": "https://www.tiktok.com/@bb16studio",

@@ -95,6 +95,43 @@ PRIVACY_REQUIRED = {
         "No document, vault, PIN or user-entered text passes through this channel",
     ],
 }
+# Technical J0 disclosures; no runtime or contractual assurance is inferred.
+PRIVACY_J0_TECHNICAL_REQUIRED = {'convertair-privacy.html': ['Lors de ces traitements documentaires locaux',
+                             'During this local document processing',
+                             "Le SDK d'achats Android peut demander à Google Block Store",
+                             'The Android purchase SDK may ask Google Block Store',
+                             "distinct de la sauvegarde des fichiers de l'application",
+                             'separate from the disabled backup of app files'],
+ 'doccipher-privacy.html': ['déclare exactement sept entrées',
+                            'declares exactly seven manifest entries',
+                            'RECEIVE_BOOT_COMPLETED</code> — reprogrammer les rappels locaux après '
+                            'redémarrage',
+                            'RECEIVE_BOOT_COMPLETED</code> — reschedule local reminders after a '
+                            'restart',
+                            'POST_NOTIFICATIONS</code> — afficher les rappels locaux, avec '
+                            'autorisation système quand elle est requise',
+                            'POST_NOTIFICATIONS</code> — display local reminders, with system '
+                            'permission when required',
+                            'Rappels locaux et données hors coffre',
+                            'Local reminders and data outside the vault',
+                            'Il ne contient ni titre de document, ni nom, ni numéro, ni catégorie',
+                            'The plan contains no document title, name, number or category',
+                            'Aux démarrages suivants, ce repère peut provoquer la configuration du '
+                            'SDK',
+                            'At later starts, this marker may configure the SDK',
+                            'Un repère illisible est traité comme présent',
+                            'An unreadable marker is treated as present',
+                            'il ne garantit ni une requête à chaque lancement ni une réponse '
+                            'réseau',
+                            'it guarantees neither a request at every launch nor a network '
+                            'response',
+                            "Le SDK d'achats Android peut demander à Google Block Store",
+                            'The Android purchase SDK may ask Google Block Store',
+                            "distinct de la sauvegarde des fichiers de l'application",
+                            'separate from the disabled backup of app files']}
+for _page, _phrases in PRIVACY_J0_TECHNICAL_REQUIRED.items():
+    PRIVACY_REQUIRED[_page].extend(_phrases)
+
 PRIVACY_FORBIDDEN = ["rien, de notre côté", "nothing on our side", "pas à vous", "not to you", "identifiant anonyme", "anonymous identifier", "identifiant d'achat anonyme", "anonymous purchase identifier", "leurs propres politiques", "under their own policies", "supprimant le coffre", "deleting the vault"]
 COMING_SOON_PRIVACY_FORBIDDEN = [
     "distribuée sur Google Play",
@@ -336,8 +373,27 @@ def validate_feedback_markup(text: str, page: str) -> None:
         validate_css_resources(css)
 
 
+def validate_custom_domain(config: dict) -> None:
+    domain = config.get("custom_domain")
+    if domain is None:
+        return
+    if not isinstance(domain, str) or not re.fullmatch(
+        r"(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}", domain
+    ):
+        raise SystemExit("BAD_CUSTOM_DOMAIN")
+    if config.get("site_url") != "https://" + domain or config.get("base_path") != "/":
+        raise SystemExit("CUSTOM_DOMAIN_ORIGIN_OR_BASE_MISMATCH")
+    try:
+        cname = (SITE / "CNAME").read_text(encoding="utf-8")
+    except OSError:
+        raise SystemExit("CUSTOM_DOMAIN_CNAME_MISSING") from None
+    if cname != domain + "\n":
+        raise SystemExit("CUSTOM_DOMAIN_CNAME_MISMATCH")
+
+
 def main() -> None:
     config = json.loads((SITE / "site.config.json").read_text(encoding="utf-8"))
+    validate_custom_domain(config)
     site_url = config.get("site_url")
     base_path = config.get("base_path", "/")
     if not base_path.startswith("/") or not base_path.endswith("/"):

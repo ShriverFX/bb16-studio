@@ -18,6 +18,36 @@ import build_site
 
 
 class SiteGateMutationTests(unittest.TestCase):
+    def test_custom_domain_contract_rejects_inconsistent_config_and_cname(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            folder = Path(temporary)
+            cname = folder / "CNAME"
+            config = {"custom_domain": "bb16studio.com", "site_url": "https://bb16studio.com", "base_path": "/"}
+            cname.write_text("bb16studio.com\n", encoding="utf-8")
+            with patch.object(validate_site, "SITE", folder):
+                validate_site.validate_custom_domain(config)
+                for key, value, error in (
+                    ("custom_domain", "https://bb16studio.com", "BAD_CUSTOM_DOMAIN"),
+                    ("custom_domain", "bb16studio.com\nother.invalid", "BAD_CUSTOM_DOMAIN"),
+                    ("site_url", "https://shriverfx.github.io", "CUSTOM_DOMAIN_ORIGIN_OR_BASE_MISMATCH"),
+                    ("base_path", "/bb16-studio/", "CUSTOM_DOMAIN_ORIGIN_OR_BASE_MISMATCH"),
+                ):
+                    with self.subTest(key=key, value=value), self.assertRaisesRegex(SystemExit, error):
+                        validate_site.validate_custom_domain({**config, key: value})
+                for value in ("other.invalid\n", "bb16studio.com\nother.invalid\n"):
+                    cname.write_text(value, encoding="utf-8")
+                    with self.subTest(cname=value), self.assertRaisesRegex(SystemExit, "CUSTOM_DOMAIN_CNAME_MISMATCH"):
+                        validate_site.validate_custom_domain(config)
+                cname.unlink()
+                with self.assertRaisesRegex(SystemExit, "CUSTOM_DOMAIN_CNAME_MISSING"):
+                    validate_site.validate_custom_domain(config)
+
+    def test_j0_technical_privacy_disclosures_are_mandatory(self) -> None:
+        for page, phrases in validate_site.PRIVACY_J0_TECHNICAL_REQUIRED.items():
+            for phrase in phrases:
+                with self.subTest(page=page, phrase=phrase):
+                    self.assert_removal_is_rejected(page, phrase, "MISSING_PRIVACY_TEXT=" + page)
+
     def test_social_links_reject_untrusted_destinations(self) -> None:
         for url in (
             "javascript:alert(1)",
@@ -167,7 +197,8 @@ class SiteGateMutationTests(unittest.TestCase):
             path.relative_to(export_site.SITE).as_posix()
             for path in export_site.publication_files()
         }
-        self.assertEqual(len(names), 75)
+        self.assertEqual(len(names), 76)
+        self.assertIn("CNAME", names)
         self.assertIn("convertair-test.html", names)
         self.assertIn("doccipher-test.html", names)
         self.assertIn("assets/branding/bb16-studio-logo-light-256.webp", names)

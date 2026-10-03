@@ -272,7 +272,7 @@ def convertair_privacy_body(email: str) -> str:
 <p>Le responsable du traitement est BB16 Studio, éditeur de ConvertAir. Pour toute question ou demande sur vos données, écrivez à <a href="mailto:{email}">{email}</a>. Cette politique couvre la version Android de ConvertAir annoncée pour Google Play. L'application n'y est pas encore disponible.</p>
 
 <h2>Vos documents restent sur votre appareil</h2>
-<p>La numérisation, les conversions, l'assemblage, la compression, l'annotation, la signature et la reconnaissance de texte (OCR) s'exécutent sur votre téléphone. Aucun document, aucune image et aucun texte reconnu n'est transmis à BB16 Studio ni à un tiers.</p>
+<p>La numérisation, les conversions, l'assemblage, la compression, l'annotation, la signature et la reconnaissance de texte (OCR) s'exécutent sur votre téléphone. Lors de ces traitements documentaires locaux, aucun document, aucune image et aucun texte reconnu n'est transmis à BB16 Studio ni à un tiers.</p>
 <p>La reconnaissance de texte utilise des modèles embarqués dans l'application : elle a lieu sur l'appareil, et ConvertAir n'envoie aucune image à un serveur pour cela. La capture de documents est déléguée aux services Google Play installés sur votre téléphone ; ConvertAir ne transmet lui-même aucun document, mais ce traitement se déroule dans un composant Google, régi par la politique de confidentialité de Google et non par la nôtre.</p>
 
 <h2>Partage, enregistrement et impression</h2>
@@ -331,6 +331,7 @@ def convertair_privacy_body(email: str) -> str:
 
 <h2>Sauvegarde et transfert d'appareil</h2>
 <p>La sauvegarde automatique d'Android est désactivée et les règles d'extraction excluent explicitement la sauvegarde vers le cloud et le transfert d'un appareil à l'autre. Les données de l'application ne sont donc pas téléversées vers un espace Google Drive ni recopiées vers un nouveau téléphone par ces canaux.</p>
+<p>Le SDK d'achats Android peut demander à Google Block Store de sauvegarder l'identifiant pseudonyme lié aux achats, afin de faciliter leur restauration. Ce canal est distinct de la sauvegarde des fichiers de l'application désactivée ci-dessus ; il ne porte pas vos documents.</p>
 
 <h2>Ce qui est conservé sur votre appareil</h2>
 <p>Les fichiers que vous produisez, un historique local des opérations, vos préférences d'affichage et vos signatures enregistrées, dans l'espace privé de l'application. Les images de signature sont chiffrées sur l'appareil. L'historique peut être purgé automatiquement au bout de 30 jours, de 90 jours, ou conservé, selon le réglage que vous choisissez dans l'écran Réglages.</p>
@@ -363,7 +364,7 @@ def convertair_privacy_body(email: str) -> str:
 <p>The data controller is BB16 Studio, publisher of ConvertAir. For any question or request about your data, write to <a href="mailto:{email}">{email}</a>. This policy covers the Android version of ConvertAir announced for Google Play. The app is not available there yet.</p>
 
 <h3>Your documents stay on your device</h3>
-<p>Scanning, conversions, merging, compression, annotation, signing and text recognition (OCR) all run on your phone. No document, no image and no recognised text is sent to BB16 Studio or to any third party.</p>
+<p>Scanning, conversions, merging, compression, annotation, signing and text recognition (OCR) all run on your phone. During this local document processing, no document, no image and no recognised text is sent to BB16 Studio or to any third party.</p>
 <p>Text recognition uses models bundled inside the app: it runs on the device, and ConvertAir sends no image to any server for it. Document capture is delegated to the Google Play services installed on your phone; ConvertAir itself transmits no document, but that step runs inside a Google component, governed by Google's privacy policy rather than ours.</p>
 
 <h3>Sharing, saving and printing</h3>
@@ -422,6 +423,7 @@ def convertair_privacy_body(email: str) -> str:
 
 <h3>Backup and device transfer</h3>
 <p>Android's automatic backup is disabled, and the data-extraction rules explicitly exclude both cloud backup and device-to-device transfer. The app's data is therefore not uploaded to a Google Drive space, nor copied to a new phone through those channels.</p>
+<p>The Android purchase SDK may ask Google Block Store to back up the pseudonymous purchase identifier to support restoration. This is separate from the disabled backup of app files described above and carries no documents.</p>
 
 <h3>What is kept on your device</h3>
 <p>The files you produce, a local history of operations, your display preferences and your saved signatures, in the app's private storage. Signature images are encrypted on the device. History can be purged automatically after 30 days, after 90 days, or kept, depending on the setting you choose in the Settings screen.</p>
@@ -476,6 +478,9 @@ def doccipher_privacy_body(email: str) -> str:
 <p>Les documents importés, leurs aperçus, le texte reconnu par OCR, les dossiers, les tags et les données du coffre restent dans l'espace privé de l'application. Le coffre est chiffré sur l'appareil. BB16 Studio ne reçoit ni vos documents, ni leur contenu, ni votre mot de passe, ni votre matériel de récupération.</p>
 <p>La reconnaissance de texte (OCR) s'exécute sur l'appareil, avec des modèles embarqués dans l'application : aucune image et aucun texte ne sont envoyés à un serveur pour cela.</p>
 
+<h2>Rappels locaux et données hors coffre</h2>
+<p>Si vous activez les rappels, DocCipher conserve dans l'espace privé de l'application, hors du coffre chiffré, un plan limité à des jours, compteurs, heure choisie et textes génériques. Ce plan permet les rappels locaux même lorsque le coffre est verrouillé. Il ne contient ni titre de document, ni nom, ni numéro, ni catégorie. La notification utilise un titre générique sur l'écran verrouillé. Ces données ne sont pas envoyées par un service de notifications push.</p>
+
 <h2>Ni serveur documentaire, ni synchronisation</h2>
 <p>BB16 Studio n'exploite aucun serveur qui héberge, analyse, synchronise ou sauvegarde vos documents. La synchronisation WebDAV ou Nextcloud n'est pas disponible dans cette version, pas plus qu'un autre stockage en ligne. Vos documents ne quittent l'appareil que par un export que vous déclenchez vous-même.</p>
 
@@ -483,6 +488,7 @@ def doccipher_privacy_body(email: str) -> str:
 <p>Un document ou une sauvegarde <code>.dcvault</code> ne quitte l'application que lorsque vous déclenchez explicitement un export et choisissez sa destination avec le sélecteur ou la feuille de partage du système. Une sauvegarde <code>.dcvault</code> reste chiffrée ; un document exporté en clair ne l'est plus et relève alors de la sécurité de la destination choisie.</p>
 <p>Le kit de récupération (votre phrase de récupération et son code QR) ne quitte l'application que si vous l'imprimez, l'enregistrez en PDF à l'emplacement de votre choix ou copiez la phrase. Il relève alors de l'imprimante, de la destination ou du presse-papiers que vous avez choisis.</p>
 <p>La sauvegarde automatique Android et le transfert automatique vers un nouvel appareil sont désactivés.</p>
+<p>Le SDK d'achats Android peut demander à Google Block Store de sauvegarder l'identifiant pseudonyme lié aux achats, afin de faciliter leur restauration. Ce canal est distinct de la sauvegarde des fichiers de l'application désactivée ci-dessus ; il ne porte pas vos documents.</p>
 
 <h2>Déverrouillage biométrique</h2>
 <p>Si vous l'activez, le déverrouillage biométrique passe par l'invite du système Android. DocCipher ne reçoit que sa réponse, identité confirmée ou non : il n'accède à aucune empreinte, à aucune image de visage ni à aucun gabarit biométrique, qui restent dans la zone sécurisée de l'appareil. La biométrie ne remplace pas votre code PIN, qui reste nécessaire.</p>
@@ -493,7 +499,8 @@ def doccipher_privacy_body(email: str) -> str:
 <p>Le coffre leurre est un coffre local séparé, avec son propre PIN, ses propres clés et son propre contenu. Quand il est ouvert, seul son contenu est affiché. Cette protection contre un regard occasionnel est documentée publiquement ; elle ne garantit ni qu'un observateur ignore son existence, ni qu'une analyse de l'appareil ne puisse la distinguer.</p>
 
 <h2>Achats facultatifs</h2>
-<p>DocCipher contacte RevenueCat uniquement pour les achats facultatifs : afficher les offres, acheter, restaurer un achat. Vous pouvez utiliser DocCipher sans rien acheter. Le paiement est réalisé par Google Play. La vérification de l'achat et de votre accès Premium est confiée à RevenueCat, un prestataire qui agit pour le compte de BB16 Studio et sur ses instructions (sous-traitant au sens du RGPD). Une fois RevenueCat contacté, l'application peut lui redemander l'état de votre accès Premium lorsqu'elle revient au premier plan, jusqu'à sa fermeture. Aucun document, coffre, PIN, mot de passe ou clé ne passe par ce chemin.</p>
+<p>Les échanges de DocCipher avec RevenueCat servent à afficher les offres, acheter, restaurer un achat et vérifier l'accès Premium lié à ces démarches facultatives. Vous pouvez utiliser DocCipher sans rien acheter. Le paiement est réalisé par Google Play. La vérification de l'achat et de votre accès Premium est confiée à RevenueCat, un prestataire qui agit pour le compte de BB16 Studio et sur ses instructions (sous-traitant au sens du RGPD). Une fois le SDK configuré, l'application peut lui redemander l'état de votre accès Premium lorsqu'elle revient au premier plan. Aucun document, coffre, PIN, mot de passe ou clé ne passe par ce chemin.</p>
+<p>L'ouverture des offres, un achat, une restauration ou un droit Premium connu laisse aussi un repère local d'intérêt Premium. Aux démarrages suivants, ce repère peut provoquer la configuration du SDK et une nouvelle vérification de l'accès, même sans ouvrir les offres. Un repère illisible est traité comme présent pour permettre la récupération du droit. Cet amorçage peut commencer au premier déverrouillage du processus ; il ne garantit ni une requête à chaque lancement ni une réponse réseau.</p>
 <p>À chacun de ces échanges, RevenueCat reçoit :</p>
 <ul>
 <li>un identifiant d'utilisateur aléatoire, créé par le SDK RevenueCat la première fois que l'application le contacte ;</li>
@@ -533,12 +540,14 @@ def doccipher_privacy_body(email: str) -> str:
 <p>DocCipher peut appeler l'API officielle Google Play In-App Review après la protection réussie d'un document ou la réussite d'une sauvegarde. La demande n'est jamais faite au démarrage, pendant un traitement, après un échec ni depuis les écrans de code de panique ou de coffre leurre. Un délai local d'au moins 90 jours sépare deux demandes. Google Play décide si l'interface s'affiche ; DocCipher ne reçoit ni la note, ni le commentaire, ni le score, et ne sait pas si la carte a été affichée. Aucun document, coffre, PIN ou texte saisi ne passe par ce canal.</p>
 
 <h2>Permissions Android</h2>
-<p>Le manifeste du build Android préparé pour Google Play déclare exactement cinq entrées :</p>
+<p>Le manifeste du build Android préparé pour Google Play déclare exactement sept entrées :</p>
 <ul>
 <li><code>android.permission.INTERNET</code> — les achats, et rien d'autre ;</li>
 <li><code>com.android.vending.BILLING</code> — la facturation Google Play ;</li>
 <li><code>android.permission.USE_BIOMETRIC</code> — afficher l'invite biométrique du système ; elle ne donne accès à aucune donnée biométrique ;</li>
 <li><code>android.permission.USE_FINGERPRINT</code>, limitée à Android 9 et aux versions antérieures — le même rôle sur ces versions ;</li>
+<li><code>android.permission.RECEIVE_BOOT_COMPLETED</code> — reprogrammer les rappels locaux après redémarrage ;</li>
+<li><code>android.permission.POST_NOTIFICATIONS</code> — afficher les rappels locaux, avec autorisation système quand elle est requise ;</li>
 <li>une permission de signature interne à l'application, qui n'ouvre aucune capacité de l'appareil.</li>
 </ul>
 <p>Aucune permission de caméra, de localisation, de contacts, de microphone ou de stockage étendu n'est demandée : les fichiers passent par les sélecteurs du système.</p>
@@ -566,6 +575,9 @@ def doccipher_privacy_body(email: str) -> str:
 <p>Imported documents, previews, recognised text, folders, tags and vault data remain in the app's private storage. The vault is encrypted on the device. BB16 Studio receives neither your documents nor their content, your password or your recovery material.</p>
 <p>Text recognition (OCR) runs on the device, using models bundled in the app: no image and no text is sent to any server for it.</p>
 
+<h3>Local reminders and data outside the vault</h3>
+<p>If you enable reminders, DocCipher keeps a limited plan in the app's private storage, outside the encrypted vault: days, counts, the selected time and generic text. This supports local reminders while the vault is locked. The plan contains no document title, name, number or category. The lock-screen notification uses a generic title. This data is not sent through a push notification service.</p>
+
 <h3>No document server, no synchronisation</h3>
 <p>BB16 Studio runs no server that hosts, analyses, synchronises or backs up your documents. WebDAV or Nextcloud synchronisation is not available in this version, and neither is any other online storage. Your documents leave the device only through an export you start yourself.</p>
 
@@ -573,6 +585,7 @@ def doccipher_privacy_body(email: str) -> str:
 <p>A document or <code>.dcvault</code> backup leaves the app only when you explicitly start an export and choose its destination through the system picker or share sheet. A <code>.dcvault</code> backup remains encrypted; a document exported in clear form is no longer encrypted and then depends on the security of your chosen destination.</p>
 <p>The recovery kit (your recovery phrase and its QR code) leaves the app only if you print it, save it as a PDF to a location you choose, or copy the phrase. It then depends on the printer, destination or clipboard you chose.</p>
 <p>Android automatic backup and automatic device-to-device transfer are disabled.</p>
+<p>The Android purchase SDK may ask Google Block Store to back up the pseudonymous purchase identifier to support restoration. This is separate from the disabled backup of app files described above and carries no documents.</p>
 
 <h3>Biometric unlock</h3>
 <p>If you turn it on, biometric unlock uses the Android system prompt. DocCipher only receives its answer, identity confirmed or not: it has no access to any fingerprint, face image or biometric template, which stay in the device's secure area. Biometrics do not replace your PIN, which is still required.</p>
@@ -583,7 +596,8 @@ def doccipher_privacy_body(email: str) -> str:
 <p>The decoy vault is a separate local vault with its own PIN, keys and content. While it is open, only its content is shown. This protection from casual observation is publicly documented; it cannot guarantee that an observer is unaware of its existence or that device analysis cannot distinguish it.</p>
 
 <h3>Optional purchases</h3>
-<p>DocCipher contacts RevenueCat only for optional purchases: showing offers, buying, restoring a purchase. You can use DocCipher without buying anything. The payment is carried out by Google Play. Checking the purchase and your Premium access is entrusted to RevenueCat, a provider acting on behalf of BB16 Studio and on its instructions (a processor under the GDPR). Once RevenueCat has been contacted, the app may check your Premium access with it again when the app returns to the foreground, until the app is closed. No document, vault, PIN, password or key travels over this path.</p>
+<p>DocCipher exchanges data with RevenueCat to show offers, buy, restore a purchase and check Premium access related to these optional actions. You can use DocCipher without buying anything. The payment is carried out by Google Play. Checking the purchase and your Premium access is entrusted to RevenueCat, a provider acting on behalf of BB16 Studio and on its instructions (a processor under the GDPR). Once the SDK is configured, the app may check your Premium access again when it returns to the foreground. No document, vault, PIN, password or key travels over this path.</p>
+<p>Opening offers, purchasing, restoring or a known Premium entitlement also leaves a local Premium-interest marker. At later starts, this marker may configure the SDK and trigger another access check without opening offers. An unreadable marker is treated as present to support entitlement recovery. This bootstrap may start at the first unlock in the process; it guarantees neither a request at every launch nor a network response.</p>
 <p>With each of these exchanges, RevenueCat receives:</p>
 <ul>
 <li>a random user identifier, created by the RevenueCat SDK the first time the app contacts it;</li>
@@ -623,12 +637,14 @@ def doccipher_privacy_body(email: str) -> str:
 <p>DocCipher may call the official Google Play In-App Review API after a document has been protected successfully or a backup has completed successfully. It never requests a review at startup, during processing, after a failure or from the panic-PIN or decoy-vault screens. A local delay of at least 90 days separates requests. Google Play decides whether to show the interface; DocCipher receives neither the rating, the comment nor the score and cannot tell whether the review card appeared. No document, vault, PIN or user-entered text passes through this channel.</p>
 
 <h3>Android permissions</h3>
-<p>The Android build prepared for Google Play declares exactly five manifest entries:</p>
+<p>The Android build prepared for Google Play declares exactly seven manifest entries:</p>
 <ul>
 <li><code>android.permission.INTERNET</code> — purchases, and nothing else;</li>
 <li><code>com.android.vending.BILLING</code> — Google Play billing;</li>
 <li><code>android.permission.USE_BIOMETRIC</code> — showing the system biometric prompt; it gives no access to any biometric data;</li>
 <li><code>android.permission.USE_FINGERPRINT</code>, limited to Android 9 and earlier — the same role on those versions;</li>
+<li><code>android.permission.RECEIVE_BOOT_COMPLETED</code> — reschedule local reminders after a restart;</li>
+<li><code>android.permission.POST_NOTIFICATIONS</code> — display local reminders, with system permission when required;</li>
 <li>an app-internal signature permission, which grants no device capability.</li>
 </ul>
 <p>No camera, location, contacts, microphone or broad storage permission is requested: files use system pickers.</p>

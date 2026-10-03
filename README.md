@@ -17,9 +17,22 @@ utilise une origine seule et un chemin de base séparé :
 
 ```powershell
 python .\build_site.py `
-  --site-url 'https://shriverfx.github.io' `
-  --base-path '/bb16-studio/'
+  --site-url 'https://bb16studio.com' `
+  --base-path '/'
 ```
+
+Le domaine canonique configuré est `bb16studio.com`. Le fichier `CNAME` porte
+la même valeur et fait partie de l'export public. Pour le workflow GitHub
+Actions existant, l'activation dépend du réglage Custom domain dans Pages ;
+le fichier CNAME ne configure pas ce réglage. Le 3 octobre 2026, la propriété
+du domaine est vérifiée et le réglage Pages enregistré ; les preuves DNS,
+HTTPS et redirections sont suivies séparément dans la checklist.
+
+Les corrections techniques de confidentialité du 3 octobre couvrent les sept
+permissions et les rappels locaux DocCipher, le marqueur d'intérêt Premium,
+le chemin conditionnel Google Block Store du SDK achats et la portée locale
+des traitements ConvertAir. Elles ne valident aucun contrat, durée de
+conservation, transfert ou comportement effectif d'un service tiers.
 
 La génération normale utilise uniquement les assets déjà copiés dans ce dépôt. Elle
 ne dépend d'aucun dépôt privé voisin. Pour actualiser volontairement ces

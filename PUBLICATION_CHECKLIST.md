@@ -4,14 +4,31 @@ Publication de la vitrine explicitement demandée par le propriétaire le
 19 septembre 2026. Les informations légales manquantes ne sont pas inventées ;
 leur complétion et la vérification du compte Organisation restent à suivre.
 
+## Migration du 3 octobre 2026
+
+- [x] Activation, DNS et remplacement des liens après preuve live autorisés.
+- [x] Propriété de `bb16studio.com` vérifiée par TXT et Custom domain enregistré
+      dans GitHub Pages, observations du coordinateur.
+- [x] Configuration locale : origine `https://bb16studio.com`, base `/`, CNAME
+      cohérent ; export allowlist et gates de confidentialité actualisés.
+- [ ] Déploiement du nouveau lot et concordance de l'artefact public.
+- [ ] Résolution DNS apex/www, HTTPS, redirections des anciennes URL et ressources.
+- [ ] Vérification des deux pages de confidentialité et des deux questionnaires.
+
+Le workflow GitHub Actions existant reste utilisé. Le CNAME exporté est une
+déclaration publique ; il ne remplace pas le réglage Pages déjà enregistré.
+Les corrections factuelles de confidentialité n'ajoutent aucune validation
+juridique : identité, contrats, transferts, conservation et droits restent
+liés à leurs preuves OWNER propres.
+
 ## Champs encore requis
 
 - [ ] Nom légal exact de l'éditeur.
 - [ ] Adresse publique de l'éditeur.
 - [x] Dépôt public dédié : `ShriverFX/bb16-studio`.
-- [x] URL configurée : `https://shriverfx.github.io/bb16-studio/`.
+- [x] URL canonique configurée : `https://bb16studio.com/`.
 
-## Vérifications avant publication
+## Historique des vérifications avant publication initiale
 
 - [x] `python build_site.py --site-url ... --base-path ...` exécuté avec les
       valeurs réelles.

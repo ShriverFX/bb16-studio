@@ -14,10 +14,12 @@ from urllib.parse import urlsplit
 
 from build_site import ASSETS as CORE_ASSETS
 from product_pages import MEDIA_FILES
+from validate_site import validate_custom_domain
 
 
 SITE = Path(__file__).resolve().parent
 ROOT_FILES = (
+    "CNAME",
     "404.html",
     "apps.html",
     "contact.html",
@@ -56,6 +58,7 @@ CSS_IMPORT = re.compile(
 
 
 def publication_files() -> list[Path]:
+    validate_custom_domain(json.loads((SITE / "site.config.json").read_text(encoding="utf-8")))
     relative_names = list(ROOT_FILES) + list(ASSET_FILES)
     for name in relative_names:
         relative = PurePosixPath(name)
