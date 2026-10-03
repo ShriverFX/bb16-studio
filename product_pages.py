@@ -54,6 +54,7 @@ HISTORICAL_SCREENS: dict[str, tuple[str, Path]] = {
     "assets/screens/hgq/resultat.webp": ("hgq", _hgq("22-06-05-486")),
     "assets/screens/hgq/duel.webp": ("hgq", _hgq("22-08-11-253")),
     "assets/screens/convertair/reglages.webp": ("convertair", CA_FR / "reglages.png"),
+    "assets/screens/convertair/paywall.webp": ("convertair", CA_FR / "paywall.png"),
 }
 
 SCREENS: dict[str, tuple[str, Path]] = {
@@ -62,7 +63,6 @@ SCREENS: dict[str, tuple[str, Path]] = {
     "assets/screens/convertair/catalogue-ocr.webp": ("convertair", CA_FR / "catalogue-ocr.png"),
     "assets/screens/convertair/fusion.webp": ("convertair", CA_FR / "fusion.png"),
     "assets/screens/convertair/fichiers.webp": ("convertair", CA_FR / "fichiers.png"),
-    "assets/screens/convertair/paywall.webp": ("convertair", CA_FR / "paywall.png"),
     "assets/screens/doccipher/coffre.webp": ("doccipher", DC_FR / "01-journeys-home.png"),
     "assets/screens/doccipher/parcours.webp": ("doccipher", DC_FR / "02-journeys.png"),
     "assets/screens/doccipher/recherche.webp": ("doccipher", DC_FR / "03-search.png"),
@@ -85,7 +85,6 @@ VIDEOS: dict[str, list[tuple[str, str]]] = {
     "assets/video/convertair/fusion.mp4": [("assets/screens/convertair/fusion.webp", "drift")],
     "assets/video/convertair/fichiers.mp4": [("assets/screens/convertair/fichiers.webp", "drift")],
     "assets/video/convertair/ocr.mp4": [("assets/screens/convertair/catalogue-ocr.webp", "scroll")],
-    "assets/video/convertair/premium.mp4": [("assets/screens/convertair/paywall.webp", "scroll")],
     "assets/video/doccipher/coffre.mp4": [("assets/screens/doccipher/coffre.webp", "scroll")],
     "assets/video/doccipher/parcours.mp4": [("assets/screens/doccipher/parcours.webp", "scroll")],
     "assets/video/doccipher/echeances.mp4": [("assets/screens/doccipher/coffre.webp", "drift"), ("assets/screens/doccipher/echeances.webp", "scroll")],
@@ -99,6 +98,7 @@ VIDEOS: dict[str, list[tuple[str, str]]] = {
 # Preserved source mappings, deliberately absent from the active export/generator.
 HISTORICAL_VIDEOS: dict[str, list[tuple[str, str]]] = {
     "assets/video/convertair/reglages.mp4": [("assets/screens/convertair/reglages.webp", "scroll")],
+    "assets/video/convertair/premium.mp4": [("assets/screens/convertair/paywall.webp", "scroll")],
     "assets/video/hgq/creer.mp4": [("assets/screens/hgq/creer.webp", "scroll")],
     "assets/video/hgq/duel.mp4": [("assets/screens/hgq/duel.webp", "drift")],
     "assets/video/hgq/resultat.mp4": [("assets/screens/hgq/resultat.webp", "drift")],
@@ -155,7 +155,7 @@ PRODUCTS: dict[str, dict] = {
         "grid": [
             ("Le texte, reconnu sur place", "PDF cherchable et extraction du texte, avec des modèles embarqués : aucune image n'est envoyée à un serveur pour la reconnaissance.", "assets/screens/convertair/catalogue-ocr.webp", "assets/video/convertair/ocr.mp4", "Outils de reconnaissance de texte de ConvertAir"),
             ("Des réglages qui disent tout", "Thème, langue, nettoyage de l'historique, et une explication claire : vos documents sont traités sur l'appareil. Les connexions servent aux achats et aux téléchargements facultatifs via Google Play.", None, None, None),
-            ("Premium, quand il le faut", "Opérations illimitées, export sans filigrane, traitement par lot. Mensuel, annuel ou à vie.", "assets/screens/convertair/paywall.webp", "assets/video/convertair/premium.mp4", "Offre Premium de ConvertAir"),
+            ("Premium, quand il le faut", "Opérations illimitées, export sans filigrane, traitement par lot. Mensuel, annuel ou à vie.", None, None, None),
         ],
         "also": None,
         "soon": None,

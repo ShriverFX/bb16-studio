@@ -19,6 +19,7 @@ import build_site
 
 class SiteGateMutationTests(unittest.TestCase):
     def test_retired_media_cannot_return_to_export(self) -> None:
+        self.assertTrue({"assets/screens/convertair/paywall.webp", "assets/video/convertair/premium.mp4"} <= export_site.RETIRED_MEDIA)
         for entry in export_site.RETIRED_MEDIA:
             with self.subTest(entry=entry), patch.object(export_site, "ASSET_FILES", export_site.ASSET_FILES + (entry,)):
                 with self.assertRaisesRegex(SystemExit, "RETIRED_MEDIA_EXPORT"):
@@ -36,6 +37,12 @@ class SiteGateMutationTests(unittest.TestCase):
 
     def test_hgq_canonical_bodies_and_links_are_pinned(self) -> None:
         texts = {name: (validate_site.SITE / name).read_text(encoding="utf-8") for name in validate_site.PAGES}
+        privacy = texts["hgq-privacy.html"]
+        self.assertNotIn("indépendant et non commercial", privacy)
+        reverted = privacy.replace("indépendant sur la culture", "indépendant et non commercial sur la culture")
+        self.assertNotEqual(reverted, privacy)
+        with self.assertRaisesRegex(SystemExit, "HGQ_CANONICAL_BODY_CHANGED=hgq-privacy.html"):
+            validate_site.validate_current_media_and_hgq_legal({**texts, "hgq-privacy.html": reverted})
         for page in validate_site.HGQ_CANONICAL_BODY_SHA256:
             changed = texts[page].replace("<!-- HGQ_CANONICAL_BEGIN -->", "<!-- HGQ_CANONICAL_BEGIN -->Changed")
             with self.subTest(page=page), self.assertRaisesRegex(SystemExit, "HGQ_CANONICAL_BODY_CHANGED"):
@@ -253,7 +260,7 @@ class SiteGateMutationTests(unittest.TestCase):
             path.relative_to(export_site.SITE).as_posix()
             for path in export_site.publication_files()
         }
-        self.assertEqual(len(names), 67)
+        self.assertEqual(len(names), 65)
         self.assertTrue({"hgq-privacy.html", "hgq-account-deletion.html"} <= names)
         self.assertFalse(names & export_site.RETIRED_MEDIA)
         self.assertIn("CNAME", names)

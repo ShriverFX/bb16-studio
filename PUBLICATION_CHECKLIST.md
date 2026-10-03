@@ -1,5 +1,16 @@
 # Checklist de publication — BB16 Studio
 
+## Retrait du paywall ConvertAir portant l'ancien domaine, 4 octobre 2026
+
+- [x] `paywall.webp` et `premium.mp4` exclus de la grille et de l'allowlist ;
+  fichiers historiques conservés, texte et avantages Premium inchangés.
+- [x] Gate anti-retour des deux médias ; export actif limité à 65 fichiers.
+- [x] Politique HGQ : retrait des seuls mots « et non commercial », pin du
+  corps actualisé et mutation de réintroduction rejetée.
+- [ ] Nouvelle capture issue de l'application actuelle ; aucun prix Store
+  ni achat n'est attesté par les anciens rendus de démonstration.
+- [ ] Publication du commit de retrait et contrôle public après push.
+
 ## Correctif captures et pages HGQ du 4 octobre 2026
 
 - [x] Quatre captures gameplay HGQ legacy et cinq clips d'images fixes exclus
