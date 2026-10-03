@@ -8,13 +8,14 @@ import re
 import struct
 import json
 import hashlib
+from product_pages import RETIRED_MEDIA
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urlsplit
 
 
 SITE = Path(__file__).resolve().parent
-PAGES = ["index.html", "studio.html", "apps.html", "convertair.html", "convertair-privacy.html", "doccipher.html", "doccipher-privacy.html", "hgq.html", "support.html", "contact.html", "privacy.html", "legal.html", "data-deletion.html", "404.html"]
+PAGES = ["index.html", "studio.html", "apps.html", "convertair.html", "convertair-privacy.html", "doccipher.html", "doccipher-privacy.html", "hgq.html", "hgq-privacy.html", "hgq-account-deletion.html", "support.html", "contact.html", "privacy.html", "legal.html", "data-deletion.html", "404.html"]
 FEEDBACK_PAGES = ("convertair-test.html", "doccipher-test.html")
 ASSETS = ["assets/branding/convertair-presentation.png", "assets/branding/doccipher-presentation.png", "assets/apps/convertair-icon-512.png", "assets/apps/doccipher-icon-512.png", "assets/branding/bb16-studio-logo.jpg", "assets/apps/hgq-logo.png", "assets/branding/bb16-studio-logo-dark.png"]
 ORIGINAL_LOGOS = {
@@ -146,6 +147,27 @@ COMING_SOON_PRIVACY_FORBIDDEN = [
 # prix décidés, annonce Coming soon bornée, médias légers et différés.
 # ---------------------------------------------------------------------------
 PRODUCT_PAGES = ["convertair.html", "doccipher.html", "hgq.html"]
+HGQ_CANONICAL_BODY_SHA256 = {
+    "hgq-privacy.html": "9b6d3b9d8d0b946c64acccc9ae7a3b0426700ed900f9cf32a3e243221a5880a3",
+    "hgq-account-deletion.html": "fa2f35888322c626fe38973c818904a331a12926a6f9268c5e5c075c10c37aee",
+}
+
+
+def validate_current_media_and_hgq_legal(texts: dict[str, str]) -> None:
+    for page, text in texts.items():
+        if any(path in text for path in RETIRED_MEDIA):
+            raise SystemExit("RETIRED_MEDIA_REFERENCE=" + page)
+    for page, expected in HGQ_CANONICAL_BODY_SHA256.items():
+        match = re.search(r"<!-- HGQ_CANONICAL_BEGIN -->(.*?)<!-- HGQ_CANONICAL_END -->", texts[page], re.S)
+        if not match or hashlib.sha256(match.group(1).encode("utf-8")).hexdigest() != expected:
+            raise SystemExit("HGQ_CANONICAL_BODY_CHANGED=" + page)
+    hgq = texts["hgq.html"]
+    for link in ("hgq-privacy.html", "hgq-account-deletion.html"):
+        if f'href="/{link}"' not in hgq and f'href="{link}"' not in hgq:
+            raise SystemExit("HGQ_DEDICATED_LEGAL_LINK_MISSING=" + link)
+    if "<video" in hgq:
+        raise SystemExit("HGQ_UNATTESTED_VIDEO=hgq.html")
+
 PRODUCT_PRICES = {
     "convertair.html": ["9,99 €", "par mois", "49,99 €", "par an", "119,99 €", "au lancement, puis 159,99 €", "3 opérations par jour"],
     "doccipher.html": ["19,99 €", "paiement unique", "Jusqu'à 15 documents", "Pas d'abonnement"],
@@ -297,7 +319,9 @@ def validate_products(config: dict, base_path: str) -> None:
         if f'src="{base_path}product.js?' not in text:
             raise SystemExit(f"MISSING_PRODUCT_SCRIPT={page}")
         videos = re.findall(r"<video[^>]*>", text)
-        if not videos:
+        if page == "hgq.html" and videos:
+            raise SystemExit("HGQ_UNATTESTED_VIDEO=" + page)
+        if not videos and page != "hgq.html":
             raise SystemExit(f"MISSING_VIDEOS={page}")
         for tag in videos:
             if re.search(r"\ssrc=|autoplay|poster=", tag) or not all(a in tag for a in ('preload="none"', " muted", " playsinline", 'aria-hidden="true"', "data-src=")):
@@ -405,6 +429,7 @@ def main() -> None:
     missing = [p for p in PAGES + ASSETS + ["styles.css", "theme.js", "product.js", "sitemap.xml", "robots.txt"] if not (SITE / p).is_file()]
     if missing:
         raise SystemExit("MISSING=" + ",".join(missing))
+    validate_current_media_and_hgq_legal({page: (SITE / page).read_text(encoding="utf-8") for page in PAGES})
     bad_links = []
     duplicate_ids = []
     for page in PAGES:

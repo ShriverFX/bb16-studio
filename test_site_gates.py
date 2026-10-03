@@ -18,6 +18,44 @@ import build_site
 
 
 class SiteGateMutationTests(unittest.TestCase):
+    def test_retired_media_cannot_return_to_export(self) -> None:
+        for entry in export_site.RETIRED_MEDIA:
+            with self.subTest(entry=entry), patch.object(export_site, "ASSET_FILES", export_site.ASSET_FILES + (entry,)):
+                with self.assertRaisesRegex(SystemExit, "RETIRED_MEDIA_EXPORT"):
+                    export_site.publication_files()
+
+    def test_retired_media_and_unattested_video_are_rejected_in_pages(self) -> None:
+        texts = {name: (validate_site.SITE / name).read_text(encoding="utf-8") for name in validate_site.PAGES}
+        validate_site.validate_current_media_and_hgq_legal(texts)
+        for entry in export_site.RETIRED_MEDIA:
+            edited = {**texts, "hgq.html": texts["hgq.html"] + f'<img src="/{entry}">'}
+            with self.subTest(entry=entry), self.assertRaisesRegex(SystemExit, "RETIRED_MEDIA_REFERENCE"):
+                validate_site.validate_current_media_and_hgq_legal(edited)
+        with self.assertRaisesRegex(SystemExit, "HGQ_UNATTESTED_VIDEO"):
+            validate_site.validate_current_media_and_hgq_legal({**texts, "hgq.html": texts["hgq.html"] + '<video></video>'})
+
+    def test_hgq_canonical_bodies_and_links_are_pinned(self) -> None:
+        texts = {name: (validate_site.SITE / name).read_text(encoding="utf-8") for name in validate_site.PAGES}
+        for page in validate_site.HGQ_CANONICAL_BODY_SHA256:
+            changed = texts[page].replace("<!-- HGQ_CANONICAL_BEGIN -->", "<!-- HGQ_CANONICAL_BEGIN -->Changed")
+            with self.subTest(page=page), self.assertRaisesRegex(SystemExit, "HGQ_CANONICAL_BODY_CHANGED"):
+                validate_site.validate_current_media_and_hgq_legal({**texts, page: changed})
+        for link in ("hgq-privacy.html", "hgq-account-deletion.html"):
+            changed = texts["hgq.html"].replace('href="/' + link + '"', 'href="/other.html"').replace('href="' + link + '"', 'href="other.html"')
+            with self.subTest(link=link), self.assertRaisesRegex(SystemExit, "HGQ_DEDICATED_LEGAL_LINK_MISSING"):
+                validate_site.validate_current_media_and_hgq_legal({**texts, "hgq.html": changed})
+
+    def test_legacy_contacts_remain_forbidden_even_in_legal_wrappers(self) -> None:
+        original_read_text = Path.read_text
+        for page in ("hgq.html", "hgq-privacy.html", "hgq-account-deletion.html"):
+            for contact in ("shriverfx" + "@gmail.com", "support" + "@hgq.app", "legal" + "@hgq.app"):
+                def edited_read_text(path: Path, *args, **kwargs) -> str:
+                    text = original_read_text(path, *args, **kwargs)
+                    return text + "<p>" + contact + "</p>" if path == validate_site.SITE / page else text
+                with self.subTest(page=page, contact=contact), patch.object(Path, "read_text", new=edited_read_text):
+                    with contextlib.redirect_stdout(io.StringIO()), self.assertRaisesRegex(SystemExit, "FORBIDDEN_PUBLIC_TEXT"):
+                        validate_site.main()
+
     def test_custom_domain_contract_rejects_inconsistent_config_and_cname(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             folder = Path(temporary)
@@ -197,7 +235,9 @@ class SiteGateMutationTests(unittest.TestCase):
             path.relative_to(export_site.SITE).as_posix()
             for path in export_site.publication_files()
         }
-        self.assertEqual(len(names), 76)
+        self.assertEqual(len(names), 67)
+        self.assertTrue({"hgq-privacy.html", "hgq-account-deletion.html"} <= names)
+        self.assertFalse(names & export_site.RETIRED_MEDIA)
         self.assertIn("CNAME", names)
         self.assertIn("convertair-test.html", names)
         self.assertIn("doccipher-test.html", names)
@@ -210,6 +250,8 @@ class SiteGateMutationTests(unittest.TestCase):
             "site.config.json",
             "test_site_gates.py",
             "validate_site.py",
+            "content/hgq-privacy.html",
+            "content/hgq-account-deletion.html",
         ):
             self.assertNotIn(forbidden, names)
 

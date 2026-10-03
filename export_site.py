@@ -13,7 +13,7 @@ from pathlib import Path, PurePosixPath
 from urllib.parse import urlsplit
 
 from build_site import ASSETS as CORE_ASSETS
-from product_pages import MEDIA_FILES
+from product_pages import MEDIA_FILES, RETIRED_MEDIA
 from validate_site import validate_custom_domain
 
 
@@ -32,6 +32,8 @@ ROOT_FILES = (
     "doccipher.html",
     "google7f580d7c20e79216.html",
     "hgq.html",
+    "hgq-privacy.html",
+    "hgq-account-deletion.html",
     "index.html",
     "legal.html",
     "privacy.html",
@@ -60,6 +62,9 @@ CSS_IMPORT = re.compile(
 def publication_files() -> list[Path]:
     validate_custom_domain(json.loads((SITE / "site.config.json").read_text(encoding="utf-8")))
     relative_names = list(ROOT_FILES) + list(ASSET_FILES)
+    retired = sorted(set(relative_names) & RETIRED_MEDIA)
+    if retired:
+        raise SystemExit("RETIRED_MEDIA_EXPORT=" + ",".join(retired))
     for name in relative_names:
         relative = PurePosixPath(name)
         if relative.is_absolute() or ".." in relative.parts:

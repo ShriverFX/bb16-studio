@@ -1,5 +1,21 @@
 # Checklist de publication — BB16 Studio
 
+## Correctif captures et pages HGQ du 4 octobre 2026
+
+- [x] Quatre captures gameplay HGQ legacy et cinq clips d'images fixes exclus
+  de l'export actif ; fichiers historiques conservés.
+- [x] Ancienne capture/clip Réglages ConvertAir exclus en attendant un nouveau
+  rendu de l'application avec le domaine studio.
+- [x] Écrans HGQ connexion/inscription conservés en statique ; textes produit
+  préservés. Aucun nouveau gameplay ni short présenté comme enregistré.
+- [x] Pages dédiées HGQ privacy/suppression issues des textes publics Firebase,
+  seuls cadre/liens/contact studio adaptés ; aucune nouvelle clause juridique.
+- [x] Gate globale des contacts inchangée, hashes des corps et mutations PASS.
+- [x] Build/validation, 19 tests Python et 28 tests DOM PASS ; export 67 fichiers.
+- [ ] Nouveau commit publié et contrôlé sur le domaine : à constater après push.
+- [ ] Nouvelles captures HGQ gameplay et CA Réglages : runtime/appareil requis.
+- [ ] Shorts enregistrés : LOCAL_ONLY, aucune publication avant lancement public.
+
 Publication de la vitrine explicitement demandée par le propriétaire le
 19 septembre 2026. Les informations légales manquantes ne sont pas inventées ;
 leur complétion et la vérification du compte Organisation restent à suivre.

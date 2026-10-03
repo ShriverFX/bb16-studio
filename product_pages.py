@@ -48,13 +48,20 @@ def _hgq(name: str) -> Path:
 
 
 # Clé publiée -> (application, fichier source dans le dépôt de l'app).
+HISTORICAL_SCREENS: dict[str, tuple[str, Path]] = {
+    "assets/screens/hgq/creer.webp": ("hgq", _hgq("21-28-33-109")),
+    "assets/screens/hgq/salon.webp": ("hgq", _hgq("21-45-38-403")),
+    "assets/screens/hgq/resultat.webp": ("hgq", _hgq("22-06-05-486")),
+    "assets/screens/hgq/duel.webp": ("hgq", _hgq("22-08-11-253")),
+    "assets/screens/convertair/reglages.webp": ("convertair", CA_FR / "reglages.png"),
+}
+
 SCREENS: dict[str, tuple[str, Path]] = {
     "assets/screens/convertair/accueil.webp": ("convertair", CA_FR / "accueil.png"),
     "assets/screens/convertair/catalogue.webp": ("convertair", CA_FR / "catalogue.png"),
     "assets/screens/convertair/catalogue-ocr.webp": ("convertair", CA_FR / "catalogue-ocr.png"),
     "assets/screens/convertair/fusion.webp": ("convertair", CA_FR / "fusion.png"),
     "assets/screens/convertair/fichiers.webp": ("convertair", CA_FR / "fichiers.png"),
-    "assets/screens/convertair/reglages.webp": ("convertair", CA_FR / "reglages.png"),
     "assets/screens/convertair/paywall.webp": ("convertair", CA_FR / "paywall.png"),
     "assets/screens/doccipher/coffre.webp": ("doccipher", DC_FR / "01-journeys-home.png"),
     "assets/screens/doccipher/parcours.webp": ("doccipher", DC_FR / "02-journeys.png"),
@@ -65,10 +72,6 @@ SCREENS: dict[str, tuple[str, Path]] = {
     "assets/screens/doccipher/confiance.webp": ("doccipher", DC_FR / "07-trust.png"),
     "assets/screens/doccipher/ajout.webp": ("doccipher", DC_FR / "08-photo.png"),
     # Captures sans adresse email ni donnée de compte visible.
-    "assets/screens/hgq/creer.webp": ("hgq", _hgq("21-28-33-109")),
-    "assets/screens/hgq/salon.webp": ("hgq", _hgq("21-45-38-403")),
-    "assets/screens/hgq/resultat.webp": ("hgq", _hgq("22-06-05-486")),
-    "assets/screens/hgq/duel.webp": ("hgq", _hgq("22-08-11-253")),
     "assets/screens/hgq/connexion.webp": ("hgq", HGQ_STORE / "hgq_01_login.png"),
     "assets/screens/hgq/inscription.webp": ("hgq", HGQ_STORE / "hgq_02_signup.png"),
 }
@@ -82,7 +85,6 @@ VIDEOS: dict[str, list[tuple[str, str]]] = {
     "assets/video/convertair/fusion.mp4": [("assets/screens/convertair/fusion.webp", "drift")],
     "assets/video/convertair/fichiers.mp4": [("assets/screens/convertair/fichiers.webp", "drift")],
     "assets/video/convertair/ocr.mp4": [("assets/screens/convertair/catalogue-ocr.webp", "scroll")],
-    "assets/video/convertair/reglages.mp4": [("assets/screens/convertair/reglages.webp", "scroll")],
     "assets/video/convertair/premium.mp4": [("assets/screens/convertair/paywall.webp", "scroll")],
     "assets/video/doccipher/coffre.mp4": [("assets/screens/doccipher/coffre.webp", "scroll")],
     "assets/video/doccipher/parcours.mp4": [("assets/screens/doccipher/parcours.webp", "scroll")],
@@ -92,6 +94,11 @@ VIDEOS: dict[str, list[tuple[str, str]]] = {
     "assets/video/doccipher/import.mp4": [("assets/screens/doccipher/import.webp", "scroll")],
     "assets/video/doccipher/confiance.mp4": [("assets/screens/doccipher/confiance.webp", "scroll")],
     "assets/video/doccipher/premium.mp4": [("assets/screens/doccipher/premium.webp", "scroll")],
+}
+
+# Preserved source mappings, deliberately absent from the active export/generator.
+HISTORICAL_VIDEOS: dict[str, list[tuple[str, str]]] = {
+    "assets/video/convertair/reglages.mp4": [("assets/screens/convertair/reglages.webp", "scroll")],
     "assets/video/hgq/creer.mp4": [("assets/screens/hgq/creer.webp", "scroll")],
     "assets/video/hgq/duel.mp4": [("assets/screens/hgq/duel.webp", "drift")],
     "assets/video/hgq/resultat.mp4": [("assets/screens/hgq/resultat.webp", "drift")],
@@ -109,6 +116,7 @@ ICONS: dict[str, tuple[str, tuple[int, int]]] = {
 }
 
 MEDIA_FILES = sorted(SCREENS) + sorted(VIDEOS) + sorted(ICONS)
+RETIRED_MEDIA = frozenset(HISTORICAL_SCREENS) | frozenset(HISTORICAL_VIDEOS)
 
 
 def screen_size(app: str, width: int) -> tuple[int, int]:
@@ -146,7 +154,7 @@ PRODUCTS: dict[str, dict] = {
         "grid_title": "Et dans le détail.",
         "grid": [
             ("Le texte, reconnu sur place", "PDF cherchable et extraction du texte, avec des modèles embarqués : aucune image n'est envoyée à un serveur pour la reconnaissance.", "assets/screens/convertair/catalogue-ocr.webp", "assets/video/convertair/ocr.mp4", "Outils de reconnaissance de texte de ConvertAir"),
-            ("Des réglages qui disent tout", "Thème, langue, nettoyage de l'historique, et une explication claire : vos documents sont traités sur l'appareil, le réseau ne sert qu'aux achats.", "assets/screens/convertair/reglages.webp", "assets/video/convertair/reglages.mp4", "Réglages de ConvertAir : apparence, langue, confidentialité"),
+            ("Des réglages qui disent tout", "Thème, langue, nettoyage de l'historique, et une explication claire : vos documents sont traités sur l'appareil. Les connexions servent aux achats et aux téléchargements facultatifs via Google Play.", None, None, None),
             ("Premium, quand il le faut", "Opérations illimitées, export sans filigrane, traitement par lot. Mensuel, annuel ou à vie.", "assets/screens/convertair/paywall.webp", "assets/video/convertair/premium.mp4", "Offre Premium de ConvertAir"),
         ],
         "also": None,
@@ -231,14 +239,15 @@ PRODUCTS: dict[str, dict] = {
         "hero": ("assets/screens/hgq/connexion.webp", "Écran d'accueil de Hard Gamer Quiz : se connecter ou s'inscrire"),
         "tour_title": "Une question. Deux joueurs. Un gagnant.",
         "tour": [
-            ("creer", "Créer une partie à votre mesure", "Catégorie, nombre de questions, difficulté, mode multijoueur ou solo : la partie se règle en quelques touches.", "assets/screens/hgq/creer.webp", "assets/video/hgq/creer.mp4", "Création d'une partie HGQ : catégorie, questions, difficulté, mode"),
-            ("duel", "Répondre plus vite que l'adversaire", "Les deux joueurs voient la même question au même moment. Le chrono tourne, les réponses s'affichent en direct.", "assets/screens/hgq/duel.webp", "assets/video/hgq/duel.mp4", "Question en duel dans HGQ"),
-            ("resultat", "Le verdict", "Score final face à face. Les parties classées sont validées côté serveur.", "assets/screens/hgq/resultat.webp", "assets/video/hgq/resultat.mp4", "Résultat final d'un duel HGQ"),
+            ("creer", "Créer une partie à votre mesure", "Catégorie, nombre de questions, difficulté, mode multijoueur ou solo : la partie se règle en quelques touches.", None, None, None),
+            ("duel", "Répondre plus vite que l'adversaire", "Les deux joueurs voient la même question au même moment. Le chrono tourne, les réponses s'affichent en direct.", None, None, None),
+            ("resultat", "Le verdict", "Score final face à face. Les parties classées sont validées côté serveur.", None, None, None),
         ],
         "grid_title": "Et autour de la partie.",
         "grid": [
-            ("La salle d'attente", "Votre partie attend un adversaire et démarre dès qu'un joueur la rejoint.", "assets/screens/hgq/salon.webp", "assets/video/hgq/salon.mp4", "Salle d'attente d'une partie HGQ"),
-            ("Un compte pour progresser", "Connexion par email ou avec Google, pseudo et avatar : vos statistiques et vos amis vous suivent.", "assets/screens/hgq/connexion.webp", "assets/video/hgq/compte.mp4", "Connexion et création de compte HGQ"),
+            ("La salle d'attente", "Votre partie attend un adversaire et démarre dès qu'un joueur la rejoint.", None, None, None),
+            ("Un compte pour progresser", "Connexion par email ou avec Google, pseudo et avatar : vos statistiques et vos amis vous suivent.", "assets/screens/hgq/connexion.webp", None, "Connexion HGQ"),
+            ("Créer votre compte", "Un compte, et c'est tout : email ou Google, puis un pseudo et un avatar.", "assets/screens/hgq/inscription.webp", None, "Création de compte HGQ"),
         ],
         "also": ["Amis et recherche de joueurs.", "Profil, historique des parties et statistiques.", "Classements.", "Suppression du compte depuis les paramètres de l'application."],
         "soon": None,
@@ -252,18 +261,18 @@ PRODUCTS: dict[str, dict] = {
             ("Suppression dans l'application", "Paramètres, puis Mon compte, puis Supprimer mon compte. Sans accès, écrivez au support."),
             ("Une politique dédiée", "La politique de confidentialité de l'application détaille ses données et ses services tiers."),
         ],
-        "privacy_link": ("data-deletion.html", "Supprimer un compte HGQ"),
+        "privacy_link": ("hgq-account-deletion.html", "Supprimer un compte HGQ"),
         "faq": [
             ("Quand HGQ sera-t-il disponible ?", "Bientôt sur Android. Le lien Google Play apparaîtra sur cette page dès la publication."),
             ("Faut-il un compte ?", "Oui : il porte vos statistiques, vos amis et vos classements. La connexion se fait par email ou avec Google."),
             ("Que contiendra Premium ?", "Les prix sont fixés — 3,99 € par mois ou 24,99 € par an — mais le contenu de Premium sera annoncé avec la sortie. Rien n'est promis avant."),
             ("Comment supprimer mon compte ?", "Depuis l'application : Paramètres, Mon compte, Supprimer mon compte. La page Suppression de compte explique la marche à suivre si vous n'avez plus accès."),
         ],
-        "captures_note": "Captures de versions de développement : l'interface, encore partiellement en anglais, évolue d'ici la sortie.",
+        "captures_note": "Découvrez les écrans de connexion et de création de compte.",
     },
 }
 
-HGQ_PRIVACY_URL = "https://hgq-prod.web.app/privacy"
+HGQ_PRIVACY_URL = "hgq-privacy.html"
 
 
 def play_url(package: str) -> str:
@@ -378,13 +387,29 @@ def product_body(key: str, config: dict) -> str:
     layers = []
     total = len(p["tour"])
     for i, (sid, title, text, src, video, alt) in enumerate(p["tour"], start=1):
-        steps.append(f'''<li class="tour-step" data-step id="etape-{sid}"><div class="step-copy"><p class="step-index">{i:02d} <span>/ {total:02d}</span></p><h3>{escape(title)}</h3><p>{escape(text)}</p></div><div class="step-device">{phone(key, src, alt, video, extra_class="step-phone")}</div></li>''')
-        active = " is-active" if i == 1 else ""
-        layers.append(f'<div class="layer{active}" data-layer>{screen_img(key, src, "")}{video_tag(video)}</div>')
+        device = f'<div class="step-device">{phone(key, src, alt, video, extra_class="step-phone")}</div>' if src else ""
+        steps.append(f'''<li class="tour-step" data-step id="etape-{sid}"><div class="step-copy"><p class="step-index">{i:02d} <span>/ {total:02d}</span></p><h3>{escape(title)}</h3><p>{escape(text)}</p></div>{device}</li>''')
+        if src:
+            active = " is-active" if not layers else ""
+            layers.append(f'<div class="layer{active}" data-layer>{screen_img(key, src, "")}{video_tag(video) if video else ""}</div>')
+    tour_layout = (
+        f'''<div class="tour" data-tour>
+    <ol class="tour-steps">{"".join(steps)}</ol>
+    <div class="tour-stage" aria-hidden="true"><div class="tour-sticky">{phone_frame("".join(layers))}<p class="tour-counter"><span data-counter>01</span> <span>/ {total:02d}</span></p></div></div>
+  </div>'''
+        if layers else f'<div class="prose"><ol class="tour-steps">{"".join(steps)}</ol></div>'
+    )
+    has_video = any(row[4] for row in p["tour"]) or any(row[3] for row in p["grid"])
+    motion_button = '<button class="motion-toggle" type="button" data-motion-toggle aria-pressed="false" hidden>Mettre les aperçus en pause</button>' if has_video else ""
+    preview_label = "02 · En mouvement" if has_video else "02 · Aperçus"
+    preview_hint = '<p class="hover-hint">Survolez une carte ou lancez son aperçu animé.</p><p class="touch-hint">Les aperçus s\'animent lorsqu\'ils apparaissent à l\'écran. Vous pouvez les mettre en pause.</p><p class="motion-hint">Animations désactivées : explorez les captures à votre rythme.</p>' if has_video else f'<p>{captures_note}</p>'
 
     cards = []
     for title, text, src, video, alt in p["grid"]:
-        cards.append(f'''<article class="feature-card" data-hover-video><div class="feature-copy"><h3>{escape(title)}</h3><p>{escape(text)}</p></div><div class="feature-device">{phone(key, src, alt, video)}</div><button class="preview-toggle" type="button" data-preview-toggle aria-pressed="false" hidden><span data-preview-label>Voir l'aperçu animé</span><span class="sr-only"> : {escape(title)}</span></button></article>''')
+        device = f'<div class="feature-device">{phone(key, src, alt, video)}</div>' if src else ""
+        hover = " data-hover-video" if video else ""
+        toggle = f'<button class="preview-toggle" type="button" data-preview-toggle aria-pressed="false" hidden><span data-preview-label>Voir l\'aperçu animé</span><span class="sr-only"> : {escape(title)}</span></button>' if video else ""
+        cards.append(f'''<article class="feature-card"{hover}><div class="feature-copy"><h3>{escape(title)}</h3><p>{escape(text)}</p></div>{device}{toggle}</article>''')
     also = ""
     if p["also"]:
         also = '<ul class="also-list">' + "".join(f"<li>{escape(x)}</li>" for x in p["also"]) + "</ul>"
@@ -417,14 +442,11 @@ def product_body(key: str, config: dict) -> str:
   <figure class="hero-device">{phone(key, hero_src, hero_alt, eager=True)}<figcaption>Capture réelle de {name}</figcaption></figure>
 </div></section>
 <section class="section tour-section" id="fonctions"><div class="container">
-  <div class="section-head"><div><p class="eyebrow">01 · Visite guidée</p><h2>{tour_title}</h2></div><div class="section-intro"><p>Découvrez chaque fonction au fil de la page. {captures_note}</p><button class="motion-toggle" type="button" data-motion-toggle aria-pressed="false" hidden>Mettre les aperçus en pause</button></div></div>
-  <div class="tour" data-tour>
-    <ol class="tour-steps">{"".join(steps)}</ol>
-    <div class="tour-stage" aria-hidden="true"><div class="tour-sticky">{phone_frame("".join(layers))}<p class="tour-counter"><span data-counter>01</span> <span>/ {total:02d}</span></p></div></div>
-  </div>
+  <div class="section-head"><div><p class="eyebrow">01 · Visite guidée</p><h2>{tour_title}</h2></div><div class="section-intro"><p>Découvrez chaque fonction au fil de la page. {captures_note}</p>{motion_button}</div></div>
+  {tour_layout}
 </div></section>
 <section class="section alt" id="apercus"><div class="container">
-  <div class="section-head"><div><p class="eyebrow">02 · En mouvement</p><h2>{grid_title}</h2></div><div class="section-intro"><p class="hover-hint">Survolez une carte ou lancez son aperçu animé.</p><p class="touch-hint">Les aperçus s'animent lorsqu'ils apparaissent à l'écran. Vous pouvez les mettre en pause.</p><p class="motion-hint">Animations désactivées : explorez les captures à votre rythme.</p></div></div>
+  <div class="section-head"><div><p class="eyebrow">{preview_label}</p><h2>{grid_title}</h2></div><div class="section-intro">{preview_hint}</div></div>
   <div class="feature-grid">{"".join(cards)}</div>{also}
 </div></section>
 {soon}

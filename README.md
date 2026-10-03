@@ -1,5 +1,19 @@
 # BB16 Studio — site statique
 
+La publication active exclut les quatre anciennes captures gameplay HGQ et
+leurs clips animés, ainsi que l'ancienne capture Réglages ConvertAir et son
+clip. Les fichiers restent versionnés pour l'historique. HGQ conserve ses
+aperçus statiques de connexion/inscription ; ses fonctions de jeu restent
+présentées en texte en attendant les nouvelles captures runtime.
+
+Les pages dédiées `hgq-privacy.html` et `hgq-account-deletion.html` reprennent
+les pages publiques Firebase HGQ vérifiées le 4 octobre 2026, avec les seuls
+ajustements de cadre, liens du domaine studio et adresses de contact vers le
+contact studio configuré. Les textes légaux et rôles existants sont conservés.
+Les fragments sources `content/hgq-*.html` sont exclus de l'export ; les corps
+rendus sont protégés par des hashes et tests de mutation. L'allowlist active
+contient 67 fichiers, dont les deux pages légales HGQ dédiées.
+
 Site officiel statique de BB16 Studio, prévu pour GitHub Pages. Le site est
 généré sans dépendance externe par `build_site.py`. Il reste publiable depuis
 un dépôt public qui ne contient que ce dossier.
