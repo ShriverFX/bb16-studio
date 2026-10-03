@@ -45,6 +45,24 @@ class SiteGateMutationTests(unittest.TestCase):
             with self.subTest(link=link), self.assertRaisesRegex(SystemExit, "HGQ_DEDICATED_LEGAL_LINK_MISSING"):
                 validate_site.validate_current_media_and_hgq_legal({**texts, "hgq.html": changed})
 
+    def test_hgq_admob_disclosure_cannot_lose_sdk_data_or_purposes(self) -> None:
+        texts = {name: (validate_site.SITE / name).read_text(encoding="utf-8") for name in validate_site.PAGES}
+        privacy = texts["hgq-privacy.html"]
+        for fact in (
+            "L'adresse IP, qui peut servir à estimer une localisation approximative.",
+            "Les interactions avec l'application et les publicités",
+            "Des diagnostics de performance de l'application et du SDK publicitaire",
+            "Des identifiants de l'appareil ou de l'application",
+            "Google utilise ces données pour la publicité, l'analyse et la prévention de la fraude.",
+            "Ces diagnostics publicitaires sont distincts des rapports Firebase Crashlytics",
+            "Les formulaires Google UMP permettent d'exprimer tes choix lorsqu'un consentement est requis",
+            "Gérer mon consentement lorsque ces options sont disponibles.",
+        ):
+            with self.subTest(fact=fact):
+                self.assertIn(fact, privacy)
+                with self.assertRaisesRegex(SystemExit, "HGQ_CANONICAL_BODY_CHANGED=hgq-privacy.html"):
+                    validate_site.validate_current_media_and_hgq_legal({**texts, "hgq-privacy.html": privacy.replace(fact, "")})
+
     def test_legacy_contacts_remain_forbidden_even_in_legal_wrappers(self) -> None:
         original_read_text = Path.read_text
         for page in ("hgq.html", "hgq-privacy.html", "hgq-account-deletion.html"):

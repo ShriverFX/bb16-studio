@@ -148,7 +148,7 @@ COMING_SOON_PRIVACY_FORBIDDEN = [
 # ---------------------------------------------------------------------------
 PRODUCT_PAGES = ["convertair.html", "doccipher.html", "hgq.html"]
 HGQ_CANONICAL_BODY_SHA256 = {
-    "hgq-privacy.html": "9b6d3b9d8d0b946c64acccc9ae7a3b0426700ed900f9cf32a3e243221a5880a3",
+    "hgq-privacy.html": "9e34208359dd913738eb8f3fcefbdab3dd13c665684afd7a0ca29dac7e600ec8",
     "hgq-account-deletion.html": "fa2f35888322c626fe38973c818904a331a12926a6f9268c5e5c075c10c37aee",
 }
 
