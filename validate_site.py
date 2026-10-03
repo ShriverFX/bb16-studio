@@ -148,7 +148,9 @@ COMING_SOON_PRIVACY_FORBIDDEN = [
 # ---------------------------------------------------------------------------
 PRODUCT_PAGES = ["convertair.html", "doccipher.html", "hgq.html"]
 HGQ_CANONICAL_BODY_SHA256 = {
-    "hgq-privacy.html": "e110dcc065b74dfb5b006869959f0d14600b699279883d074b85eb9e6b66c5fa",
+    # 2026-10-04 reviewed delta: pseudonymous UID, bounded deletion/retention,
+    # Premium-only cash purchases and server reward verification records.
+    "hgq-privacy.html": "c55e6757ade4cfa65de5594cccd5ab71a6f3c9032994a621de9e44a9b74771f4",
     "hgq-account-deletion.html": "fa2f35888322c626fe38973c818904a331a12926a6f9268c5e5c075c10c37aee",
 }
 

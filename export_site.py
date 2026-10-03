@@ -20,6 +20,7 @@ from validate_site import validate_custom_domain
 SITE = Path(__file__).resolve().parent
 ROOT_FILES = (
     "CNAME",
+    "app-ads.txt",
     "404.html",
     "apps.html",
     "contact.html",

@@ -28,7 +28,7 @@
     <div class="updated">Dernière mise à jour : 2026-10-04</div>
 
     <h2>1. Qui nous sommes</h2>
-    <p>Hard Gamer Quiz (HGQ) est un jeu de quiz multijoueur temps réel édité par l'équipe HGQ. Cette politique décrit comment nous collectons, utilisons et protégeons tes données personnelles.</p>
+    <p>Hard Gamer Quiz (HGQ) est un jeu de quiz multijoueur temps réel édité par BB16 Studio. Cette politique décrit les données nécessaires au compte, aux parties, aux achats Premium et aux services publicitaires.</p>
 
     <h2>2. Données collectées</h2>
     <p>Pour le compte et les parties, nous traitons les données suivantes. Les données du SDK publicitaire sont décrites à la section 5 :</p>
@@ -37,6 +37,7 @@
       <li>Pseudo et avatar choisis</li>
       <li>Statistiques de jeu : score, victoires, totalGamesPlayed, streak, rankPoints</li>
       <li>Hegos (monnaie virtuelle) et historique des transactions</li>
+      <li>Vérification des récompenses publicitaires : intention liée au compte, identifiant de transaction publicitaire, unité concernée, horodatage et état de validation serveur. Les Hegos sont une monnaie virtuelle du jeu, sans valeur monétaire ni conversion en argent.</li>
       <li>Liste d'avatars achetés (purchasedAvatarIds) et inventaire de jokers</li>
       <li>Liste d'amis, demandes d'amis, défis envoyés/reçus</li>
       <li>Historique des parties (résultats, questions jouées, opponentUid)</li>
@@ -69,7 +70,7 @@
       <li>Firebase App Check (attestation Play Integrity / App Attest intégrée à l'app ; l'obligation côté serveur sera activée progressivement)</li>
       <li>Google Sign-In et Apple Sign In (connexion tierce)</li>
       <li>Google Mobile Ads / AdMob (publicités, UMP consent pour la zone EEE)</li>
-      <li>Google Play Billing et Apple In-App Purchase (Premium et achats Hegos)</li>
+      <li>Google Play Billing et Apple In-App Purchase (achats Premium ; les offres disponibles dépendent du magasin et de la plateforme)</li>
       <li>Google ML Kit Translation (on-device, aucune donnée envoyée)</li>
       <li>App Tracking Transparency iOS (demande d'autorisation de tracking)</li>
     </ul>
@@ -86,10 +87,10 @@
     <p>Les formulaires Google UMP permettent d'exprimer tes choix lorsqu'un consentement est requis, notamment dans l'Espace Économique Européen (EEE) et au Royaume-Uni. Tu peux modifier les choix proposés via Paramètres &gt; Gérer mon consentement lorsque ces options sont disponibles.</p>
 
     <h2>6. Crashlytics (rapports de crash, activés par défaut, désactivables)</h2>
-    <p>Si tu actives les rapports de crash (Paramètres &gt; APPLICATION &gt; Rapports de crash, activé par défaut), Firebase Crashlytics reçoit ton UID Firebase (anonyme), la version de l'app, la stack trace du crash et des métadonnées techniques (modèle device, OS). Aucune donnée personnelle supplémentaire n'est partagée. Tu peux désactiver à tout moment.</p>
+    <p>Les rapports de crash sont activés par défaut et peuvent être désactivés dans Paramètres &gt; APPLICATION &gt; Rapports de crash. Firebase Crashlytics peut recevoir l'UID Firebase, un identifiant pseudonyme lié au compte, la version de l'app, la trace technique du crash et des métadonnées comme le modèle de l'appareil et son système. Un identifiant pseudonyme n'est pas une garantie d'anonymat.</p>
 
     <h2>7. Conservation des données</h2>
-    <p>Tes données sont conservées aussi longtemps que ton compte est actif. Lors de la suppression via Paramètres &gt; Supprimer mon compte, la suppression est automatique et immédiate : une Cloud Function serveur (onUserDelete) purge en cascade l'intégralité de tes données dans Firestore (profil, historique de parties, transactions Hegos, amis, défis, notifications), dans Realtime Database (présence), et dans Firebase Storage en quelques secondes. Les logs techniques anonymes (Crashlytics, Cloud Functions logs) suivent les politiques de rétention de Google Cloud (90 jours maximum).</p>
+    <p>Les données du compte et du jeu sont conservées pour faire fonctionner ton compte. Le parcours Paramètres &gt; Supprimer mon compte demande sa suppression ; un traitement serveur supprime les données associées prises en charge, notamment le profil, l'historique, les transactions et les relations sociales. La validation des récompenses publicitaires ajoute des enregistrements techniques liés au compte, également concernés par ce traitement. Cette page ne garantit pas une purge instantanée ou un effacement physique de toutes les copies et sauvegardes. Si tu rencontres une difficulté ou n'as plus accès à l'app, utilise la <a href="https://bb16studio.com/hgq-account-deletion.html">procédure de suppression</a> ou contacte le studio. Les journaux techniques des services Google suivent leur configuration et leurs propres règles de conservation ; aucun plafond de 90 jours n'est garanti ici.</p>
 
     <h2>8. Tes droits (RGPD)</h2>
     <ul>
@@ -105,7 +106,7 @@
     <p>HGQ est destiné aux utilisateurs de 13 ans et plus (PEGI 12). Nous ne collectons pas sciemment de données sur les enfants de moins de 13 ans.</p>
 
     <h2>10. Sécurité</h2>
-    <p>Toutes les communications utilisent HTTPS/TLS. Les mots de passe sont hashés par Firebase Authentication. Les achats premium sont vérifiés côté serveur (Cloud Functions, vérification du <code>bundle_id</code> Apple et du <code>packageName</code> Google). Les écritures économiques (Hegos, achats avatars/jokers, points de classement) passent toutes par des Cloud Functions Admin SDK : le client ne peut pas écrire ces données directement, et les points de classement sont recalculés par le serveur à partir des réponses, des horodatages serveur et des jokers accordés par le serveur (anti-triche). L'attestation App Check (Play Integrity / App Attest) est intégrée à l'app ; son obligation côté serveur sera activée progressivement.</p>
+    <p>L'app utilise les services Firebase et Google via leurs connexions sécurisées. Firebase Authentication gère les mots de passe. Le code serveur vérifie les achats Premium et calcule les droits économiques à partir de preuves serveur ; les récompenses publicitaires utilisent une vérification de signature Google liée à une intention de récompense. La présence de ces contrôles dans le code ne garantit pas leur fonctionnement dans chaque version distribuée : leur déploiement et les parcours réels doivent être vérifiés avant la diffusion concernée. App Check est intégré ; son obligation côté serveur dépend de la configuration effective. Aucun système ne permet de promettre l'absence totale de fraude ou de vulnérabilité.</p>
 
     <h2>11. Modifications</h2>
     <p>Cette politique peut être mise à jour. La date de dernière mise à jour affichée en haut de cette page reflète la version en vigueur. En cas de changement majeur, nous t'avertirons par email (à l'adresse associée à ton compte).</p>

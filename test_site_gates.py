@@ -260,7 +260,10 @@ class SiteGateMutationTests(unittest.TestCase):
             path.relative_to(export_site.SITE).as_posix()
             for path in export_site.publication_files()
         }
-        self.assertEqual(len(names), 65)
+        self.assertEqual(len(names), 66)
+        self.assertIn("app-ads.txt", names)
+        self.assertEqual((export_site.SITE / "app-ads.txt").read_text(encoding="utf-8").strip(),
+                         "google.com, pub-7532135517195314, DIRECT, f08c47fec0942fa0")
         self.assertTrue({"hgq-privacy.html", "hgq-account-deletion.html"} <= names)
         self.assertFalse(names & export_site.RETIRED_MEDIA)
         self.assertIn("CNAME", names)
