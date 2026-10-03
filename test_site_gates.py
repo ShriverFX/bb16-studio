@@ -14,9 +14,21 @@ from unittest.mock import patch
 
 import export_site
 import validate_site
+import build_site
 
 
 class SiteGateMutationTests(unittest.TestCase):
+    def test_social_links_reject_untrusted_destinations(self) -> None:
+        for url in (
+            "javascript:alert(1)",
+            "http://www.instagram.com/bb16studio/",
+            "https://www.instagram.com.evil.invalid/bb16studio/",
+            "https://www.instagram.com@evil.invalid/bb16studio/",
+            "https://user:password@www.instagram.com/bb16studio/",
+        ):
+            with self.subTest(url=url), self.assertRaises(ValueError):
+                build_site.footer({"social_profiles": {"instagram": url}})
+
     def test_feedback_pages_reject_automatic_collection(self) -> None:
         for page in validate_site.FEEDBACK_PAGES:
             text = (validate_site.SITE / page).read_text(encoding="utf-8")

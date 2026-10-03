@@ -9,7 +9,12 @@
   "duns": null,
   "github_pages_repository": "ShriverFX/bb16-studio",
   "custom_domain": null,
-  "social_profiles": {},
+  "social_profiles": {
+    "instagram": "https://www.instagram.com/bb16studio/",
+    "tiktok": "https://www.tiktok.com/@bb16studio",
+    "linkedin": "https://www.linkedin.com/in/francois-xavier-b-b26aab10b/",
+    "discord": "https://discord.gg/8a9bPbtAEb"
+  },
   "store_listings": {
     "convertair": {
       "package": "com.bb16studio.convertair",

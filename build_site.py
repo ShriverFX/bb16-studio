@@ -95,10 +95,28 @@ def header(active: str, compact: bool = False) -> str:
 </header>'''
 
 
-def footer() -> str:
-    return '''<footer class="footer"><div class="container footer-grid">
+def footer(config: dict) -> str:
+    platforms = {
+        "instagram": ("Instagram", {"www.instagram.com", "instagram.com"}),
+        "tiktok": ("TikTok", {"www.tiktok.com", "tiktok.com"}),
+        "linkedin": ("LinkedIn · fondateur", {"www.linkedin.com", "linkedin.com"}),
+        "discord": ("Discord", {"discord.gg", "discord.com"}),
+        "youtube": ("YouTube", {"www.youtube.com", "youtube.com"}),
+    }
+    links = []
+    for key, (label, hosts) in platforms.items():
+        url = config.get("social_profiles", {}).get(key)
+        if not url:
+            continue
+        parsed = urlsplit(url)
+        if parsed.scheme != "https" or parsed.hostname not in hosts or parsed.username or parsed.password or parsed.port:
+            raise ValueError(f"URL de réseau social non autorisée : {key}")
+        links.append(f'<a href="{escape(url)}" target="_blank" rel="noopener noreferrer">{label}</a>')
+    socials = f'<nav class="footer-socials" aria-label="Réseaux du studio">{"".join(links)}</nav>' if links else ""
+    return f'''<footer class="footer"><div class="container footer-grid">
   <span>© 2026 BB16 Studio · projets numériques indépendants</span>
   <span class="footer-links"><a href="privacy.html">Confidentialité</a><a href="legal.html">Mentions légales</a><a href="contact.html">Contact</a></span>
+  {socials}
 </div></footer>'''
 
 
@@ -139,7 +157,7 @@ def document(title: str, description: str, active: str, body: str, config: dict,
 <body{body_class}>
   {header(active, compact)}
   <main id="main">{body}</main>
-  {footer()}
+  {footer(config)}
 </body>
 </html>
 '''
