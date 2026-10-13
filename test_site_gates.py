@@ -260,7 +260,10 @@ class SiteGateMutationTests(unittest.TestCase):
             path.relative_to(export_site.SITE).as_posix()
             for path in export_site.publication_files()
         }
-        self.assertEqual(len(names), 66)
+        self.assertEqual(len(names), 866)
+        self.assertTrue({'i18n.css', 'locale.js', 'ar/convertair.html',
+                         'zh-Hant/doccipher-privacy.html',
+                         'assets/screens/doccipher/ja/coffre.webp'} <= names)
         self.assertIn("app-ads.txt", names)
         self.assertEqual((export_site.SITE / "app-ads.txt").read_text(encoding="utf-8").strip(),
                          "google.com, pub-7532135517195314, DIRECT, f08c47fec0942fa0")
@@ -280,6 +283,10 @@ class SiteGateMutationTests(unittest.TestCase):
             "validate_site.py",
             "content/hgq-privacy.html",
             "content/hgq-account-deletion.html",
+            "locales/source.json",
+            "locales/en.json",
+            "I18N.md",
+            "site_i18n.py",
         ):
             self.assertNotIn(forbidden, names)
 

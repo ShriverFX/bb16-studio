@@ -30,8 +30,11 @@ jobs:
       - name: Validate source tree
         run: python3 validate_site.py
 
+      - name: Validate localized pages and media
+        run: python3 validate_i18n.py
+
       - name: Test publication gates
-        run: python3 -m unittest -v test_site_gates.py
+        run: python3 -m unittest -v test_site_gates.py test_i18n.py
 
       - name: Set up Node for feedback form tests
         uses: actions/setup-node@v4

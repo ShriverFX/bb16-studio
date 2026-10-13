@@ -15,6 +15,7 @@ from urllib.parse import urlsplit
 from build_site import ASSETS as CORE_ASSETS
 from product_pages import MEDIA_FILES, RETIRED_MEDIA
 from validate_site import validate_custom_domain
+from site_i18n import localized_files, localized_media
 
 
 SITE = Path(__file__).resolve().parent
@@ -45,8 +46,10 @@ ROOT_FILES = (
     "styles.css",
     "support.html",
     "theme.js",
-)
-ASSET_FILES = tuple(sorted(set(CORE_ASSETS) | set(MEDIA_FILES)))
+    "i18n.css",
+    "locale.js",
+) + tuple(localized_files())
+ASSET_FILES = tuple(sorted(set(CORE_ASSETS) | set(MEDIA_FILES) | set(localized_media())))
 ASSET_RULES = {
     "assets/apps": frozenset({".png", ".webp"}),
     "assets/branding": frozenset({".jpg", ".png", ".webp"}),

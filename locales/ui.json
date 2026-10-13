@@ -1,0 +1,178 @@
+{
+  "fr": {
+    "language": "Langue",
+    "pause_all": "Mettre les aperçus en pause",
+    "resume_all": "Reprendre les aperçus",
+    "pause_one": "Mettre l’aperçu en pause",
+    "play_one": "Voir l’aperçu animé",
+    "capture_note": "Écrans de l’application rendus sur ordinateur, avec des données de démonstration. Les animations sont réalisées à partir de ces captures."
+  },
+  "en": {
+    "language": "Language",
+    "pause_all": "Pause previews",
+    "resume_all": "Resume previews",
+    "pause_one": "Pause preview",
+    "play_one": "View animated preview",
+    "capture_note": "App screens rendered on a computer with demonstration data. Animations are made from these screenshots."
+  },
+  "de": {
+    "language": "Sprache",
+    "pause_all": "Vorschauen anhalten",
+    "resume_all": "Vorschauen fortsetzen",
+    "pause_one": "Vorschau anhalten",
+    "play_one": "Animierte Vorschau ansehen",
+    "capture_note": "Auf einem Computer gerenderte App-Bildschirme mit Beispieldaten. Die Animationen werden aus diesen Bildschirmaufnahmen erstellt."
+  },
+  "es": {
+    "language": "Idioma",
+    "pause_all": "Pausar las vistas previas",
+    "resume_all": "Reanudar las vistas previas",
+    "pause_one": "Pausar la vista previa",
+    "play_one": "Ver la vista previa animada",
+    "capture_note": "Pantallas de la aplicación renderizadas en un ordenador con datos de demostración. Las animaciones se crean a partir de estas capturas."
+  },
+  "it": {
+    "language": "Lingua",
+    "pause_all": "Metti in pausa le anteprime",
+    "resume_all": "Riprendi le anteprime",
+    "pause_one": "Metti in pausa l’anteprima",
+    "play_one": "Guarda l’anteprima animata",
+    "capture_note": "Schermate dell’app renderizzate su computer con dati dimostrativi. Le animazioni sono create a partire da queste schermate."
+  },
+  "nl": {
+    "language": "Taal",
+    "pause_all": "Voorbeelden pauzeren",
+    "resume_all": "Voorbeelden hervatten",
+    "pause_one": "Voorbeeld pauzeren",
+    "play_one": "Geanimeerd voorbeeld bekijken",
+    "capture_note": "App-schermen op een computer weergegeven met demonstratiegegevens. De animaties zijn gemaakt op basis van deze schermafbeeldingen."
+  },
+  "pt": {
+    "language": "Idioma",
+    "pause_all": "Pausar pré-visualizações",
+    "resume_all": "Retomar pré-visualizações",
+    "pause_one": "Pausar pré-visualização",
+    "play_one": "Ver pré-visualização animada",
+    "capture_note": "Ecrãs da aplicação renderizados num computador com dados de demonstração. As animações são criadas a partir destas capturas."
+  },
+  "pt-BR": {
+    "language": "Idioma",
+    "pause_all": "Pausar prévias",
+    "resume_all": "Retomar prévias",
+    "pause_one": "Pausar prévia",
+    "play_one": "Ver prévia animada",
+    "capture_note": "Telas do aplicativo renderizadas em um computador com dados de demonstração. As animações são criadas a partir dessas capturas."
+  },
+  "pl": {
+    "language": "Język",
+    "pause_all": "Wstrzymaj podglądy",
+    "resume_all": "Wznów podglądy",
+    "pause_one": "Wstrzymaj podgląd",
+    "play_one": "Zobacz animowany podgląd",
+    "capture_note": "Ekrany aplikacji wyrenderowane na komputerze z danymi demonstracyjnymi. Animacje powstały na podstawie tych zrzutów ekranu."
+  },
+  "ru": {
+    "language": "Язык",
+    "pause_all": "Приостановить просмотр",
+    "resume_all": "Возобновить просмотр",
+    "pause_one": "Приостановить анимацию",
+    "play_one": "Посмотреть анимацию",
+    "capture_note": "Экраны приложения отрисованы на компьютере с демонстрационными данными. Анимации созданы на основе этих снимков экрана."
+  },
+  "uk": {
+    "language": "Мова",
+    "pause_all": "Призупинити перегляд",
+    "resume_all": "Відновити перегляд",
+    "pause_one": "Призупинити анімацію",
+    "play_one": "Переглянути анімацію",
+    "capture_note": "Екрани застосунку відтворено на комп’ютері з демонстраційними даними. Анімації створено на основі цих знімків екрана."
+  },
+  "tr": {
+    "language": "Dil",
+    "pause_all": "Önizlemeleri duraklat",
+    "resume_all": "Önizlemeleri sürdür",
+    "pause_one": "Önizlemeyi duraklat",
+    "play_one": "Animasyonlu önizlemeyi gör",
+    "capture_note": "Uygulama ekranları örnek verilerle bir bilgisayarda oluşturulmuştur. Animasyonlar bu ekran görüntülerinden hazırlanmıştır."
+  },
+  "ar": {
+    "language": "اللغة",
+    "pause_all": "إيقاف المعاينات مؤقتًا",
+    "resume_all": "استئناف المعاينات",
+    "pause_one": "إيقاف المعاينة مؤقتًا",
+    "play_one": "عرض المعاينة المتحركة",
+    "capture_note": "شاشات التطبيق معروضة على الحاسوب باستخدام بيانات تجريبية. أُنشئت الرسوم المتحركة انطلاقًا من هذه اللقطات."
+  },
+  "hi": {
+    "language": "भाषा",
+    "pause_all": "पूर्वावलोकन रोकें",
+    "resume_all": "पूर्वावलोकन फिर शुरू करें",
+    "pause_one": "पूर्वावलोकन रोकें",
+    "play_one": "एनिमेटेड पूर्वावलोकन देखें",
+    "capture_note": "ऐप की स्क्रीन कंप्यूटर पर उदाहरण डेटा के साथ रेंडर की गई हैं। एनिमेशन इन स्क्रीनशॉट से बनाए गए हैं।"
+  },
+  "id": {
+    "language": "Bahasa",
+    "pause_all": "Jeda pratinjau",
+    "resume_all": "Lanjutkan pratinjau",
+    "pause_one": "Jeda pratinjau",
+    "play_one": "Lihat pratinjau animasi",
+    "capture_note": "Layar aplikasi dirender di komputer dengan data demonstrasi. Animasi dibuat dari tangkapan layar ini."
+  },
+  "ja": {
+    "language": "言語",
+    "pause_all": "プレビューを一時停止",
+    "resume_all": "プレビューを再開",
+    "pause_one": "プレビューを一時停止",
+    "play_one": "アニメーションを見る",
+    "capture_note": "デモデータを使用し、パソコン上で描画したアプリ画面です。アニメーションはこれらのスクリーンショットから作成しています。"
+  },
+  "ko": {
+    "language": "언어",
+    "pause_all": "미리보기 일시정지",
+    "resume_all": "미리보기 재개",
+    "pause_one": "미리보기 일시정지",
+    "play_one": "애니메이션 미리보기",
+    "capture_note": "데모 데이터를 사용해 컴퓨터에서 렌더링한 앱 화면입니다. 애니메이션은 이 스크린샷을 바탕으로 제작되었습니다."
+  },
+  "th": {
+    "language": "ภาษา",
+    "pause_all": "หยุดตัวอย่างชั่วคราว",
+    "resume_all": "เล่นตัวอย่างต่อ",
+    "pause_one": "หยุดตัวอย่างชั่วคราว",
+    "play_one": "ดูตัวอย่างภาพเคลื่อนไหว",
+    "capture_note": "หน้าจอแอปแสดงผลบนคอมพิวเตอร์โดยใช้ข้อมูลสาธิต ภาพเคลื่อนไหวสร้างจากภาพหน้าจอเหล่านี้"
+  },
+  "vi": {
+    "language": "Ngôn ngữ",
+    "pause_all": "Tạm dừng bản xem trước",
+    "resume_all": "Tiếp tục bản xem trước",
+    "pause_one": "Tạm dừng bản xem trước",
+    "play_one": "Xem bản xem trước động",
+    "capture_note": "Màn hình ứng dụng được kết xuất trên máy tính với dữ liệu minh họa. Hoạt ảnh được tạo từ các ảnh chụp màn hình này."
+  },
+  "zh": {
+    "language": "语言",
+    "pause_all": "暂停预览",
+    "resume_all": "继续预览",
+    "pause_one": "暂停预览",
+    "play_one": "观看动态预览",
+    "capture_note": "应用界面使用演示数据在电脑上渲染。动画由这些屏幕截图制作而成。"
+  },
+  "zh-Hans": {
+    "language": "语言",
+    "pause_all": "暂停预览",
+    "resume_all": "继续预览",
+    "pause_one": "暂停预览",
+    "play_one": "观看动态预览",
+    "capture_note": "应用界面使用演示数据在电脑上渲染。动画由这些屏幕截图制作而成。"
+  },
+  "zh-Hant": {
+    "language": "語言",
+    "pause_all": "暫停預覽",
+    "resume_all": "繼續預覽",
+    "pause_one": "暫停預覽",
+    "play_one": "觀看動態預覽",
+    "capture_note": "應用程式畫面使用示範資料在電腦上繪製。動畫由這些螢幕截圖製作而成。"
+  }
+}

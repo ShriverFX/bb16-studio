@@ -1,0 +1,24 @@
+/* Locale navigation and writing direction; no external fonts or services. */
+.language-picker { position: relative; flex: 0 1 auto; font-size: .86rem; }
+.language-picker summary { cursor: pointer; padding: .6rem .7rem; border: 1px solid var(--line, #64748b); border-radius: 10px; min-height: 44px; display: flex; gap: .5rem; align-items: center; }
+.language-picker summary:focus-visible, .language-list a:focus-visible { outline: 3px solid #0097d7; outline-offset: 3px; }
+.language-list { position: absolute; inset-inline-end: 0; top: calc(100% + .5rem); z-index: 100; min-width: 220px; max-height: min(65vh, 460px); overflow-y: auto; padding: .5rem; border-radius: 12px; border: 1px solid #64748b; background: var(--navy-950); box-shadow: 0 8px 24px #0003; display: grid; }
+.language-list a { padding: .65rem .8rem; min-height: 44px; text-decoration: none; border-radius: 6px; }
+.language-list a[aria-current] { font-weight: 800; text-decoration: underline; text-underline-offset: 4px; }
+.original-language { font-size: .8em; opacity: .8; white-space: nowrap; }
+html[dir=rtl] body { text-align: start; }
+html[dir=rtl] .hero-points { padding-inline-start: 1.3rem; padding-inline-end: 0; }
+html[dir=rtl] .email-box { direction: ltr; unicode-bidi: isolate; }
+.language-list a, .product-nav-name, .product-name, .plan-price { unicode-bidi: isolate; }
+.product-hero-copy, .step-copy, .feature-copy, .card, .prose { min-width: 0; overflow-wrap: anywhere; }
+h1, h2, h3, .faq-item summary, .soon-intro, .plan { overflow-wrap: anywhere; hyphens: auto; }
+.language-picker, .language-list { text-align: start; }
+@media (max-width: 1000px) { .product-page .site-header .nav { flex-wrap: wrap; } }
+@media (max-width: 560px) {
+  .language-picker { margin-inline-start: auto; }
+  .product-page .site-header .nav .language-picker { grid-column: 2; grid-row: 2; }
+  .language-picker summary { font-size: .8rem; }
+  .language-list { max-width: calc(100vw - 40px); }
+  .product-nav-inner { flex-wrap: wrap; }
+  .product-nav-links { flex-wrap: wrap; min-width: 0; }
+}

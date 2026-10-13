@@ -13,6 +13,7 @@ from pathlib import Path
 from html import escape
 
 import product_pages
+import site_i18n
 
 
 SITE = Path(__file__).resolve().parent
@@ -241,13 +242,11 @@ def product_page(kind: str, config: dict) -> tuple[str, str]:
 def convertair_privacy_body(email: str) -> str:
     """Politique de confidentialité ConvertAir, bilingue sur une seule URL.
 
-    POURQUOI UNE SEULE PAGE POUR DEUX LANGUES — le site est monolingue : le
-    gabarit force `<html lang="fr">` et il n'existe aucun mécanisme de locale.
-    Or l'application est distribuée dans vingt langues et sa fiche Play est
-    relue en anglais. Une deuxième URL aurait obligé l'application à choisir
-    laquelle ouvrir, donc à porter deux constantes au lieu d'une. Le français
-    reste la langue du document ; la partie anglaise est balisée `lang="en"`
-    pour les lecteurs d'écran et les moteurs.
+    COMPATIBILITÉ DE L'URL HISTORIQUE — la page racine garde le français et
+    sa section anglaise balisée `lang="en"`, utilisée par les liens existants.
+    `site_i18n` génère désormais les variantes séparées depuis la partie
+    française complète, sans répéter cette section anglaise. Les liens de
+    langue n'obligent pas l'application à changer sa constante historique.
 
     D'OÙ VIENT CHAQUE PHRASE — ce qui décrit l'application est adossé à une
     lecture du code de ConvertAir : manifeste release et test
@@ -700,6 +699,8 @@ def write_support_files(config: dict, base_path: str) -> None:
     site_url = config.get("site_url")
     urls = [page_url(name, site_url, base_path) for name in ["index.html", "studio.html", "apps.html", "convertair.html", "convertair-privacy.html", "doccipher.html", "doccipher-privacy.html", "hgq.html", "hgq-privacy.html", "hgq-account-deletion.html", "support.html", "contact.html", "privacy.html", "legal.html", "data-deletion.html"]]
     urls = [url for url in urls if url]
+    if site_url:
+        urls += [site_i18n.url(config, locale, filename) for locale in site_i18n.LOCALES if locale != "fr" for filename in site_i18n.PAGES if filename != "404.html"]
     if urls:
         body = "\n".join(f"  <url><loc>{escape(url)}</loc></url>" for url in urls)
     else:
@@ -738,13 +739,19 @@ def main() -> None:
     base_path = normalise_base(config.get("base_path", "/"))
     config["site_url"] = validate_site_url(config.get("site_url"))
     copy_assets(args.import_assets)
-    for filename, content in pages(config).items():
-        (SITE / filename).write_text(content, encoding="utf-8", newline="\n")
+    root_config = dict(config, base_path="/")
+    output = pages(config)
+    output.update(site_i18n.build(pages(root_config), config))
+    for filename, content in output.items():
+        target = SITE / filename
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(content, encoding="utf-8", newline="\n")
     write_support_files(config, base_path)
     print(f"SITE_BUILT={SITE}")
     print(f"SITE_BASE_PATH={base_path}")
     print(f"SITE_URL={config.get('site_url') or 'UNCONFIGURED'}")
-    print(f"SITE_PAGES={len(pages(config))}")
+    print(f"SITE_PAGES={len(output)}")
+    print(f"SITE_LOCALES={len(site_i18n.LOCALES)}")
     print(f"SITE_ASSETS={len(ASSETS)}")
     print(f"SITE_MEDIA={len(product_pages.MEDIA_FILES)}")
 

@@ -17,7 +17,7 @@ retirée pour correspondre aux publicités et achats intégrés décrits. Les r�
 et autres clauses juridiques sont conservés.
 Les fragments sources `content/hgq-*.html` sont exclus de l'export ; les corps
 rendus sont protégés par des hashes et tests de mutation. L'allowlist active
-contient 65 fichiers, dont les deux pages légales HGQ dédiées.
+contient 866 fichiers avec les variantes de langue, dont les deux pages légales HGQ dédiées.
 
 Site officiel statique de BB16 Studio, prévu pour GitHub Pages. Le site est
 généré sans dépendance externe par `build_site.py`. Il reste publiable depuis
@@ -25,10 +25,18 @@ un dépôt public qui ne contient que ce dossier.
 
 ## Génération locale
 
+La localisation couvre 22 variantes correspondant aux langues de ConvertAir et
+DocCipher : 12 pages par variante, sélecteur sans JavaScript, arabe de droite à
+gauche et captures propres à chaque langue. Le français garde ses URL racine.
+HGQ et les formulaires privés restent en français ; PeakSolo attend sa phase
+produit. Voir [I18N.md](I18N.md) pour les sources, contrôles et limites de preuve.
+Les catalogues, scripts et preuves restent exclus de l'export public.
+
 Depuis cette racine :
 
 ```powershell
 python .\build_site.py
+python .\validate_i18n.py
 ```
 
 La configuration de publication prévue pour le dépôt `ShriverFX/bb16-studio`

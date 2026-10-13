@@ -32,7 +32,7 @@
   function cardLabel(state) {
     const playing = state.video && !state.video.paused && allowed();
     state.button.setAttribute('aria-pressed', String(Boolean(playing)));
-    state.label.textContent = playing ? "Mettre l'aperçu en pause" : "Voir l'aperçu animé";
+    state.label.textContent = playing ? (document.documentElement.dataset.pauseOne || "Mettre l'aperçu en pause") : (document.documentElement.dataset.playOne || "Voir l'aperçu animé");
   }
 
   videos.forEach(video => {
@@ -125,7 +125,7 @@
     document.querySelectorAll('[data-motion-toggle]').forEach(button => {
       button.hidden = reduce.matches;
       button.setAttribute('aria-pressed', String(paused));
-      button.textContent = paused ? 'Reprendre les aperçus' : 'Mettre les aperçus en pause';
+      button.textContent = paused ? (document.documentElement.dataset.resumeAll || 'Reprendre les aperçus') : (document.documentElement.dataset.pauseAll || 'Mettre les aperçus en pause');
     });
     cards.forEach(state => { state.button.hidden = reduce.matches; syncCard(state); });
     tours.forEach(syncTour);
