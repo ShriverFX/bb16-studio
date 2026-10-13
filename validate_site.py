@@ -171,7 +171,7 @@ def validate_current_media_and_hgq_legal(texts: dict[str, str]) -> None:
         raise SystemExit("HGQ_UNATTESTED_VIDEO=hgq.html")
 
 PRODUCT_PRICES = {
-    "convertair.html": ["9,99 €", "par mois", "49,99 €", "par an", "119,99 €", "au lancement, puis 159,99 €", "3 opérations par jour"],
+    "convertair.html": ["19,99 €", "par an", "49,99 €", "au lancement, puis 59,99 €", "Soit environ 1,67 € par mois", "3 opérations par jour"],
     "doccipher.html": ["19,99 €", "paiement unique", "Jusqu'à 15 documents", "Pas d'abonnement"],
     "hgq.html": ["3,99 €", "par mois", "24,99 €", "par an"],
 }

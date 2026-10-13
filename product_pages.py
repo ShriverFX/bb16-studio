@@ -155,16 +155,15 @@ PRODUCTS: dict[str, dict] = {
         "grid": [
             ("Le texte, reconnu sur place", "PDF cherchable et extraction du texte, avec des modèles embarqués : aucune image n'est envoyée à un serveur pour la reconnaissance.", "assets/screens/convertair/catalogue-ocr.webp", "assets/video/convertair/ocr.mp4", "Outils de reconnaissance de texte de ConvertAir"),
             ("Des réglages qui disent tout", "Thème, langue, nettoyage de l'historique, et une explication claire : vos documents sont traités sur l'appareil. Les connexions servent aux achats et aux téléchargements facultatifs via Google Play.", None, None, None),
-            ("Premium, quand il le faut", "Opérations illimitées, export sans filigrane, traitement par lot. Mensuel, annuel ou à vie.", None, None, None),
+            ("Premium, quand il le faut", "Opérations illimitées, export sans filigrane, traitement par lot. Annuel ou à vie.", None, None, None),
         ],
         "also": None,
         "soon": None,
         "pricing_intro": "Premium débloque les opérations illimitées, l'export sans filigrane et le traitement par lot.",
         "plans": [
             ("Gratuit", "0 €", "", ["3 opérations par jour", "Traitement sur l'appareil", "Sans compte"], False),
-            ("Mensuel", "9,99 €", "par mois", ["Premium complet", "Résiliable à tout moment dans Google Play"], False),
-            ("Annuel", "49,99 €", "par an", ["Premium complet", "Soit environ 4,17 € par mois"], True),
-            ("À vie", "119,99 €", "au lancement, puis 159,99 €", ["Premium complet", "Paiement unique"], False),
+            ("Annuel", "19,99 €", "par an", ["Premium complet", "Soit environ 1,67 € par mois", "Résiliable à tout moment dans Google Play"], True),
+            ("À vie", "49,99 €", "au lancement, puis 59,99 €", ["Premium complet", "Paiement unique"], False),
         ],
         "privacy": [
             ("Vos documents restent sur le téléphone", "Numérisation, conversions, signature et reconnaissance de texte s'exécutent sur l'appareil. BB16 Studio ne reçoit aucune copie."),

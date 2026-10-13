@@ -951,8 +951,8 @@
       "convertair.html"
     ]
   },
-  "46eeb7d598a4": {
-    "source": "Opérations illimitées, export sans filigrane, traitement par lot. Mensuel, annuel ou à vie.",
+  "fac169d0e3f1": {
+    "source": "Opérations illimitées, export sans filigrane, traitement par lot. Annuel ou à vie.",
     "markup": true,
     "pages": [
       "convertair.html"
@@ -1004,15 +1004,15 @@
       "doccipher.html"
     ]
   },
-  "269588ce4447": {
-    "source": "Mensuel",
+  "a2fe8e999e38": {
+    "source": "Annuel",
     "markup": true,
     "pages": [
       "convertair.html"
     ]
   },
-  "2b24f2bbd858": {
-    "source": "9,99 €<span class=\"plan-unit\">par mois</span>",
+  "59e112ec4240": {
+    "source": "19,99 €<span class=\"plan-unit\">par an</span>",
     "markup": true,
     "pages": [
       "convertair.html"
@@ -1025,29 +1025,15 @@
       "convertair.html"
     ]
   },
+  "e545a5a0daa0": {
+    "source": "Soit environ 1,67 € par mois",
+    "markup": true,
+    "pages": [
+      "convertair.html"
+    ]
+  },
   "d00d21ab2bdb": {
     "source": "Résiliable à tout moment dans Google Play",
-    "markup": true,
-    "pages": [
-      "convertair.html"
-    ]
-  },
-  "a2fe8e999e38": {
-    "source": "Annuel",
-    "markup": true,
-    "pages": [
-      "convertair.html"
-    ]
-  },
-  "854a4ce71db2": {
-    "source": "49,99 €<span class=\"plan-unit\">par an</span>",
-    "markup": true,
-    "pages": [
-      "convertair.html"
-    ]
-  },
-  "39465025ae6b": {
-    "source": "Soit environ 4,17 € par mois",
     "markup": true,
     "pages": [
       "convertair.html"
@@ -1060,8 +1046,8 @@
       "convertair.html"
     ]
   },
-  "359d8bf6ac1a": {
-    "source": "119,99 €<span class=\"plan-unit\">au lancement, puis 159,99 €</span>",
+  "9868ae577495": {
+    "source": "49,99 €<span class=\"plan-unit\">au lancement, puis 59,99 €</span>",
     "markup": true,
     "pages": [
       "convertair.html"
