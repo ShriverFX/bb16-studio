@@ -6,17 +6,57 @@ from difflib import SequenceMatcher
 from urllib.parse import urlsplit
 import site_i18n as i
 
+# Reviewed disclosures: market versus language, Premium network checks,
+# pseudonymous purchase data, offline cached rights and sales statistics.
+COMMERCIAL_DISCLOSURES = {
+    'convertair.html': ('e30028d064d6','17664717c594','db4c3354c759','5f7cc7fcc41a'),
+    'doccipher.html': ('e30028d064d6','8518ccfab1cc','db4c3354c759','461daf8a5435'),
+    'convertair-privacy.html': ('a47df237f0aa','6b31336cc71f'),
+    'doccipher-privacy.html': ('a47df237f0aa','6b31336cc71f'),
+}
+
+def validate_commercial(locale, name, tree, units, translated, reference):
+    nodes=list(i.walk(tree))
+    def fail(reason): raise ValueError(f'COMMERCIAL:{locale}:{name}:{reason}')
+    def price(cents): return f'{cents//100},{cents%100:02d} €'
+    def localized(source):
+        key=i.unit_id(source)
+        if key not in units: fail('missing-price-source')
+        return source if locale=='fr' else translated[key]
+    if name in ('convertair.html','doccipher.html'):
+        plans=[n for n in nodes if n.tag=='p' and n.get('class')=='plan-price']
+        if name=='convertair.html':
+            ref=reference['convertair']
+            expected=[
+                f'{price(ref["annual_cents"])}<span class="plan-unit">par an</span>',
+                f'{price(ref["lifetime_launch_cents"])}<span class="plan-unit">au lancement, puis {price(ref["lifetime_standard_cents"])}</span>',
+            ]
+        else:
+            expected=[f'{price(reference["doccipher"]["lifetime_cents"])}<span class="plan-unit">paiement unique</span>']
+        if len(plans)!=len(expected)+1: fail('unexpected-plan-count')
+        for plan,source in zip(plans[1:],expected):
+            if plan.inner()!=i.parse(localized(source)).inner(): fail('price-or-billing-period')
+    html=i.render(tree)
+    for key in COMMERCIAL_DISCLOSURES.get(name,()):
+        if key not in units: fail('missing-disclosure-source:'+key)
+        value=units[key]['source'] if locale=='fr' else translated[key]
+        if i.parse(value).inner() not in html: fail('missing-disclosure:'+key)
+
 def validate_catalog_content(locale, data, units):
     problems=[]
     for key,value in data.items():
         src=re.sub('<[^>]*>',' ',units[key]['source'])
         dst=re.sub('<[^>]*>',' ',value)
         expected_numbers=re.findall(r'\d+',src)
-        # These two dated policy notices say 1 October 2026 in the French source.
-        # East Asian year-month-day notation must not be distorted for a test.
-        if key in {'b60764210cd2','0cad9695e49a'} and locale in {'ja','ko','zh','zh-Hans','zh-Hant'}:
-            assert expected_numbers==['1','2026'], 'Refresh the dated policy contract'
-            expected_numbers=['2026','10','1']
+        # East Asian year-month-day notation includes a numeric month. Bind it
+        # to the actual source date, not an obsolete translation key or day.
+        policy_date=re.match(r'Dernière mise à jour : (\d+)(?:er)? octobre (\d{4})\b',src)
+        if policy_date and locale in {'ja','ko','zh','zh-Hans','zh-Hant'}:
+            day,year=policy_date.groups()
+            expected_numbers=[year,'10',day]
+        if policy_date and locale=='vi' and 'tháng 10' in dst:
+            day,year=policy_date.groups()
+            expected_numbers=[day,'10',year]
         if expected_numbers!=re.findall(r'\d+',dst):
             problems.append((key,'changed-number-price-or-date'))
         # A language prefix or a handful of word replacements is not translation.
@@ -57,13 +97,17 @@ def validate():
     config=json.loads((i.ROOT/'site.config.json').read_text(encoding='utf-8'))
     base=config['base_path']
     units=json.loads((i.ROOT/'locales'/'source.json').read_text(encoding='utf-8'))
+    reference=json.loads((i.ROOT/'content'/'commercial-reference.json').read_text(encoding='utf-8'))
     results=[]
     for locale in i.LOCALES:
-        if locale!='fr': validate_catalog_content(locale,i.catalog(locale,units),units)
+        translated={} if locale=='fr' else i.catalog(locale,units)
+        if locale!='fr': validate_catalog_content(locale,translated,units)
         for name in i.PAGES:
             path=i.ROOT/name if locale=='fr' else i.ROOT/locale/name
             tree=i.parse(path.read_text(encoding='utf-8'))
             nodes=list(i.walk(tree))
+            if name in COMMERCIAL_DISCLOSURES:
+                validate_commercial(locale,name,tree,units,translated,reference)
             html=next(n for n in nodes if n.tag=='html')
             assert html.get('lang')==locale, (locale,name,'language')
             assert html.get('dir')==('rtl' if locale=='ar' else 'ltr'), (locale,name,'direction')
@@ -99,7 +143,7 @@ def validate():
             results.append({'locale':locale,'page':name,'resources':len(set(media)),**weights})
     for asset in i.localized_media(): assert (i.ROOT/asset).is_file(), asset
     return {'status':'PASS','locales':len(i.LOCALES),'translated_units_per_locale':len(units),
-            'pages_checked':len(results),'localized_media_files':len(i.localized_media()),
+            'pages_checked':len(results),'commercial_pages_checked':len(i.LOCALES)*len(COMMERCIAL_DISCLOSURES),'localized_media_files':len(i.localized_media()),
             'max_product_initial_bytes':max(x.get('initial_bytes',0) for x in results),
             'native_linguistic_review':'NOT_OBSERVED','device_validation':'NOT_OBSERVED','pages':results}
 

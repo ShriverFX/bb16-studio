@@ -1060,8 +1060,8 @@
       "convertair.html"
     ]
   },
-  "7627b68c941c": {
-    "source": "Prix de référence en France. Le prix affiché par Google Play au moment de l'achat fait foi.",
+  "e30028d064d6": {
+    "source": "Références France en euros. La langue du site ne détermine pas votre pays d'achat. Les prix, devises et offres disponibles dépendent de votre compte Google Play ; vérifiez le prix final dans l'application avant de confirmer l'achat.",
     "markup": true,
     "pages": [
       "convertair.html",
@@ -1105,25 +1105,26 @@
       "convertair.html"
     ]
   },
-  "ad00534b46ba": {
-    "source": "Google Play encaisse le paiement, RevenueCat vérifie l'accès Premium. Après un résultat réussi affiché, l'API officielle Google Play peut proposer un avis. Aucun contenu de document ne passe par ces chemins.",
+  "17664717c594": {
+    "source": "Google Play et RevenueCat gèrent les offres, les achats, les restaurations et l'accès Premium. Des vérifications peuvent avoir lieu au démarrage et au retour dans l'application, même sans achat. Après un résultat réussi affiché, l'API officielle Google Play peut proposer un avis. Aucun contenu de document ne passe par ces chemins.",
     "markup": true,
     "pages": [
       "convertair.html"
     ]
   },
-  "7e96c667d35a": {
-    "source": "Ni publicité, ni mesure d'audience",
+  "0246f0bff1e8": {
+    "source": "Sans publicité ni suivi publicitaire",
     "markup": true,
     "pages": [
       "convertair.html"
     ]
   },
-  "2b3c02b310ea": {
-    "source": "Aucun compte, aucun identifiant publicitaire, aucun SDK d'analytics intégré à l'application.",
+  "db4c3354c759": {
+    "source": "Aucun compte BB16 à créer. RevenueCat traite un identifiant pseudonyme, des informations techniques et l'historique des achats pour gérer Premium et les statistiques de ventes. Il ne reçoit pas vos documents.",
     "markup": true,
     "pages": [
-      "convertair.html"
+      "convertair.html",
+      "doccipher.html"
     ]
   },
   "2baa85af54d5": {
@@ -1195,11 +1196,12 @@
     "source": "Faut-il une connexion Internet ?",
     "markup": true,
     "pages": [
-      "convertair.html"
+      "convertair.html",
+      "doccipher.html"
     ]
   },
-  "815f7cd32da0": {
-    "source": "Pas pour traiter vos documents. La connexion sert aux achats et à la vérification de l'accès Premium.",
+  "5f7cc7fcc41a": {
+    "source": "Les traitements documentaires fonctionnent sur l'appareil. Consulter les offres à jour, acheter et restaurer Premium nécessite Internet. L'accès Premium hors ligne s'appuie sur les droits déjà enregistrés sur cet appareil.",
     "markup": true,
     "pages": [
       "convertair.html"
@@ -1720,8 +1722,8 @@
       "doccipher.html"
     ]
   },
-  "b06b7f59d854": {
-    "source": "Google Play encaisse, RevenueCat vérifie l'accès Premium et l'API officielle Google Play peut proposer un avis après une réussite. Aucun document, coffre, mot de passe, PIN ni clé ne passe par ces chemins.",
+  "8518ccfab1cc": {
+    "source": "Google Play et RevenueCat gèrent les offres, les achats, les restaurations et l'accès Premium. Après une consultation des offres ou un achat, des vérifications peuvent aussi avoir lieu au déverrouillage et au retour dans l'application. Aucun document, coffre, mot de passe, PIN ni clé ne passe par ces chemins.",
     "markup": true,
     "pages": [
       "doccipher.html"
@@ -1771,6 +1773,20 @@
   },
   "29d3ab933574": {
     "source": "Non : 19,99 € une seule fois. Sans achat, DocCipher reste utilisable jusqu'à 15 documents.",
+    "markup": true,
+    "pages": [
+      "doccipher.html"
+    ]
+  },
+  "461daf8a5435": {
+    "source": "Le coffre fonctionne sur l'appareil. Consulter les offres à jour, acheter et restaurer Premium nécessite Internet. L'accès Premium hors ligne s'appuie sur les droits déjà enregistrés sur cet appareil.",
+    "markup": true,
+    "pages": [
+      "doccipher.html"
+    ]
+  },
+  "9b90d00c6900": {
+    "source": "Quelles données servent aux achats ?",
     "markup": true,
     "pages": [
       "doccipher.html"
@@ -2177,8 +2193,8 @@
       "convertair-privacy.html"
     ]
   },
-  "b60764210cd2": {
-    "source": "Dernière mise à jour : 1er octobre 2026 · <a href=\"/en/convertair-privacy.html#main\">Read this page in English</a>",
+  "25f36d03d1e5": {
+    "source": "Dernière mise à jour : 14 octobre 2026 · <a href=\"/en/convertair-privacy.html#main\">Read this page in English</a>",
     "markup": true,
     "pages": [
       "convertair-privacy.html"
@@ -2311,8 +2327,8 @@
       "doccipher-privacy.html"
     ]
   },
-  "190bb7f3cede": {
-    "source": "Les échanges avec RevenueCat répondent à deux finalités distinctes :",
+  "6092453387aa": {
+    "source": "Les échanges avec RevenueCat servent à gérer vos achats et vos droits Premium :",
     "markup": true,
     "pages": [
       "convertair-privacy.html",
@@ -2334,8 +2350,8 @@
       "doccipher-privacy.html"
     ]
   },
-  "909098ed0766": {
-    "source": "Ces données ne servent ni à la publicité, ni au profilage, ni au suivi. Si vous nous écrivez, votre message et votre adresse email servent à vous répondre, sur la base de notre intérêt légitime à le faire, ou de nos obligations légales lorsque vous exercez vos droits.",
+  "a47df237f0aa": {
+    "source": "Les données d'achat permettent aussi des statistiques de ventes et d'abonnements dans RevenueCat. Elles ne servent ni à la publicité, ni au profilage publicitaire, ni au suivi publicitaire. Si vous nous écrivez, votre message et votre adresse email servent à vous répondre, sur la base de notre intérêt légitime à le faire, ou de nos obligations légales lorsque vous exercez vos droits.",
     "markup": true,
     "pages": [
       "convertair-privacy.html",
@@ -2387,11 +2403,12 @@
       "convertair-privacy.html"
     ]
   },
-  "9147d6997f33": {
-    "source": "Aucun SDK de mesure d'audience, de statistiques d'usage ou de rapport de plantage n'est intégré à l'application ; les composants par lesquels les bibliothèques ML Kit de Google envoient des diagnostics en sont retirés.",
+  "6b31336cc71f": {
+    "source": "RevenueCat traite les données d'achat décrites ci-dessus, y compris pour les statistiques de ventes. Aucun SDK de suivi de l'utilisation des documents ni de rapport de plantage n'est ajouté ; les composants de diagnostics des bibliothèques ML Kit sont retirés.",
     "markup": true,
     "pages": [
-      "convertair-privacy.html"
+      "convertair-privacy.html",
+      "doccipher-privacy.html"
     ]
   },
   "b54f49c88fbb": {
@@ -2671,8 +2688,8 @@
       "doccipher-privacy.html"
     ]
   },
-  "0cad9695e49a": {
-    "source": "Dernière mise à jour : 1er octobre 2026 · <a href=\"/en/doccipher-privacy.html#main\">Read this page in English</a>",
+  "ddc79cc6c612": {
+    "source": "Dernière mise à jour : 14 octobre 2026 · <a href=\"/en/doccipher-privacy.html#main\">Read this page in English</a>",
     "markup": true,
     "pages": [
       "doccipher-privacy.html"
@@ -2862,13 +2879,6 @@
   },
   "1e7e48417df9": {
     "source": "Aucune publicité, aucun identifiant publicitaire et aucune vente de données.",
-    "markup": true,
-    "pages": [
-      "doccipher-privacy.html"
-    ]
-  },
-  "05ca1c7cb829": {
-    "source": "Aucun SDK d'analytics, de suivi d'usage ou de rapport de plantage n'est intégré à l'application ; les composants par lesquels les bibliothèques ML Kit de Google envoient des diagnostics en sont retirés.",
     "markup": true,
     "pages": [
       "doccipher-privacy.html"

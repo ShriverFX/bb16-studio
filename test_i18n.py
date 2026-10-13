@@ -1,6 +1,7 @@
 import unittest
+import json
 import site_i18n as i
-from validate_i18n import validate_catalog_content
+from validate_i18n import validate_catalog_content, validate_commercial
 
 class LocalizationTests(unittest.TestCase):
     def test_policy_date_accepts_correct_local_order_not_another_date(self):
@@ -15,6 +16,16 @@ class LocalizationTests(unittest.TestCase):
         for value in ('At least 9 days. Price: €19.99.','At least 90 days. Price: €1.99.'):
             with self.assertRaisesRegex(ValueError,'changed-number-price-or-date'):
                 validate_catalog_content('en',{'x':value},units)
+
+    def test_updated_policy_date_rejects_stale_day(self):
+        units={'new':{'source':'Dernière mise à jour : 14 octobre 2026','markup':False}}
+        for locale,good,bad in (
+            ('ja','最終更新日：2026年10月14日','最終更新日：2026年10月1日'),
+            ('vi','Cập nhật: 14 tháng 10 năm 2026','Cập nhật: 1 tháng 10 năm 2026'),
+        ):
+            validate_catalog_content(locale,{'new':good},units)
+            with self.assertRaisesRegex(ValueError,'changed-number-price-or-date'):
+                validate_catalog_content(locale,{'new':bad},units)
 
     def test_french_disguised_as_english_is_rejected(self):
         source='Vous pouvez conserver vos documents dans votre coffre. Cette page décrit les données de votre appareil.'
@@ -48,5 +59,30 @@ class LocalizationTests(unittest.TestCase):
         self.assertTrue({'zh','zh-Hans','zh-Hant','pt','pt-BR'}.issubset(i.LOCALES))
         self.assertEqual(len(i.localized_files()),21*12)
         self.assertEqual(len(set(i.localized_media())),21*26)
+
+    def test_commercial_gate_rejects_old_price_period_and_missing_disclosure(self):
+        units=json.loads((i.ROOT/'locales/source.json').read_text(encoding='utf-8'))
+        ref=json.loads((i.ROOT/'content/commercial-reference.json').read_text(encoding='utf-8'))
+        for locale in ('fr','en','ar','ja'):
+            translated={} if locale=='fr' else i.catalog(locale,units)
+            folder=i.ROOT if locale=='fr' else i.ROOT/locale
+            for name in ('convertair.html','doccipher.html'):
+                text=(folder/name).read_text(encoding='utf-8')
+                validate_commercial(locale,name,i.parse(text),units,translated,ref)
+                tree=i.parse(text)
+                price=next(n for n in i.walk(tree) if n.tag=='p' and n.get('class')=='plan-price' and '19' in n.inner())
+                price.children=i.parse(price.inner().replace('19','119',1)).children
+                with self.subTest(locale=locale,name=name), self.assertRaisesRegex(ValueError,'price-or-billing-period'):
+                    validate_commercial(locale,name,tree,units,translated,ref)
+                tree=i.parse(text)
+                unit=next(n for n in i.walk(tree) if n.get('class')=='plan-unit')
+                unit.children=['per month']
+                with self.assertRaisesRegex(ValueError,'price-or-billing-period'):
+                    validate_commercial(locale,name,tree,units,translated,ref)
+                key='db4c3354c759'
+                disclosure=units[key]['source'] if locale=='fr' else translated[key]
+                edited=i.render(i.parse(text)).replace(i.parse(disclosure).inner(),'')
+                with self.assertRaisesRegex(ValueError,'missing-disclosure'):
+                    validate_commercial(locale,name,i.parse(edited),units,translated,ref)
 
 if __name__=='__main__': unittest.main()

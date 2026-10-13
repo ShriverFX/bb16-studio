@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "market": "FR",
+  "currency": "EUR",
+  "evidence_date": "2026-10-14",
+  "evidence": "Read-only Google Play Console observation, France EUR prices; not a device checkout or public-release proof",
+  "convertair": {
+    "annual_cents": 1999,
+    "lifetime_launch_cents": 4999,
+    "lifetime_standard_cents": 5999,
+    "source": "Google Play Console, convertair_premium_annual:annual, convertair_lifetime_launch:lifetime and convertair_lifetime:lifetime observed 2026-10-14",
+    "annual_status": "active",
+    "lifetime_launch_status": "active",
+    "lifetime_standard_status": "draft_future_price",
+    "monthly_active_base_plans": 0,
+    "expected_offering": "launch"
+  },
+  "doccipher": {
+    "lifetime_cents": 1999,
+    "evidence_date": "2026-10-14",
+    "source": "Google Play Console, doccipher_lifetime:lifetime observed 2026-10-14",
+    "status": "active",
+    "expected_offering": "default"
+  },
+  "revenuecat_current_offering_live": "NOT_OBSERVED_BROWSER_DISCONNECTED"
+}

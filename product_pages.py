@@ -21,9 +21,17 @@ from __future__ import annotations
 
 from html import escape
 from pathlib import Path
+import json
 
 SITE = Path(__file__).resolve().parent
 STUDIO = SITE.parent  # C:\BB16\10_STUDIO
+COMMERCIAL = json.loads((SITE / "content/commercial-reference.json").read_text(encoding="utf-8"))
+
+
+def reference_price(app: str, offer: str) -> str:
+    """Dated France catalogue reference; never infer a buyer's country from language."""
+    cents = COMMERCIAL[app][offer + "_cents"]
+    return f"{cents // 100},{cents % 100:02d} €"
 
 CA_FR = STUDIO / "ConvertAir" / "docs" / "poc" / "screenshots-gate6" / "fr"
 DC_FR = STUDIO / "DocCipher" / "docs" / "store" / "screenshots" / "fr"
@@ -162,20 +170,20 @@ PRODUCTS: dict[str, dict] = {
         "pricing_intro": "Premium débloque les opérations illimitées, l'export sans filigrane et le traitement par lot.",
         "plans": [
             ("Gratuit", "0 €", "", ["3 opérations par jour", "Traitement sur l'appareil", "Sans compte"], False),
-            ("Annuel", "19,99 €", "par an", ["Premium complet", "Soit environ 1,67 € par mois", "Résiliable à tout moment dans Google Play"], True),
-            ("À vie", "49,99 €", "au lancement, puis 59,99 €", ["Premium complet", "Paiement unique"], False),
+            ("Annuel", reference_price("convertair", "annual"), "par an", ["Premium complet", "Soit environ 1,67 € par mois", "Résiliable à tout moment dans Google Play"], True),
+            ("À vie", reference_price("convertair", "lifetime_launch"), f"au lancement, puis {reference_price('convertair', 'lifetime_standard')}", ["Premium complet", "Paiement unique"], False),
         ],
         "privacy": [
             ("Vos documents restent sur le téléphone", "Numérisation, conversions, signature et reconnaissance de texte s'exécutent sur l'appareil. BB16 Studio ne reçoit aucune copie."),
-            ("Des services Store bornés", "Google Play encaisse le paiement, RevenueCat vérifie l'accès Premium. Après un résultat réussi affiché, l'API officielle Google Play peut proposer un avis. Aucun contenu de document ne passe par ces chemins."),
-            ("Ni publicité, ni mesure d'audience", "Aucun compte, aucun identifiant publicitaire, aucun SDK d'analytics intégré à l'application."),
+            ("Des services Store bornés", "Google Play et RevenueCat gèrent les offres, les achats, les restaurations et l'accès Premium. Des vérifications peuvent avoir lieu au démarrage et au retour dans l'application, même sans achat. Après un résultat réussi affiché, l'API officielle Google Play peut proposer un avis. Aucun contenu de document ne passe par ces chemins."),
+            ("Sans publicité ni suivi publicitaire", "Aucun compte BB16 à créer. RevenueCat traite un identifiant pseudonyme, des informations techniques et l'historique des achats pour gérer Premium et les statistiques de ventes. Il ne reçoit pas vos documents."),
         ],
         "privacy_link": ("convertair-privacy.html", "Lire la politique de confidentialité de ConvertAir"),
         "faq": [
             ("Mes documents sont-ils envoyés sur un serveur ?", "Non. Les traitements s'exécutent sur votre téléphone. Un fichier ne quitte ConvertAir que si vous le partagez, l'enregistrez ailleurs ou l'imprimez."),
             ("Que permet la version gratuite ?", "Trois opérations par jour, traitées sur l'appareil et sans compte. Premium lève la limite, retire le filigrane des exports et ajoute le traitement par lot."),
             ("Comment résilier un abonnement ?", "Dans Google Play, à tout moment. L'accès Premium reste actif jusqu'à la fin de la période payée. L'offre à vie est un paiement unique, sans renouvellement."),
-            ("Faut-il une connexion Internet ?", "Pas pour traiter vos documents. La connexion sert aux achats et à la vérification de l'accès Premium."),
+            ("Faut-il une connexion Internet ?", "Les traitements documentaires fonctionnent sur l'appareil. Consulter les offres à jour, acheter et restaurer Premium nécessite Internet. L'accès Premium hors ligne s'appuie sur les droits déjà enregistrés sur cet appareil."),
             ("Quand ConvertAir sera-t-il disponible ?", "La V1 Android est en préparation. Le lien Google Play apparaîtra sur cette page dès la publication. Une version iOS est à l'étude."),
         ],
         "captures_note": "Captures de l'application en français, prises sur une version de préparation.",
@@ -209,18 +217,20 @@ PRODUCTS: dict[str, dict] = {
         "pricing_intro": "Un seul achat, pour toujours. Pas d'abonnement.",
         "plans": [
             ("Gratuit", "0 €", "", ["Jusqu'à 15 documents", "Coffre chiffré sur l'appareil", "Sans compte"], False),
-            ("Premium", "19,99 €", "paiement unique", ["Plus de limite de 15 documents", "Des documents dans plusieurs coffres", "Code de panique et coffre leurre prévus dès le lancement", "Droit Premium à vie, sans supplément pour ces protections"], True),
+            ("Premium", reference_price("doccipher", "lifetime"), "paiement unique", ["Plus de limite de 15 documents", "Des documents dans plusieurs coffres", "Code de panique et coffre leurre prévus dès le lancement", "Droit Premium à vie, sans supplément pour ces protections"], True),
         ],
         "privacy": [
             ("Chiffré sur l'appareil", "Documents, aperçus, texte reconnu et données du coffre restent dans l'espace privé de l'application, chiffrés."),
             ("Ni compte, ni serveur documentaire", "BB16 Studio n'héberge, ne synchronise et ne sauvegarde aucun document. Vos documents ne sortent que par un export que vous déclenchez."),
-            ("Aucun document dans les services tiers", "Google Play encaisse, RevenueCat vérifie l'accès Premium et l'API officielle Google Play peut proposer un avis après une réussite. Aucun document, coffre, mot de passe, PIN ni clé ne passe par ces chemins."),
+            ("Aucun document dans les services tiers", "Google Play et RevenueCat gèrent les offres, les achats, les restaurations et l'accès Premium. Après une consultation des offres ou un achat, des vérifications peuvent aussi avoir lieu au déverrouillage et au retour dans l'application. Aucun document, coffre, mot de passe, PIN ni clé ne passe par ces chemins."),
         ],
         "privacy_link": ("doccipher-privacy.html", "Lire la politique de confidentialité de DocCipher"),
         "faq": [
             ("Et si j'oublie mon mot de passe ?", "Votre mot de passe maître n'est ni enregistré ni envoyé : personne, pas même BB16 Studio, ne peut le réinitialiser. Le kit de récupération (phrase et code QR), à imprimer ou enregistrer, sert à cela."),
             ("Mes documents sont-ils sauvegardés en ligne ?", "Non. Vous exportez vous-même une sauvegarde .dcvault chiffrée vers l'emplacement de votre choix. La synchronisation WebDAV ou Nextcloud n'est pas disponible dans cette version."),
             ("Premium est-il un abonnement ?", "Non : 19,99 € une seule fois. Sans achat, DocCipher reste utilisable jusqu'à 15 documents."),
+            ("Faut-il une connexion Internet ?", "Le coffre fonctionne sur l'appareil. Consulter les offres à jour, acheter et restaurer Premium nécessite Internet. L'accès Premium hors ligne s'appuie sur les droits déjà enregistrés sur cet appareil."),
+            ("Quelles données servent aux achats ?", "Aucun compte BB16 à créer. RevenueCat traite un identifiant pseudonyme, des informations techniques et l'historique des achats pour gérer Premium et les statistiques de ventes. Il ne reçoit pas vos documents."),
             ("Le code de panique et le coffre leurre seront-ils présents au lancement ?", "Ils sont prévus dès le lancement et inclus dans le droit Premium à vie, sans supplément. Leur implémentation locale reste en validation : ils ne seront rendus disponibles que si les revues de sécurité et les essais sur appareil requis sont concluants."),
             ("Quand DocCipher sera-t-il disponible ?", "DocCipher arrive bientôt sur Android. Il n'est pas encore disponible sur Google Play ; le lien apparaîtra sur cette page après sa publication."),
         ],
@@ -427,6 +437,9 @@ def product_body(key: str, config: dict) -> str:
         privacy_actions = f'<a class="button secondary" href="{HGQ_PRIVACY_URL}" rel="noopener">Politique de confidentialité HGQ</a>' + privacy_actions
 
     faq = "".join(f'<details class="faq-item"><summary>{escape(q)}</summary><p>{escape(a)}</p></details>' for q, a in p["faq"])
+    price_notice = ("Prix de référence en France. Le prix affiché par Google Play au moment de l'achat fait foi."
+        if key == "hgq" else
+        "Références France en euros. La langue du site ne détermine pas votre pays d'achat. Les prix, devises et offres disponibles dépendent de votre compte Google Play ; vérifiez le prix final dans l'application avant de confirmer l'achat.")
 
     return f'''<nav class="product-nav" aria-label="Dans cette page"><div class="container product-nav-inner"><a class="product-nav-name" href="#presentation">{name}</a><div class="product-nav-links"><a href="#fonctions">Fonctions</a><a href="#apercus">Aperçus</a><a href="#prix">Prix</a><a href="#confidentialite">Confidentialité</a><a href="#faq">FAQ</a></div></div></nav>
 <section class="product-hero" id="presentation"><div class="container product-hero-grid">
@@ -452,7 +465,7 @@ def product_body(key: str, config: dict) -> str:
 <section class="section" id="prix"><div class="container">
   <div class="section-head"><div><p class="eyebrow">03 · Prix</p><h2>Simple et affiché.</h2></div><p>{pricing_intro}</p></div>
   <div class="plan-grid">{"".join(plans)}</div>
-  <p class="meta plan-note">Prix de référence en France. Le prix affiché par Google Play au moment de l'achat fait foi.</p>
+  <p class="meta plan-note">{escape(price_notice, quote=False)}</p>
 </div></section>
 <section class="section alt" id="confidentialite"><div class="container">
   <div class="section-head"><div><p class="eyebrow">04 · Confidentialité</p><h2>Ce qui reste chez vous.</h2></div></div>
