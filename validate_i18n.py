@@ -81,6 +81,24 @@ def validate_catalog_content(locale, data, units):
         for token in ('RevenueCat','BB16 Studio','Google Play'):
             if token not in retention:
                 problems.append((retention_key,'missing-retention-token:'+token))
+    review_access_tokens={
+        '22a8b87a0c8b': ('ConvertAir','D1','Cloudflare','Google Play'),
+        'cf6065bf88fa': ('Cloudflare',),
+        '6cca0139b842': ('RevenueCat','ML Kit','android.permission.INTERNET'),
+        '461f0ef7c388': ('ConvertAir','13'),
+    }
+    for key,tokens in review_access_tokens.items():
+        if key not in units:
+            continue
+        value=data.get(key,'')
+        for token in tokens:
+            if token not in value:
+                problems.append((key,'missing-review-access-token:'+token))
+        for forbidden in ('CAR1_','CONVERTAIR_REVIEW_ACCESS_URL'):
+            if forbidden in value:
+                problems.append((key,'forbidden-review-access-secret-or-config:'+forbidden))
+        if locale in {'ja','ko','zh','zh-Hans','zh-Hant'} and '?' in value:
+            problems.append((key,'ascii-question-mark-in-cjk-review-access'))
     recording_words=('recording','aufnahme','grabación','रिकॉर्डिंग','rekaman','registrazione',
                      '録音','録画','녹음','opname','nagranie','gravação','录音','錄音','การบันทึก')
     for key,value in ((retention_key,retention),(rights_key,rights)):

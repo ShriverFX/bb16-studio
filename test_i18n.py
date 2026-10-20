@@ -106,6 +106,34 @@ class LocalizationTests(unittest.TestCase):
         units={'x': {'source':'Au moins 90 jours. Prix : 19,99 €.'}}
         validate_catalog_content('en',{'x':'At least 90 days. Price: €19.99.'},units)
 
+    def test_convertair_review_access_tokens_and_age_scope_are_guarded(self):
+        units=json.loads((i.ROOT/'locales/source.json').read_text(encoding='utf-8'))
+        required={
+            '22a8b87a0c8b': ('D1','Cloudflare','Google Play'),
+            'cf6065bf88fa': ('Cloudflare',),
+            '6cca0139b842': ('RevenueCat','ML Kit','android.permission.INTERNET'),
+            '461f0ef7c388': ('ConvertAir','13'),
+        }
+        for locale in (code for code in i.LOCALES if code!='fr'):
+            data=json.loads((i.ROOT/'locales'/f'{locale}.json').read_text(encoding='utf-8'))
+            validate_catalog_content(locale,data,units)
+            for key,tokens in required.items():
+                for token in tokens:
+                    broken=dict(data)
+                    broken[key]=broken[key].replace(token,'',1)
+                    with self.subTest(locale=locale,key=key,token=token), self.assertRaisesRegex(
+                        ValueError,'missing-review-access-token|changed-number-price-or-date'
+                    ):
+                        validate_catalog_content(locale,broken,units)
+        chinese=json.loads((i.ROOT/'locales/zh-Hant.json').read_text(encoding='utf-8'))
+        broken=dict(chinese); broken['22a8b87a0c8b']+='?'
+        with self.assertRaisesRegex(ValueError,'ascii-question-mark-in-cjk-review-access'):
+            validate_catalog_content('zh-Hant',broken,units)
+
+    def test_convertair_review_access_guards_ignore_unrelated_partial_fixtures(self):
+        units={'x': {'source':'Au moins 90 jours. Prix : 19,99 €.'}}
+        validate_catalog_content('en',{'x':'At least 90 days. Price: €19.99.'},units)
+
     def test_commercial_gate_rejects_old_price_period_and_missing_disclosure(self):
         units=json.loads((i.ROOT/'locales/source.json').read_text(encoding='utf-8'))
         ref=json.loads((i.ROOT/'content/commercial-reference.json').read_text(encoding='utf-8'))

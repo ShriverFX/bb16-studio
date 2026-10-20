@@ -28,7 +28,7 @@
 <p class="eyebrow">ConvertAir · ứng dụng di động</p>
 <h1>Chính sách quyền riêng tư</h1>
 <p class="lede">ConvertAir xử lý tài liệu trên thiết bị. Trang này mô tả những gì ứng dụng thực sự làm, không làm, dữ liệu mua hàng được gửi và phạm vi sử dụng giới hạn các dịch vụ Google Play.</p>
-<p class="meta">Cập nhật lần cuối: Ngày 19 tháng 10 năm 2026 · <a href="/en/convertair-privacy.html#main" hreflang="en">Đọc trang này bằng tiếng Anh</a></p>
+<p class="meta">Cập nhật lần cuối: Ngày 20 tháng 10 năm 2026 · <a href="/en/convertair-privacy.html#main" hreflang="en">Đọc trang này bằng tiếng Anh</a></p>
 
 <h2>Bên kiểm soát dữ liệu</h2>
 <p>Bên kiểm soát dữ liệu là BB16 Studio, nhà phát hành ConvertAir. Với mọi câu hỏi hoặc yêu cầu về dữ liệu, hãy viết tới <a href="mailto:bb16studio@gmail.com">bb16studio@gmail.com</a>. Chính sách này áp dụng cho phiên bản Android của ConvertAir được công bố cho Google Play. Ứng dụng chưa có tại đó.</p>
@@ -39,6 +39,10 @@
 
 <h2>Chia sẻ, lưu và in</h2>
 <p>Tệp chỉ rời ConvertAir khi bạn quyết định: chia sẻ qua bảng chia sẻ Android, lưu ở vị trí bạn chọn hoặc in. Khi đó tệp đi tới ứng dụng, thư mục hoặc dịch vụ in bạn chỉ định và được xử lý theo quy tắc của nơi đó. BB16 Studio không nhận bản sao nào.</p>
+
+<h2>Quyền truy cập trực tuyến tùy chọn để xét duyệt</h2>
+<p>Quyền truy cập để xét duyệt là tùy chọn và cần kết nối Internet. Khi bạn kích hoạt, ConvertAir gửi mã truy cập đã nhập và một mã định danh yêu cầu ngẫu nhiên đến dịch vụ xác minh. Dịch vụ lưu hàm băm của mã và trạng thái cấp quyền trong D1. Cloudflare xử lý địa chỉ IP và siêu dữ liệu mạng cần thiết để định tuyến, bảo vệ và vận hành yêu cầu. Không có tài liệu, hình ảnh hoặc văn bản đã nhận dạng nào được gửi đến dịch vụ này. Bạn có thể xóa quyền truy cập này trên màn hình của nó; việc xóa không làm thay đổi giao dịch mua trên Google Play.</p>
+<p>Cloudflare cũng có thể xử lý nhật ký vận hành và bảo mật theo chính sách quyền riêng tư và cấu hình áp dụng cho dịch vụ. Các loại nhật ký và thời hạn lưu giữ thay đổi theo những quy tắc và cấu hình đó.</p>
 
 <h2>Kết nối mạng: mua hàng của Google và chẩn đoán kỹ thuật</h2>
 <p>ConvertAir trực tiếp mở kết nối mạng để mua hàng. Mỗi lần bạn khởi chạy ứng dụng, nếu thiết bị được kết nối và khi ứng dụng quay trở lại nền trước, ConvertAir sẽ kiểm tra trạng thái quyền truy cập Premium của bạn bằng RevenueCat, ngay cả khi bạn chưa mua bất kỳ thứ gì. Xem phiếu mua hàng, mua hàng và khôi phục giao dịch mua hàng đều đi theo cùng một con đường. Thanh toán được thực hiện bởi Google Play. Việc xác minh giao dịch mua và quyền truy cập Premium của bạn được giao cho RevenueCat, nhà cung cấp dịch vụ thay mặt BB16 Studio và theo hướng dẫn của RevenueCat (nhà thầu phụ theo nghĩa của GDPR). SDK Android ML Kit được nhúng cũng có thể truyền dữ liệu phân tích sử dụng và chẩn đoán kỹ thuật được mô tả bên dưới tới Google.</p>
@@ -86,7 +90,7 @@
 <h2>Quyền Android</h2>
 <p>Manifest của bản dựng Android chuẩn bị cho Google Play khai báo chính xác ba mục:</p>
 <ul>
-<li><code>android.permission.INTERNET</code> — mua hàng thông qua chẩn đoán kỹ thuật RevenueCat và ML Kit được mô tả ở trên;</li>
+<li><code>android.permission.INTERNET</code> — quyền truy cập trực tuyến tùy chọn để xét duyệt, giao dịch mua qua RevenueCat và dữ liệu chẩn đoán kỹ thuật ML Kit được mô tả ở trên;</li>
 <li><code>com.android.vending.BILLING</code> — thanh toán Google Play;</li>
 <li>một quyền chữ ký nội bộ của ứng dụng, không mở bất kỳ khả năng nào của thiết bị.</li>
 </ul>
@@ -105,7 +109,7 @@
 <p>Để tạo PDF có thể tìm kiếm bằng tiếng Trung, Nhật, Hàn hoặc chữ Devanagari, ConvertAir cần phông bổ sung. Chúng chỉ được tải khi bạn yêu cầu trong Cài đặt hoặc tùy chọn nhận dạng văn bản. Google Play (Play Asset Delivery) thực hiện tải như cập nhật ứng dụng: ConvertAir không mở kết nối và không gửi tài liệu. Google Play nhận yêu cầu này và áp dụng chính sách riêng.</p>
 
 <h2>Trẻ em</h2>
-<p>ConvertAir không hướng riêng đến trẻ em và không cố ý thu thập dữ liệu về trẻ em.</p>
+<p>ConvertAir dành cho người từ 13 tuổi trở lên và không hướng đến trẻ em dưới 13 tuổi. Hoạt động xử lý kỹ thuật và giao dịch mua được mô tả trong chính sách này áp dụng theo cùng một cách khi người chưa thành niên sử dụng ứng dụng.</p>
 
 <h2>Quyền của bạn</h2>
 <p>Tài liệu, lịch sử và chữ ký chỉ ở trên thiết bị: bạn tự xem, xuất và xóa trong ứng dụng hoặc bằng cách gỡ ứng dụng. BB16 Studio không giữ bản sao.</p>

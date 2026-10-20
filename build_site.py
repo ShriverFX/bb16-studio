@@ -265,7 +265,7 @@ def convertair_privacy_body(email: str) -> str:
 <p class="eyebrow">ConvertAir · application mobile</p>
 <h1>Politique de confidentialité</h1>
 <p class="lede">ConvertAir traite vos documents sur votre appareil. Cette page décrit ce que l'application fait réellement, ce qu'elle ne fait pas, les données d'achat qu'elle envoie et son recours borné aux services Google Play.</p>
-<p class="meta">Dernière mise à jour : 19 octobre 2026 · <a href="#english">Read this page in English</a></p>
+<p class="meta">Dernière mise à jour : 20 octobre 2026 · <a href="#english">Read this page in English</a></p>
 
 <h2>Responsable du traitement</h2>
 <p>Le responsable du traitement est BB16 Studio, éditeur de ConvertAir. Pour toute question ou demande sur vos données, écrivez à <a href="mailto:{email}">{email}</a>. Cette politique couvre la version Android de ConvertAir annoncée pour Google Play. L'application n'y est pas encore disponible.</p>
@@ -276,6 +276,10 @@ def convertair_privacy_body(email: str) -> str:
 
 <h2>Partage, enregistrement et impression</h2>
 <p>Un fichier ne quitte ConvertAir que lorsque vous le décidez : partage par la feuille de partage d'Android, enregistrement à l'emplacement que vous choisissez, ou impression. Il part alors vers l'application, le dossier ou le service d'impression que vous avez désigné, qui le traite selon ses propres règles. BB16 Studio n'en reçoit aucune copie.</p>
+
+<h2>Accès d'examen en ligne facultatif</h2>
+<p>L'accès réservé à l'examen est facultatif et nécessite une connexion. Lorsque vous l'activez, ConvertAir envoie au service de vérification le code d'accès que vous avez saisi et un identifiant de requête aléatoire. Le service conserve dans D1 une empreinte du code et son état d'autorisation. Cloudflare traite l'adresse IP et les métadonnées réseau nécessaires à l'acheminement, à la protection et au fonctionnement de la requête. Aucun document, aucune image ni aucun texte reconnu n'est envoyé à ce service. Vous pouvez retirer cet accès depuis son écran ; son retrait ne modifie pas un achat Google Play.</p>
+<p>Cloudflare peut aussi traiter des journaux opérationnels et de sécurité selon sa politique de confidentialité et la configuration appliquée au service. Leurs catégories et durées de conservation varient selon ces règles et cette configuration.</p>
 
 <h2>Connexions réseau : achats et diagnostics techniques Google</h2>
 <p>ConvertAir ouvre directement une connexion réseau pour les achats. À chaque lancement, si l'appareil est connecté, et à nouveau lorsque l'application revient au premier plan, ConvertAir vérifie l'état de votre accès Premium auprès de RevenueCat, même si vous n'avez rien acheté. L'affichage des offres, l'achat et la restauration d'un achat passent par le même chemin. Le paiement est réalisé par Google Play. La vérification de l'achat et de votre accès Premium est confiée à RevenueCat, un prestataire qui agit pour le compte de BB16 Studio et sur ses instructions (sous-traitant au sens du RGPD). Les SDK Android ML Kit intégrés peuvent par ailleurs transmettre à Google les données techniques de diagnostic et d'analyse d'utilisation décrites ci-dessous.</p>
@@ -323,7 +327,7 @@ def convertair_privacy_body(email: str) -> str:
 <h2>Permissions Android</h2>
 <p>Le manifeste du build Android préparé pour Google Play déclare exactement trois entrées :</p>
 <ul>
-<li><code>android.permission.INTERNET</code> — les achats via RevenueCat et les diagnostics techniques ML Kit décrits ci-dessus ;</li>
+<li><code>android.permission.INTERNET</code> — l'accès d'examen en ligne facultatif, les achats via RevenueCat et les diagnostics techniques ML Kit décrits ci-dessus ;</li>
 <li><code>com.android.vending.BILLING</code> — la facturation Google Play ;</li>
 <li>une permission de signature interne à l'application, qui n'ouvre aucune capacité de l'appareil.</li>
 </ul>
@@ -342,7 +346,7 @@ def convertair_privacy_body(email: str) -> str:
 <p>Pour produire un PDF interrogeable en chinois, en japonais, en coréen ou dans une écriture devanagari, ConvertAir a besoin de polices supplémentaires. Elles ne sont téléchargées que si vous le demandez, depuis l'écran Réglages ou les options de reconnaissance de texte. Le téléchargement est assuré par Google Play (Play Asset Delivery), comme une mise à jour de l'application : ConvertAir n'ouvre aucune connexion pour cela et ne transmet aucun document. Google Play, qui reçoit cette demande, applique sa propre politique de confidentialité.</p>
 
 <h2>Enfants</h2>
-<p>ConvertAir ne s'adresse pas spécifiquement aux enfants et ne collecte sciemment aucune donnée les concernant.</p>
+<p>ConvertAir est destiné aux personnes âgées de 13 ans ou plus et ne s'adresse pas aux enfants de moins de 13 ans. Les traitements techniques et d'achat décrits dans cette politique s'appliquent de la même manière lorsqu'une personne mineure utilise l'application.</p>
 
 <h2>Vos droits</h2>
 <p>Vos documents, votre historique et vos signatures ne se trouvent que sur votre appareil : vous les consultez, les exportez et les supprimez vous-même, dans l'application ou en la désinstallant. BB16 Studio n'en détient aucune copie.</p>
@@ -358,7 +362,7 @@ def convertair_privacy_body(email: str) -> str:
 <div lang="en">
 <h2 id="english">English version</h2>
 <p class="lede">ConvertAir processes your documents on your device. This page describes what the app actually does, what it does not do, the purchase data it sends and its bounded use of Google Play services.</p>
-<p class="meta">Last updated: 19 October 2026 · <a href="#main">Lire cette page en français</a></p>
+<p class="meta">Last updated: 20 October 2026 · <a href="#main">Lire cette page en français</a></p>
 
 <h3>Data controller</h3>
 <p>The data controller is BB16 Studio, publisher of ConvertAir. For any question or request about your data, write to <a href="mailto:{email}">{email}</a>. This policy covers the Android version of ConvertAir announced for Google Play. The app is not available there yet.</p>
@@ -369,6 +373,10 @@ def convertair_privacy_body(email: str) -> str:
 
 <h3>Sharing, saving and printing</h3>
 <p>A file leaves ConvertAir only when you decide so: sharing through the Android share sheet, saving to a location you choose, or printing. It then goes to the app, folder or print service you selected, which handles it under its own rules. BB16 Studio receives no copy.</p>
+
+<h3>Optional online review access</h3>
+<p>Review access is optional and requires an internet connection. When you activate it, ConvertAir sends the access code you entered and a random request identifier to the verification service. The service stores a hash of the code and its authorization status in D1. Cloudflare processes the IP address and network metadata needed to route, protect and operate the request. No document, image or recognised text is sent to this service. You can remove this access from its screen; removing it does not change a Google Play purchase.</p>
+<p>Cloudflare may also process operational and security logs under its privacy policy and the configuration applied to the service. Their categories and retention periods vary under those rules and that configuration.</p>
 
 <h3>Network connections: purchases and Google technical diagnostics</h3>
 <p>ConvertAir directly opens a network connection for purchases. Each time the app starts with a connection, and again when it returns to the foreground, ConvertAir checks your Premium access with RevenueCat, even if you have bought nothing. Showing the offers, buying and restoring a purchase use the same path. The payment is carried out by Google Play. Checking the purchase and your Premium access is entrusted to RevenueCat, a provider acting on behalf of BB16 Studio and on its instructions (a processor under the GDPR). The Android ML Kit SDKs included in the app may also send Google the diagnostic and usage analytics technical data described below.</p>
@@ -416,7 +424,7 @@ def convertair_privacy_body(email: str) -> str:
 <h3>Android permissions</h3>
 <p>The Android build prepared for Google Play declares exactly three manifest entries:</p>
 <ul>
-<li><code>android.permission.INTERNET</code> — purchases through RevenueCat and the ML Kit technical diagnostics described above;</li>
+<li><code>android.permission.INTERNET</code> — optional online review access, purchases through RevenueCat and the ML Kit technical diagnostics described above;</li>
 <li><code>com.android.vending.BILLING</code> — Google Play billing;</li>
 <li>an app-internal signature permission, which grants no device capability.</li>
 </ul>
@@ -435,7 +443,7 @@ def convertair_privacy_body(email: str) -> str:
 <p>To produce a searchable PDF in Chinese, Japanese, Korean or a Devanagari script, ConvertAir needs additional fonts. They are downloaded only if you ask, from the Settings screen or the text-recognition options. The download is handled by Google Play (Play Asset Delivery), like an app update: ConvertAir opens no connection for it and sends no document. Google Play, which receives the request, applies its own privacy policy.</p>
 
 <h3>Children</h3>
-<p>ConvertAir is not directed at children and does not knowingly collect any data about them.</p>
+<p>ConvertAir is intended for people aged 13 or older and is not directed at children under 13. The technical and purchase processing described in this policy applies in the same way when a minor uses the app.</p>
 
 <h3>Your rights</h3>
 <p>Your documents, history and signatures exist only on your device: you view, export and delete them yourself, in the app or by uninstalling it. BB16 Studio holds no copy of them.</p>

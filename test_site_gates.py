@@ -242,6 +242,15 @@ class SiteGateMutationTests(unittest.TestCase):
                     "MISSING_PRIVACY_TEXT=convertair-privacy.html",
                 )
 
+    def test_convertair_online_review_access_notice_is_mandatory(self) -> None:
+        for phrase in validate_site.CONVERTAIR_REVIEW_ACCESS_REQUIRED:
+            with self.subTest(phrase=phrase):
+                self.assert_removal_is_rejected(
+                    "convertair-privacy.html",
+                    phrase,
+                    "MISSING_PRIVACY_TEXT=convertair-privacy.html",
+                )
+
     def test_convertair_product_review_claim_is_mandatory(self) -> None:
         self.assert_removal_is_rejected(
             "convertair.html",

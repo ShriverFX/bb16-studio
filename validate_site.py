@@ -152,6 +152,28 @@ PRIVACY_J0_TECHNICAL_REQUIRED = {'convertair-privacy.html': ['Lors de ces traite
 for _page, _phrases in PRIVACY_J0_TECHNICAL_REQUIRED.items():
     PRIVACY_REQUIRED[_page].extend(_phrases)
 
+CONVERTAIR_REVIEW_ACCESS_REQUIRED = [
+    "Accès d'examen en ligne facultatif",
+    "Optional online review access",
+    "identifiant de requête aléatoire",
+    "random request identifier",
+    "une empreinte du code",
+    "a hash of the code",
+    "Cloudflare traite l'adresse IP et les métadonnées réseau",
+    "Cloudflare processes the IP address and network metadata",
+    "journaux opérationnels et de sécurité",
+    "operational and security logs",
+    "catégories et durées de conservation varient",
+    "categories and retention periods vary",
+    "20 octobre 2026",
+    "20 October 2026",
+    "âgées de 13 ans ou plus",
+    "aged 13 or older",
+    "lorsqu'une personne mineure utilise l'application",
+    "when a minor uses the app",
+]
+PRIVACY_REQUIRED["convertair-privacy.html"].extend(CONVERTAIR_REVIEW_ACCESS_REQUIRED)
+
 PRIVACY_FORBIDDEN = ["rien, de notre côté", "nothing on our side", "pas à vous", "not to you", "identifiant anonyme", "anonymous identifier", "identifiant d'achat anonyme", "anonymous purchase identifier", "leurs propres politiques", "under their own policies", "supprimant le coffre", "deleting the vault"]
 CONVERTAIR_PRIVACY_FORBIDDEN = [
     "les composants de diagnostics des bibliothèques ML Kit sont retirés",
@@ -166,6 +188,16 @@ CONVERTAIR_PRIVACY_FORBIDDEN = [
     "you can give the approximate date, device model",
     "find the plug",
     "deletion of an unidentified file",
+    "CAR1_",
+    "CONVERTAIR_REVIEW_ACCESS_URL",
+    "Cloudflare ne collecte aucune donnée",
+    "Cloudflare collects no data",
+    "aucun journal Cloudflare",
+    "no Cloudflare logs",
+    "tous les journaux sont conservés 3 jours",
+    "all logs are retained for 3 days",
+    "ne collecte sciemment aucune donnée les concernant",
+    "does not knowingly collect any data about them",
 ]
 COMING_SOON_PRIVACY_FORBIDDEN = [
     "distribuée sur Google Play",

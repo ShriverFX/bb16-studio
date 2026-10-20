@@ -28,7 +28,7 @@
 <p class="eyebrow">ConvertAir · mobile application</p>
 <h1>Privacy policy</h1>
 <p class="lede">ConvertAir processes your documents on your device. This page describes what the application actually does, what it does not do, the purchase data it sends and its limited use of Google Play services.</p>
-<p class="meta">Last updated: October 19, 2026 · <a href="/en/convertair-privacy.html#main" hreflang="en">Read this page in English</a></p>
+<p class="meta">Last updated: October 20, 2026 · <a href="/en/convertair-privacy.html#main" hreflang="en">Read this page in English</a></p>
 
 <h2>Data controller</h2>
 <p>The data controller is BB16 Studio, publisher of ConvertAir. For any question or request concerning your data, write to <a href="mailto:bb16studio@gmail.com">bb16studio@gmail.com</a>. This policy covers the Android version of ConvertAir announced for Google Play. The application is not yet available there.</p>
@@ -39,6 +39,10 @@
 
 <h2>Sharing, saving and printing</h2>
 <p>A file leaves ConvertAir only when you decide: by sharing through the Android share sheet, saving it to the location you choose, or printing it. It then goes to the application, folder or printing service you selected, which processes it according to its own rules. BB16 Studio receives no copy.</p>
+
+<h2>Optional online review access</h2>
+<p>Review access is optional and requires an internet connection. When you activate it, ConvertAir sends the access code you entered and a random request identifier to the verification service. The service stores a hash of the code and its authorization status in D1. Cloudflare processes the IP address and network metadata needed to route, protect and operate the request. No document, image or recognised text is sent to this service. You can remove this access from its screen; removing it does not change a Google Play purchase.</p>
+<p>Cloudflare may also process operational and security logs under its privacy policy and the configuration applied to the service. Their categories and retention periods vary under those rules and that configuration.</p>
 
 <h2>Network connections: Google purchases and technical diagnostics</h2>
 <p>ConvertAir directly opens a network connection for purchases. Each time the app starts with a connection, and again when it returns to the foreground, ConvertAir checks your Premium access with RevenueCat, even if you have bought nothing. Showing the offers, buying and restoring a purchase use the same path. The payment is carried out by Google Play. Checking the purchase and your Premium access is entrusted to RevenueCat, a provider acting on behalf of BB16 Studio and on its instructions (a processor under the GDPR). The Android ML Kit SDKs included in the app may also send Google the diagnostic and usage analytics technical data described below.</p>
@@ -86,7 +90,7 @@
 <h2>Android permissions</h2>
 <p>The manifest of the Android build prepared for Google Play declares exactly three entries:</p>
 <ul>
-<li><code>android.permission.INTERNET</code> — purchases via RevenueCat and ML Kit technical diagnostics described above;</li>
+<li><code>android.permission.INTERNET</code> — optional online review access, purchases through RevenueCat and the ML Kit technical diagnostics described above;</li>
 <li><code>com.android.vending.BILLING</code> — Google Play billing;</li>
 <li>an internal signature permission for the application, which grants no device capability.</li>
 </ul>
@@ -105,7 +109,7 @@
 <p>To produce a searchable PDF in Chinese, Japanese, Korean or a Devanagari script, ConvertAir needs additional fonts. They are downloaded only if you request them, from the Settings screen or text-recognition options. Google Play handles the download (Play Asset Delivery), like an application update: ConvertAir opens no connection for this purpose and transmits no document. Google Play, which receives this request, applies its own privacy policy.</p>
 
 <h2>Children</h2>
-<p>ConvertAir is not specifically directed at children and does not knowingly collect any data concerning them.</p>
+<p>ConvertAir is intended for people aged 13 or older and is not directed at children under 13. The technical and purchase processing described in this policy applies in the same way when a minor uses the app.</p>
 
 <h2>Your rights</h2>
 <p>Your documents, history and signatures are found only on your device: you view, export and delete them yourself, in the application or by uninstalling it. BB16 Studio holds no copy.</p>
