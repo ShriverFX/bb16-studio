@@ -11,7 +11,7 @@ import site_i18n as i
 COMMERCIAL_DISCLOSURES = {
     'convertair.html': ('e30028d064d6','17664717c594','db4c3354c759','5f7cc7fcc41a'),
     'doccipher.html': ('e30028d064d6','8518ccfab1cc','db4c3354c759','461daf8a5435'),
-    'convertair-privacy.html': ('a47df237f0aa','6b31336cc71f'),
+    'convertair-privacy.html': ('a47df237f0aa','387e0a375332'),
     'doccipher-privacy.html': ('a47df237f0aa','6b31336cc71f'),
 }
 
@@ -67,6 +67,60 @@ def validate_catalog_content(locale, data, units):
                 problems.append((key,'almost-untranslated-paragraph'))
         if re.search(r'\b(?:vous pouvez|vos documents|sur votre appareil|cette page|dans le navigateur|ne joignez jamais|les données|votre coffre|écrivez-nous)\b',dst,re.I):
             problems.append((key,'residual-french'))
+    rights_key='8bc9e3640a7d'
+    retention_key='ab727a80ec51'
+    rights=data.get(rights_key,'') if rights_key in units else ''
+    retention=data.get(retention_key,'') if retention_key in units else ''
+    if rights_key in units:
+        for token in ('GPA.','RevenueCat','RevenueCat App User ID'):
+            if token not in rights:
+                problems.append((rights_key,'missing-immutable-rights-token:'+token))
+        if re.search(r'(?i)\b(?:plug|socket|prise|stecker|enchufe|listing|file|fichier)\b',rights):
+            problems.append((rights_key,'corrupted-revenuecat-record-wording'))
+    if retention_key in units:
+        for token in ('RevenueCat','BB16 Studio','Google Play'):
+            if token not in retention:
+                problems.append((retention_key,'missing-retention-token:'+token))
+    recording_words=('recording','aufnahme','grabación','रिकॉर्डिंग','rekaman','registrazione',
+                     '録音','録画','녹음','opname','nagranie','gravação','录音','錄音','การบันทึก')
+    for key,value in ((retention_key,retention),(rights_key,rights)):
+        if key in units and any(word in value.casefold() for word in recording_words):
+            problems.append((key,'recording-instead-of-data'))
+    reviewed_locale_phrases={
+        'ar': {rights_key: ('تقييد المعالجة','ستشرح لك BB16 Studio هذا القيد')},
+        'ko': {retention_key: ('해당 데이터를 삭제하거나 앱을 제거할 때까지',)},
+        'zh-Hant': {'4cd480f1d99c': ('ConvertAir 隱私政策：本機文件、購買和 Google Play 元件。',)},
+    }
+    for key,phrases in reviewed_locale_phrases.get(locale,{}).items():
+        if key not in units:
+            continue
+        for phrase in phrases:
+            if phrase not in data.get(key,''):
+                problems.append((key,'missing-reviewed-locale-semantics:'+phrase))
+    reviewed_locale_forbidden={
+        'ar': {rights_key: ('أو التحديد أو قابلية النقل',)},
+        'ko': {retention_key: ('기기를 삭제하거나 앱을 제거할 때까지',)},
+    }
+    for key,phrases in reviewed_locale_forbidden.get(locale,{}).items():
+        if key not in units:
+            continue
+        for phrase in phrases:
+            if phrase in data.get(key,''):
+                problems.append((key,'forbidden-reviewed-locale-semantics:'+phrase))
+    if locale=='en':
+        expected={
+            retention_key: ('which data concerns you','does not promise erasure it cannot verify'),
+            '387e0a375332': ('a device identifier for features provided through Google Play services',
+                             'does not list document, image or recognised-text content'),
+            rights_key: ('which RevenueCat data concerns you',
+                         'will not claim to have erased data it could not identify as yours'),
+        }
+        for key,phrases in expected.items():
+            if key not in units:
+                continue
+            for phrase in phrases:
+                if phrase not in data.get(key,''):
+                    problems.append((key,'missing-reviewed-english-semantics:'+phrase))
     if problems: raise ValueError(f'I18N_CONTENT:{locale}:{problems}')
 
 def product_weight(nodes, html_path, base):

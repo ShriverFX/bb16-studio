@@ -60,6 +60,52 @@ class LocalizationTests(unittest.TestCase):
         self.assertEqual(len(i.localized_files()),21*12)
         self.assertEqual(len(set(i.localized_media())),21*26)
 
+    def test_convertair_revenuecat_rights_tokens_and_meaning_are_guarded(self):
+        units=json.loads((i.ROOT/'locales/source.json').read_text(encoding='utf-8'))
+        key='8bc9e3640a7d'
+        for locale in (code for code in i.LOCALES if code!='fr'):
+            data=json.loads((i.ROOT/'locales'/f'{locale}.json').read_text(encoding='utf-8'))
+            validate_catalog_content(locale,data,units)
+            broken=dict(data)
+            broken[key]=broken[key].replace('GPA.','IPK',1)
+            with self.subTest(locale=locale,damage='order-prefix'), self.assertRaisesRegex(
+                ValueError,'missing-immutable-rights-token:GPA'
+            ):
+                validate_catalog_content(locale,broken,units)
+        english=json.loads((i.ROOT/'locales/en.json').read_text(encoding='utf-8'))
+        for damage in (' find the plug',' deletion of an unidentified file'):
+            broken=dict(english); broken[key]+=damage
+            with self.subTest(damage=damage), self.assertRaisesRegex(
+                ValueError,'corrupted-revenuecat-record-wording'
+            ):
+                validate_catalog_content('en',broken,units)
+        broken=dict(english); broken['ab727a80ec51']+=' recording'
+        with self.assertRaisesRegex(ValueError,'recording-instead-of-data'):
+            validate_catalog_content('en',broken,units)
+        for locale,key,good,bad in (
+            ('ar',key,'تقييد المعالجة','التحديد'),
+            ('ko','ab727a80ec51','해당 데이터를 삭제','기기를 삭제'),
+        ):
+            data=json.loads((i.ROOT/'locales'/f'{locale}.json').read_text(encoding='utf-8'))
+            broken=dict(data); broken[key]=broken[key].replace(good,bad,1)
+            with self.subTest(locale=locale,damage='reviewed-locale-semantics'), self.assertRaisesRegex(
+                ValueError,'reviewed-locale-semantics'
+            ):
+                validate_catalog_content(locale,broken,units)
+
+    def test_convertair_traditional_chinese_privacy_title_is_guarded(self):
+        units=json.loads((i.ROOT/'locales/source.json').read_text(encoding='utf-8'))
+        locale='zh-Hant'; key='4cd480f1d99c'
+        data=json.loads((i.ROOT/'locales'/f'{locale}.json').read_text(encoding='utf-8'))
+        self.assertEqual(data[key],'ConvertAir 隱私政策：本機文件、購買和 Google Play 元件。')
+        broken=dict(data); broken[key]='ConvertAir ?私政策：本地文?、??和 Google Play ?件。'
+        with self.assertRaisesRegex(ValueError,'missing-reviewed-locale-semantics'):
+            validate_catalog_content(locale,broken,units)
+
+    def test_convertair_guards_do_not_require_absent_units_in_partial_fixtures(self):
+        units={'x': {'source':'Au moins 90 jours. Prix : 19,99 €.'}}
+        validate_catalog_content('en',{'x':'At least 90 days. Price: €19.99.'},units)
+
     def test_commercial_gate_rejects_old_price_period_and_missing_disclosure(self):
         units=json.loads((i.ROOT/'locales/source.json').read_text(encoding='utf-8'))
         ref=json.loads((i.ROOT/'content/commercial-reference.json').read_text(encoding='utf-8'))

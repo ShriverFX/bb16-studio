@@ -111,6 +111,20 @@ class SiteGateMutationTests(unittest.TestCase):
                 with self.subTest(page=page, phrase=phrase):
                     self.assert_removal_is_rejected(page, phrase, "MISSING_PRIVACY_TEXT=" + page)
 
+    def test_convertair_privacy_rejects_stale_mlkit_and_erasure_overclaims(self) -> None:
+        target = (validate_site.SITE / "convertair-privacy.html").resolve()
+        original_read_text = Path.read_text
+        for phrase in validate_site.CONVERTAIR_PRIVACY_FORBIDDEN:
+            def edited_read_text(path: Path, *args, **kwargs) -> str:
+                text = original_read_text(path, *args, **kwargs)
+                return text + "<p>" + phrase + "</p>" if path.resolve() == target else text
+
+            with self.subTest(phrase=phrase), patch.object(Path, "read_text", new=edited_read_text):
+                with contextlib.redirect_stdout(io.StringIO()), self.assertRaisesRegex(
+                    SystemExit, "FORBIDDEN_PRIVACY_TEXT=convertair-privacy.html"
+                ):
+                    validate_site.main()
+
     def test_social_links_reject_untrusted_destinations(self) -> None:
         for url in (
             "javascript:alert(1)",

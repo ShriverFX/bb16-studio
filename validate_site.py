@@ -28,7 +28,7 @@ ORIGINAL_LOGOS = {
 # The legal-basis/retention/rights phrases below close the P2 found in round 2:
 # RevenueCat is contacted even by installs that never bought anything, but
 # those three sections used to cover only buyers.
-PRIVACY_COMMON_REQUIRED = ["GPA.", "sous-traitant", "processor", "pseudonyme", "pseudonymous", "le pays de votre compte Google Play", "the country of your Google Play account", "contrat d'utilisation de l'application", "performance of the contract for using the app", "modèle de votre appareil", "model of your device", "sans numéro de commande", "no order number needed"]
+PRIVACY_COMMON_REQUIRED = ["GPA.", "sous-traitant", "processor", "pseudonyme", "pseudonymous", "le pays de votre compte Google Play", "the country of your Google Play account", "contrat d'utilisation de l'application", "performance of the contract for using the app"]
 PRIVACY_REQUIRED = {
     "convertair-privacy.html": PRIVACY_COMMON_REQUIRED + [
         "même si vous n'avez rien acheté",
@@ -57,6 +57,10 @@ PRIVACY_REQUIRED = {
         "it uses neither the success counter nor the 60-day delay",
     ],
     "doccipher-privacy.html": PRIVACY_COMMON_REQUIRED + [
+        "modèle de votre appareil",
+        "model of your device",
+        "sans numéro de commande",
+        "no order number needed",
         "USE_BIOMETRIC",
         "USE_FINGERPRINT",
         "WebDAV or Nextcloud synchronisation is not available",
@@ -99,6 +103,21 @@ PRIVACY_REQUIRED = {
 # Technical J0 disclosures; no runtime or contractual assurance is inferred.
 PRIVACY_J0_TECHNICAL_REQUIRED = {'convertair-privacy.html': ['Lors de ces traitements documentaires locaux',
                              'During this local document processing',
+                             "un identifiant d'appareil pour les fonctions fournies par les services Google Play",
+                             'des identifiants propres à chaque installation',
+                             'la taille des entrées et sorties',
+                             'a device identifier for features provided through Google Play services',
+                             'per-installation identifiers',
+                             'input and output sizes',
+                             'ne mentionne pas le contenu des documents',
+                             'does not list document, image or recognised-text content',
+                             'RevenueCat App User ID',
+                             "Si votre version ne permet pas d'afficher cet identifiant",
+                             'If your version cannot display this identifier',
+                             'peut ne pas savoir avec certitude quelles données RevenueCat vous concernent',
+                             'may be unable to determine with certainty which RevenueCat data concerns you',
+                             "ne déclarera pas avoir effacé des données qu'il n'a pas pu identifier comme vôtres",
+                             'will not claim to have erased data it could not identify as yours',
                              "Le SDK d'achats Android peut demander à Google Block Store",
                              'The Android purchase SDK may ask Google Block Store',
                              "distinct de la sauvegarde des fichiers de l'application",
@@ -134,6 +153,20 @@ for _page, _phrases in PRIVACY_J0_TECHNICAL_REQUIRED.items():
     PRIVACY_REQUIRED[_page].extend(_phrases)
 
 PRIVACY_FORBIDDEN = ["rien, de notre côté", "nothing on our side", "pas à vous", "not to you", "identifiant anonyme", "anonymous identifier", "identifiant d'achat anonyme", "anonymous purchase identifier", "leurs propres politiques", "under their own policies", "supprimant le coffre", "deleting the vault"]
+CONVERTAIR_PRIVACY_FORBIDDEN = [
+    "les composants de diagnostics des bibliothèques ML Kit sont retirés",
+    "diagnostic components of the ML Kit libraries are removed",
+    "ces éléments et l'identifiant propre à RevenueCat suffisent à retrouver votre fiche",
+    "this and RevenueCat's own identifier are enough to find your record",
+    "Aucun contenu de document ne passe par ces échanges",
+    "No document content travels through these exchanges",
+    "ces diagnostics ne comprennent pas le contenu",
+    "these diagnostics do not include document",
+    "vous pouvez indiquer la date approximative, le modèle de l'appareil",
+    "you can give the approximate date, device model",
+    "find the plug",
+    "deletion of an unidentified file",
+]
 COMING_SOON_PRIVACY_FORBIDDEN = [
     "distribuée sur Google Play",
     "distributed on Google Play",
@@ -475,7 +508,8 @@ def main() -> None:
         missing_text = [phrase for phrase in required if phrase not in text]
         if missing_text:
             raise SystemExit(f"MISSING_PRIVACY_TEXT={page}:" + "|".join(missing_text))
-        stale_text = [phrase for phrase in PRIVACY_FORBIDDEN if phrase in text]
+        forbidden = PRIVACY_FORBIDDEN + (CONVERTAIR_PRIVACY_FORBIDDEN if page == "convertair-privacy.html" else [])
+        stale_text = [phrase for phrase in forbidden if phrase in text]
         if stale_text:
             raise SystemExit(f"FORBIDDEN_PRIVACY_TEXT={page}:" + "|".join(stale_text))
         availability_overclaims = [

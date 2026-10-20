@@ -2157,8 +2157,8 @@
       "legal.html"
     ]
   },
-  "b34f9a274db5": {
-    "source": "Politique de confidentialité de l'application ConvertAir : traitement local des documents, réseau limité aux achats.",
+  "4cd480f1d99c": {
+    "source": "Politique de confidentialité de ConvertAir : documents locaux, achats et composants Google Play.",
     "markup": false,
     "pages": [
       "convertair-privacy.html"
@@ -2193,8 +2193,8 @@
       "convertair-privacy.html"
     ]
   },
-  "25f36d03d1e5": {
-    "source": "Dernière mise à jour : 14 octobre 2026 · <a href=\"/en/convertair-privacy.html#main\">Read this page in English</a>",
+  "0c867eea968d": {
+    "source": "Dernière mise à jour : 19 octobre 2026 · <a href=\"/en/convertair-privacy.html#main\">Read this page in English</a>",
     "markup": true,
     "pages": [
       "convertair-privacy.html"
@@ -2250,15 +2250,15 @@
       "convertair-privacy.html"
     ]
   },
-  "cfe0a9021e8f": {
-    "source": "La seule connexion réseau ouverte par l'application : les achats",
+  "b7a40a8f7fab": {
+    "source": "Connexions réseau : achats et diagnostics techniques Google",
     "markup": true,
     "pages": [
       "convertair-privacy.html"
     ]
   },
-  "4e4c28eb956a": {
-    "source": "ConvertAir n'ouvre directement de connexion réseau que pour les achats. À chaque lancement, si l'appareil est connecté, et à nouveau lorsque l'application revient au premier plan, ConvertAir vérifie l'état de votre accès Premium auprès de RevenueCat, même si vous n'avez rien acheté. L'affichage des offres, l'achat et la restauration d'un achat passent par le même chemin. Le paiement est réalisé par Google Play. La vérification de l'achat et de votre accès Premium est confiée à RevenueCat, un prestataire qui agit pour le compte de BB16 Studio et sur ses instructions (sous-traitant au sens du RGPD). Aucun contenu de document ne passe par ce chemin.",
+  "9272e69feafd": {
+    "source": "ConvertAir ouvre directement une connexion réseau pour les achats. À chaque lancement, si l'appareil est connecté, et à nouveau lorsque l'application revient au premier plan, ConvertAir vérifie l'état de votre accès Premium auprès de RevenueCat, même si vous n'avez rien acheté. L'affichage des offres, l'achat et la restauration d'un achat passent par le même chemin. Le paiement est réalisé par Google Play. La vérification de l'achat et de votre accès Premium est confiée à RevenueCat, un prestataire qui agit pour le compte de BB16 Studio et sur ses instructions (sous-traitant au sens du RGPD). Les SDK Android ML Kit intégrés peuvent par ailleurs transmettre à Google les données techniques de diagnostic et d'analyse d'utilisation décrites ci-dessous.",
     "markup": true,
     "pages": [
       "convertair-privacy.html"
@@ -2303,12 +2303,11 @@
       "doccipher-privacy.html"
     ]
   },
-  "42f4dbc20304": {
-    "source": "Cet identifiant ne contient ni votre nom ni votre adresse email, mais il n'est pas anonyme : il est associé à vos achats Google Play, eux-mêmes liés à votre compte Google, et une restauration d'achat peut le relier aux identifiants de vos autres installations. C'est une donnée pseudonyme. Aucun compte n'est créé, la collecte automatique d'identifiants d'appareil (identifiant publicitaire, identifiant Android) est désactivée, et les diagnostics du SDK sont désactivés.",
+  "4ca4774b3bf4": {
+    "source": "Cet identifiant ne contient ni votre nom ni votre adresse email, mais il n'est pas anonyme : il est associé à vos achats Google Play, eux-mêmes liés à votre compte Google, et une restauration d'achat peut le relier aux identifiants de vos autres installations. C'est une donnée pseudonyme. Aucun compte n'est créé ; dans RevenueCat, la collecte automatique de l'identifiant publicitaire et de l'identifiant Android est désactivée, tout comme les diagnostics de ce SDK.",
     "markup": true,
     "pages": [
-      "convertair-privacy.html",
-      "doccipher-privacy.html"
+      "convertair-privacy.html"
     ]
   },
   "7fe88ea6a6a6": {
@@ -2382,8 +2381,8 @@
       "doccipher-privacy.html"
     ]
   },
-  "0e2791061ab5": {
-    "source": "Les données d'achat sont conservées par RevenueCat tant qu'elles servent à gérer et à restaurer votre achat, et supprimées si vous le demandez (voir « Vos droits »). Si vous n'avez jamais acheté, la vérification à chaque lancement crée chez RevenueCat, pour le compte de BB16 Studio, une fiche pseudonyme limitée à l'identifiant et aux informations techniques décrites plus haut ; elle est conservée tant que l'application reste installée et contactée, et supprimée sur demande (voir « Vos droits »). Google Play conserve ses propres données de commande selon sa politique. Les données stockées sur votre appareil y restent jusqu'à ce que vous les supprimiez ou désinstalliez l'application.",
+  "ab727a80ec51": {
+    "source": "RevenueCat conserve les données d'achat tant qu'elles servent à gérer et à restaurer un achat. BB16 Studio demande leur effacement lorsqu'il peut relier les données RevenueCat à votre demande (voir « Vos droits »). Si vous n'avez jamais acheté, les vérifications créent chez RevenueCat des données pseudonymes limitées à l'identifiant et aux informations techniques décrites plus haut ; elles sont conservées tant que l'application reste installée et contacte RevenueCat. Sans numéro de commande ni identifiant RevenueCat accessible, BB16 Studio peut ne pas savoir avec certitude quelles données vous concernent. BB16 Studio explique alors cette limite et ne promet pas un effacement qu'il ne peut pas vérifier. Google Play conserve ses propres données de commande selon sa politique. Les données stockées sur votre appareil y restent jusqu'à ce que vous les supprimiez ou désinstalliez l'application.",
     "markup": true,
     "pages": [
       "convertair-privacy.html"
@@ -2403,12 +2402,18 @@
       "convertair-privacy.html"
     ]
   },
-  "6b31336cc71f": {
-    "source": "RevenueCat traite les données d'achat décrites ci-dessus, y compris pour les statistiques de ventes. Aucun SDK de suivi de l'utilisation des documents ni de rapport de plantage n'est ajouté ; les composants de diagnostics des bibliothèques ML Kit sont retirés.",
+  "0be97a2df35c": {
+    "source": "RevenueCat traite les données d'achat décrites ci-dessus, y compris pour les statistiques de ventes. Aucun SDK de suivi de l'utilisation des documents ni de rapport de plantage n'est ajouté.",
     "markup": true,
     "pages": [
-      "convertair-privacy.html",
-      "doccipher-privacy.html"
+      "convertair-privacy.html"
+    ]
+  },
+  "387e0a375332": {
+    "source": "Les SDK Android ML Kit peuvent toutefois transmettre à Google, pour le diagnostic et l'analyse d'utilisation, des informations sur l'appareil et l'application, un identifiant d'appareil pour les fonctions fournies par les services Google Play, des identifiants propres à chaque installation, des mesures de performance, la configuration et les événements d'API, les versions de fonction, les codes d'erreur et la taille des entrées et sorties. La <a href=\"https://developers.google.com/ml-kit/android-data-disclosure\" rel=\"noopener\">liste officielle publiée par Google pour ML Kit</a> mentionne les tailles des entrées et sorties, mais ne mentionne pas le contenu des documents, images ou textes reconnus parmi les diagnostics collectés. Les données sont chiffrées en transit par HTTPS et Google indique que ML Kit ne les transfère pas à des tiers.",
+    "markup": true,
+    "pages": [
+      "convertair-privacy.html"
     ]
   },
   "b54f49c88fbb": {
@@ -2485,12 +2490,11 @@
       "convertair-privacy.html"
     ]
   },
-  "d402386e9f36": {
-    "source": "<code>android.permission.INTERNET</code> — les achats, et rien d'autre ;",
+  "94a01365c75e": {
+    "source": "<code>android.permission.INTERNET</code> — les achats via RevenueCat et les diagnostics techniques ML Kit décrits ci-dessus ;",
     "markup": true,
     "pages": [
-      "convertair-privacy.html",
-      "doccipher-privacy.html"
+      "convertair-privacy.html"
     ]
   },
   "14e1732ca03a": {
@@ -2608,8 +2612,8 @@
       "convertair-privacy.html"
     ]
   },
-  "0914808b777f": {
-    "source": "Pour les données que RevenueCat traite pour le compte de BB16 Studio, vous pouvez demander l'accès, la rectification, l'effacement, la limitation ou la portabilité, et vous opposer au traitement lorsqu'il repose sur notre intérêt légitime. Écrivez à <a href=\"mailto:bb16studio@gmail.com\">bb16studio@gmail.com</a>. Si vous avez acheté, indiquez votre numéro de commande Google Play : il commence par « GPA. » et figure dans l'email de reçu envoyé par Google Play. Si vous n'avez jamais acheté, indiquez la date approximative et le modèle de votre appareil : l'application ne vous demandant aucune identité, ces éléments et l'identifiant propre à RevenueCat suffisent à retrouver votre fiche, sans numéro de commande. Le RGPD nous donne un mois pour vous répondre.",
+  "8bc9e3640a7d": {
+    "source": "Pour les données que RevenueCat traite pour le compte de BB16 Studio, vous pouvez demander l'accès, la rectification, l'effacement, la limitation ou la portabilité, et vous opposer au traitement lorsqu'il repose sur notre intérêt légitime. Écrivez à <a href=\"mailto:bb16studio@gmail.com\">bb16studio@gmail.com</a>. Si vous avez acheté, indiquez votre numéro de commande Google Play : il commence par « GPA. » et figure dans l'email de reçu envoyé par Google Play. Si vous n'avez jamais acheté, indiquez le « RevenueCat App User ID » si votre version de l'application l'affiche. Si votre version ne permet pas d'afficher cet identifiant et si vous n'avez pas de numéro de commande, BB16 Studio peut ne pas savoir avec certitude quelles données RevenueCat vous concernent. BB16 Studio vous expliquera cette limite et ne déclarera pas avoir effacé des données qu'il n'a pas pu identifier comme vôtres. Le RGPD nous donne un mois pour vous répondre.",
     "markup": true,
     "pages": [
       "convertair-privacy.html"
@@ -2849,6 +2853,13 @@
       "doccipher-privacy.html"
     ]
   },
+  "42f4dbc20304": {
+    "source": "Cet identifiant ne contient ni votre nom ni votre adresse email, mais il n'est pas anonyme : il est associé à vos achats Google Play, eux-mêmes liés à votre compte Google, et une restauration d'achat peut le relier aux identifiants de vos autres installations. C'est une donnée pseudonyme. Aucun compte n'est créé, la collecte automatique d'identifiants d'appareil (identifiant publicitaire, identifiant Android) est désactivée, et les diagnostics du SDK sont désactivés.",
+    "markup": true,
+    "pages": [
+      "doccipher-privacy.html"
+    ]
+  },
   "aea5883a5ff1": {
     "source": "vérifier votre accès Premium dès que l'application contacte RevenueCat, y compris si vous n'avez rien acheté : ce traitement est nécessaire à l'exécution du contrat d'utilisation de l'application (article 6, paragraphe 1, point b, du RGPD) ;",
     "markup": true,
@@ -2884,6 +2895,13 @@
       "doccipher-privacy.html"
     ]
   },
+  "6b31336cc71f": {
+    "source": "RevenueCat traite les données d'achat décrites ci-dessus, y compris pour les statistiques de ventes. Aucun SDK de suivi de l'utilisation des documents ni de rapport de plantage n'est ajouté ; les composants de diagnostics des bibliothèques ML Kit sont retirés.",
+    "markup": true,
+    "pages": [
+      "doccipher-privacy.html"
+    ]
+  },
   "16ae57ab3223": {
     "source": "Si vous avez accepté, dans les réglages de votre appareil, de partager les données d'utilisation et de diagnostic avec Google, Android peut envoyer à Google des rapports de plantage et de performance. Google Play les met à la disposition de BB16 Studio dans sa console (Android Vitals), sous forme de statistiques agrégées et de rapports techniques : modèle d'appareil, version d'Android, trace de l'erreur. Ce mécanisme appartient au système, pas à DocCipher. Ces rapports ne contiennent ni vos documents, ni votre nom, ni votre adresse email, et vous pouvez les désactiver dans les réglages de l'appareil.",
     "markup": true,
@@ -2900,6 +2918,13 @@
   },
   "17ca39db6bb0": {
     "source": "Le manifeste du build Android préparé pour Google Play déclare exactement sept entrées :",
+    "markup": true,
+    "pages": [
+      "doccipher-privacy.html"
+    ]
+  },
+  "d402386e9f36": {
+    "source": "<code>android.permission.INTERNET</code> — les achats, et rien d'autre ;",
     "markup": true,
     "pages": [
       "doccipher-privacy.html"
