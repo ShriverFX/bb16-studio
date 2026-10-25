@@ -268,7 +268,7 @@ def convertair_privacy_body(email: str) -> str:
 <p class="meta">Dernière mise à jour : 20 octobre 2026 · <a href="#english">Read this page in English</a></p>
 
 <h2>Responsable du traitement</h2>
-<p>Le responsable du traitement est BB16 Studio, éditeur de ConvertAir. Pour toute question ou demande sur vos données, écrivez à <a href="mailto:{email}">{email}</a>. Cette politique couvre la version Android de ConvertAir annoncée pour Google Play. L'application n'y est pas encore disponible.</p>
+<p>Le responsable du traitement est BB16 Studio, éditeur de ConvertAir. Pour toute question ou demande sur vos données, écrivez à <a href="mailto:{email}">{email}</a>. Cette politique couvre la version Android de ConvertAir annoncée pour Google Play.</p>
 
 <h2>Vos documents restent sur votre appareil</h2>
 <p>La numérisation, les conversions, l'assemblage, la compression, l'annotation, la signature et la reconnaissance de texte (OCR) s'exécutent sur votre téléphone. Lors de ces traitements documentaires locaux, aucun document, aucune image et aucun texte reconnu n'est transmis à BB16 Studio ni à un tiers.</p>
@@ -365,7 +365,7 @@ def convertair_privacy_body(email: str) -> str:
 <p class="meta">Last updated: 20 October 2026 · <a href="#main">Lire cette page en français</a></p>
 
 <h3>Data controller</h3>
-<p>The data controller is BB16 Studio, publisher of ConvertAir. For any question or request about your data, write to <a href="mailto:{email}">{email}</a>. This policy covers the Android version of ConvertAir announced for Google Play. The app is not available there yet.</p>
+<p>The data controller is BB16 Studio, publisher of ConvertAir. For any question or request about your data, write to <a href="mailto:{email}">{email}</a>. This policy covers the Android version of ConvertAir announced for Google Play.</p>
 
 <h3>Your documents stay on your device</h3>
 <p>Scanning, conversions, merging, compression, annotation, signing and text recognition (OCR) all run on your phone. During this local document processing, no document, no image and no recognised text is sent to BB16 Studio or to any third party.</p>
@@ -680,7 +680,7 @@ def hgq_legal_page(kind: str, config: dict) -> str:
     return document(title, title + " — Hard Gamer Quiz.", "apps.html", body, config, filename)
 
 
-def pages(config: dict) -> dict[str, str]:
+def _pages(config: dict) -> dict[str, str]:
     email = escape(config["contact_email"])
     return {
         "index.html": document("Accueil", "BB16 Studio crée des applications sobres, locales et utiles.", "index.html", f'''<section class="hero"><div class="container hero-copy"><h1>Des outils qui respectent votre attention.</h1><p class="lede">Nous concevons des expériences utiles autour des documents, de la confidentialité et du jeu compétitif. Chaque projet avance avec des limites explicites.</p><div class="actions"><a class="button" href="apps.html">Découvrir les apps</a><a class="button secondary" href="studio.html">Notre approche</a></div></div></section>
@@ -703,6 +703,24 @@ def pages(config: dict) -> dict[str, str]:
         "data-deletion.html": document("Suppression de compte", "Parcours de suppression de compte HGQ et informations à fournir au support.", "support.html", f'''<section class="section"><div class="container prose"><p class="eyebrow">HGQ · compte</p><h1>Suppression de compte</h1><p class="lede">Le parcours recommandé pour supprimer un compte Hard Gamer Quiz passe par l'application.</p><h2>Depuis l'application</h2><ol><li>Ouvrez HGQ et connectez-vous.</li><li>Ouvrez <strong>Paramètres</strong>.</li><li>Dans la section <strong>Mon compte</strong>, choisissez <strong>Supprimer mon compte</strong>.</li><li>Confirmez la suppression.</li></ol><p>Le projet décrit ce parcours comme une suppression en cascade des données de compte et de jeu. Les délais et éventuelles obligations de conservation doivent suivre la politique de l'application en vigueur.</p><h2>Si vous n'avez plus accès à l'application</h2><p>Écrivez à <a href="mailto:{email}">{email}</a> avec le nom de l'application et l'adresse email associée au compte. N'envoyez pas de mot de passe, code de connexion ou pièce d'identité par email sans demande explicite et vérifiée.</p><h2>Informations concernées</h2><p>Selon la politique HGQ publiée par l'application, le compte peut inclure une adresse email, un pseudo, des statistiques de jeu, des données sociales, des préférences, des identifiants techniques et des éléments d'économie du jeu. La politique applicative reste la référence pour les services tiers et les obligations de conservation.</p><div class="callout"><p>Cette page décrit le point d'entrée utilisateur et le canal de contact actuel. <a href="hgq-account-deletion.html">Lire la procédure détaillée de suppression HGQ</a> et <a href="hgq-privacy.html">la politique de confidentialité HGQ</a>.</p></div></div></section>''', config, "data-deletion.html"),
         "404.html": document("Page introuvable", "La page demandée n'existe pas sur le site BB16 Studio.", "", '''<section class="section"><div class="container prose"><p class="eyebrow">404</p><h1>Cette page n'existe pas.</h1><p class="lede">Le lien est peut-être ancien ou incomplet.</p><div class="actions"><a class="button" href="index.html">Retour à l'accueil</a><a class="button secondary" href="contact.html">Signaler un lien</a></div></div></section>''', config, "404.html"),
     }
+
+
+def pages(config: dict) -> dict[str, str]:
+    result = _pages(config)
+    if product_pages.store_listing(config, "convertair")["published"]:
+        def launch_card(match):
+            card = match.group(0)
+            if not re.search(r">ConvertAir</(?:a></)?h[23]>", card):
+                return card
+            card = card.replace("Bientôt sur Android", "Disponible sur Google Play")
+            cta = product_pages.store_button("convertair", config, verb="get")
+            return card.replace("</article>", '<div class="actions">' + cta + '</div></article>')
+        for filename in ("index.html", "apps.html"):
+            result[filename] = re.sub(
+                r'<article\b[^>]*>(?:(?!</article>).)*?</article>',
+                launch_card, result[filename], flags=re.S,
+            )
+    return result
 
 
 def write_support_files(config: dict, base_path: str) -> None:

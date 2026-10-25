@@ -18,7 +18,7 @@
   "store_listings": {
     "convertair": {
       "package": "com.bb16studio.convertair",
-      "published": false
+      "published": true
     },
     "doccipher": {
       "package": "com.bb16studio.doccipher",

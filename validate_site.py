@@ -34,9 +34,8 @@ PRIVACY_REQUIRED = {
         "même si vous n'avez rien acheté",
         "even if you have bought nothing",
         "version Android de ConvertAir annoncée pour Google Play",
-        "L'application n'y est pas encore disponible",
+        "Cette politique couvre la version Android de ConvertAir",
         "Android version of ConvertAir announced for Google Play",
-        "The app is not available there yet",
         "troisième résultat réussi réellement affiché",
         "jamais faite au démarrage, pendant un traitement, après une erreur ou après un lot partiellement réussi",
         "séparées d'au moins 60 jours",
@@ -297,7 +296,9 @@ def validate_products(config: dict, base_path: str) -> None:
         listing = listings.get(key) or {}
         if not re.fullmatch(r"[a-z][a-z0-9_]*(\.[a-z][a-z0-9_]*)+", str(listing.get("package", ""))) or not isinstance(listing.get("published"), bool):
             raise SystemExit(f"BAD_STORE_LISTING={key}")
-    for key in ("convertair", "doccipher", "hgq"):
+    # ConvertAir launch observed on 2026-10-25 and explicitly authorized by OWNER.
+    # Other products retain their independent publication gate.
+    for key in ("doccipher", "hgq"):
         if listings[key]["published"]:
             raise SystemExit(f"COMING_SOON_MARKED_PUBLISHED={key}")
     # Texte décodé : l'apostrophe échappée (&#x27;) ne doit pas masquer un contrôle.
@@ -332,11 +333,17 @@ def validate_products(config: dict, base_path: str) -> None:
             card = re.search(
                 rf'<article class="card[^>]*>.*?{name}.*?</article>', texts[page], re.S
             )
-            if not card or "Bientôt sur Android" not in card.group(0):
+            expected = "Disponible sur Google Play" if listings[key]["published"] else "Bientôt sur Android"
+            if not card or expected not in card.group(0):
                 raise SystemExit(f"MISSING_COMING_SOON={page}:{key}")
     for key in ("convertair", "doccipher"):
-        if "Bientôt sur Android" not in texts[f"{key}.html"]:
+        expected = "Disponible sur Google Play" if listings[key]["published"] else "Bientôt sur Android"
+        if expected not in texts[f"{key}.html"]:
             raise SystemExit(f"MISSING_PRODUCT_COMING_SOON={key}")
+        if listings[key]["published"] and any(stale in texts[f"{key}.html"] for stale in (
+            "Bientôt sur Android", "n'est pas encore sur Google Play", "La V1 Android est en préparation"
+        )):
+            raise SystemExit(f"STALE_PUBLISHED_PRODUCT={key}")
     if "play.google.com/store/apps/details" in all_text and not any(l["published"] for l in listings.values()):
         raise SystemExit("STORE_LINK_WITHOUT_PUBLICATION")
     for page, required in PRODUCT_PRICES.items():

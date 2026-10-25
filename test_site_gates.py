@@ -258,11 +258,30 @@ class SiteGateMutationTests(unittest.TestCase):
             "MISSING_CONVERTAIR_REVIEW_CLAIM",
         )
 
-    def test_every_store_listing_stays_unpublished_for_coming_soon(self) -> None:
+    def test_convertair_launch_has_download_links_and_no_pending_claims(self) -> None:
+        config = build_site.read_config()
+        self.assertTrue(config["store_listings"]["convertair"]["published"])
+        url = "https://play.google.com/store/apps/details?id=com.bb16studio.convertair"
+        for page in ("index.html", "apps.html", "convertair.html"):
+            text = (validate_site.SITE / page).read_text(encoding="utf-8")
+            self.assertIn(f'href="{url}"', text)
+            self.assertIn("Disponible sur Google Play", text)
+        text = (validate_site.SITE / "convertair.html").read_text(encoding="utf-8")
+        self.assertNotIn("Bientôt sur Android", text)
+        self.assertNotIn("n'est pas encore sur Google Play", text)
+
+    def test_published_convertair_cannot_lose_its_store_link(self) -> None:
+        self.assert_removal_is_rejected(
+            "convertair.html",
+            "https://play.google.com/store/apps/details?id=com.bb16studio.convertair",
+            "MISSING_STORE_LINK=convertair",
+        )
+
+    def test_other_store_listings_stay_unpublished_for_coming_soon(self) -> None:
         config = json.loads(
             (validate_site.SITE / "site.config.json").read_text(encoding="utf-8")
         )
-        for key in ("convertair", "doccipher", "hgq"):
+        for key in ("doccipher", "hgq"):
             with self.subTest(key=key):
                 mutated = copy.deepcopy(config)
                 mutated["store_listings"][key]["published"] = True

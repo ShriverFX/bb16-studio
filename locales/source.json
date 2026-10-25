@@ -257,11 +257,20 @@
       "index.html"
     ]
   },
-  "c737e49bff2d": {
-    "source": "Bientôt sur Android",
+  "bdec3d7a0b61": {
+    "source": "Disponible sur Google Play",
     "markup": true,
     "pages": [
       "apps.html",
+      "index.html"
+    ]
+  },
+  "a8efb5731903": {
+    "source": "Télécharger ConvertAir sur Google Play",
+    "markup": true,
+    "pages": [
+      "apps.html",
+      "convertair.html",
       "index.html"
     ]
   },
@@ -277,6 +286,14 @@
     "source": "Un coffre chiffré sur le téléphone pour vos papiers importants.",
     "markup": true,
     "pages": [
+      "index.html"
+    ]
+  },
+  "c737e49bff2d": {
+    "source": "Bientôt sur Android",
+    "markup": true,
+    "pages": [
+      "apps.html",
       "index.html"
     ]
   },
@@ -318,8 +335,8 @@
       "index.html"
     ]
   },
-  "d268903fa7bf": {
-    "source": "<img class=\"app-icon\" src=\"/assets/apps/convertair-icon-192.webp\" alt=\"\" width=\"192\" height=\"192\" loading=\"lazy\"><a class=\"rate-name\" href=\"/convertair.html\">ConvertAir</a><span class=\"store-pending\">Bientôt sur Google Play</span>",
+  "70efb96d5b3f": {
+    "source": "<img class=\"app-icon\" src=\"/assets/apps/convertair-icon-192.webp\" alt=\"\" width=\"192\" height=\"192\" loading=\"lazy\"><a class=\"rate-name\" href=\"/convertair.html\">ConvertAir</a><a class=\"button store-button\" href=\"https://play.google.com/store/apps/details?id=com.bb16studio.convertair\" rel=\"noopener\">Noter ConvertAir sur Google Play</a>",
     "markup": true,
     "pages": [
       "index.html"
@@ -726,12 +743,11 @@
       "doccipher.html"
     ]
   },
-  "30c4bf7ecfb8": {
-    "source": "<span class=\"status pending\">Bientôt sur Android</span>",
+  "ae85bf99fed5": {
+    "source": "<span class=\"status available\">Disponible sur Google Play</span>",
     "markup": true,
     "pages": [
-      "convertair.html",
-      "doccipher.html"
+      "convertair.html"
     ]
   },
   "c9be31677363": {
@@ -1207,15 +1223,15 @@
       "convertair.html"
     ]
   },
-  "07ce49e2c631": {
-    "source": "Quand ConvertAir sera-t-il disponible ?",
+  "0d65a3927fc8": {
+    "source": "Où télécharger ConvertAir ?",
     "markup": true,
     "pages": [
       "convertair.html"
     ]
   },
-  "b6d00dd16969": {
-    "source": "La V1 Android est en préparation. Le lien Google Play apparaîtra sur cette page dès la publication. Une version iOS est à l'étude.",
+  "8083424d828f": {
+    "source": "ConvertAir est disponible sur Google Play.",
     "markup": true,
     "pages": [
       "convertair.html"
@@ -1237,13 +1253,6 @@
       "doccipher.html"
     ]
   },
-  "752ab78bba35": {
-    "source": "ConvertAir n'est pas encore sur Google Play. Le lien pour noter l'application apparaîtra ici dès sa publication.",
-    "markup": true,
-    "pages": [
-      "convertair.html"
-    ]
-  },
   "dfd3f3dcd13e": {
     "source": "Un avis honnête, rien en échange : pas de parrainage, pas de récompense.",
     "markup": true,
@@ -1252,12 +1261,11 @@
       "doccipher.html"
     ]
   },
-  "558a7da9d4e5": {
-    "source": "Bientôt sur Google Play",
+  "a0f267df4d00": {
+    "source": "Noter ConvertAir sur Google Play",
     "markup": true,
     "pages": [
-      "convertair.html",
-      "doccipher.html"
+      "convertair.html"
     ]
   },
   "6922785fb07f": {
@@ -1311,6 +1319,13 @@
   },
   "e14adf8db73d": {
     "source": "Premium : 19,99 € une seule fois",
+    "markup": true,
+    "pages": [
+      "doccipher.html"
+    ]
+  },
+  "30c4bf7ecfb8": {
+    "source": "<span class=\"status pending\">Bientôt sur Android</span>",
     "markup": true,
     "pages": [
       "doccipher.html"
@@ -1827,6 +1842,13 @@
       "doccipher.html"
     ]
   },
+  "558a7da9d4e5": {
+    "source": "Bientôt sur Google Play",
+    "markup": true,
+    "pages": [
+      "doccipher.html"
+    ]
+  },
   "4f1e8f7c3d00": {
     "source": "Contacter le support public de BB16 Studio.",
     "markup": false,
@@ -2208,8 +2230,8 @@
       "doccipher-privacy.html"
     ]
   },
-  "89f461eb7ed9": {
-    "source": "Le responsable du traitement est BB16 Studio, éditeur de ConvertAir. Pour toute question ou demande sur vos données, écrivez à <a href=\"mailto:bb16studio@gmail.com\">bb16studio@gmail.com</a>. Cette politique couvre la version Android de ConvertAir annoncée pour Google Play. L'application n'y est pas encore disponible.",
+  "93f3b1eec14b": {
+    "source": "Le responsable du traitement est BB16 Studio, éditeur de ConvertAir. Pour toute question ou demande sur vos données, écrivez à <a href=\"mailto:bb16studio@gmail.com\">bb16studio@gmail.com</a>. Cette politique couvre la version Android de ConvertAir annoncée pour Google Play.",
     "markup": true,
     "pages": [
       "convertair-privacy.html"

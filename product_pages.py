@@ -346,7 +346,8 @@ def rating_section(key: str, config: dict) -> str:
     product = PRODUCTS[key]
     listing = store_listing(config, key)
     if listing["published"]:
-        text = f"Vous utilisez {product['name']} ? Une note et quelques mots sur Google Play aident d'autres personnes à trouver l'application et nous disent quoi améliorer."
+        text = ("ConvertAir est disponible sur Google Play." if key == "convertair" else
+            f"Vous utilisez {product['name']} ? Une note et quelques mots sur Google Play aident d'autres personnes à trouver l'application et nous disent quoi améliorer.")
     else:
         text = f"{product['name']} n'est pas encore sur Google Play. Le lien pour noter l'application apparaîtra ici dès sa publication."
     icon = icon_tag(key)
@@ -379,8 +380,15 @@ def soon_block() -> str:
 
 
 def product_body(key: str, config: dict) -> str:
-    p = PRODUCTS[key]
+    p = dict(PRODUCTS[key])
     listing = store_listing(config, key)
+    if key == "convertair" and listing["published"]:
+        p["status"] = "Disponible sur Google Play"
+        p["faq"] = [
+            ("Où télécharger ConvertAir ?", "ConvertAir est disponible sur Google Play.")
+            if "Quand ConvertAir" in question else (question, answer)
+            for question, answer in p["faq"]
+        ]
     hero_cta = store_button(key, config, verb="get") if listing["published"] else ""
     points = "".join(f"<li>{escape(x)}</li>" for x in p["points"])
     hero_src, hero_alt = p["hero"]
@@ -391,6 +399,7 @@ def product_body(key: str, config: dict) -> str:
     captures_note, pricing_intro = escape(p["captures_note"]), escape(p["pricing_intro"])
     soon = soon_block() if p["soon"] else ""
     secondary = " secondary" if hero_cta else ""
+    status_class = "available" if listing["published"] else "pending"
 
     steps = []
     layers = []
@@ -449,7 +458,7 @@ def product_body(key: str, config: dict) -> str:
     <p class="lede">{lede}</p>
     <ul class="hero-points">{points}</ul>
     <div class="actions">{hero_cta}<a class="button{secondary}" href="#fonctions">Voir les fonctions</a><a class="button secondary" href="#prix">Prix</a></div>
-    <p class="hero-status"><span class="status pending">{status}</span></p>
+    <p class="hero-status"><span class="status {status_class}">{status}</span></p>
   </div>
   <figure class="hero-device">{phone(key, hero_src, hero_alt, eager=True)}<figcaption>Capture réelle de {name}</figcaption></figure>
 </div></section>
