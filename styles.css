@@ -150,7 +150,33 @@ h3 { margin: 0 0 .6rem; font-size: 1.3rem; }
 .card { padding: 1.35rem; border: 1px solid var(--line); border-radius: 1rem; background: linear-gradient(145deg, var(--card-start), var(--card-end)); box-shadow: var(--shadow); }
 .card p { margin: 0; color: var(--muted); }
 .card .meta { margin-top: 1rem; color: var(--link-blue); font-size: .85rem; font-weight: 800; }
-.icon-card { display: flex; gap: 1rem; align-items: flex-start; }
+.icon-card {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+.icon-card > .app-icon,
+.icon-card > div {
+  min-width: 0;
+}
+.icon-card > div:only-child {
+  grid-column: 1 / -1;
+}
+.icon-card > .actions {
+  grid-column: 1 / -1;
+  margin-top: .5rem;
+}
+.icon-card > .actions > .button {
+  flex: 1 1 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  min-height: 48px;
+  white-space: normal;
+  overflow-wrap: normal;
+  word-break: normal;
+  text-align: center;
+}
 .app-icon { flex: 0 0 4.5rem; width: 4.5rem; height: 4.5rem; border-radius: 1.15rem; box-shadow: 0 10px 25px rgba(0,0,0,.28); }
 .hgq-icon { object-fit: contain; }
 .hgq-poster { object-fit: contain; margin-bottom: 1rem; }
