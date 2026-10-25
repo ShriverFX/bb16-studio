@@ -276,10 +276,21 @@
   }
   document.getElementById('add-feedback').addEventListener('click', addFeedback);
   function validate() {
-    var missing = []; [['device', 'modèle appareil'], ['android', 'version Android'], ['app-version', 'version app']].forEach(function (item) { if (!value(item[0])) missing.push(item[1]); });
-    if (!missing.length) return true;
-    show('À compléter pour exporter : ' + missing.join(', ') + '.', 'error'); return false;
-  }
+	var missing = [], first = null;
+	[['device', 'modèle appareil'], ['android', 'version Android'], ['app-version', 'version app']].forEach(function (item) {
+		if (!value(item[0])) {
+			missing.push(item[1]);
+			if (!first) first = item[0];
+		}
+	});
+	if (!missing.length) return true;
+	show('À compléter pour exporter : ' + missing.join(', ') + '.', 'error');
+	if (first) {
+		var el = document.getElementById(first);
+		if (el) el.focus();
+	}
+	return false;
+}
   function payload() {
     captureTaskState();
     captureChecklistState();
