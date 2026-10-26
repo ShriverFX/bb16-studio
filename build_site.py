@@ -707,13 +707,15 @@ def _pages(config: dict) -> dict[str, str]:
 
 def pages(config: dict) -> dict[str, str]:
     result = _pages(config)
-    if product_pages.store_listing(config, "convertair")["published"]:
+    for launched_key in ("convertair", "doccipher"):
+        if not product_pages.store_listing(config, launched_key)["published"]:
+            continue
         def launch_card(match):
             card = match.group(0)
-            if not re.search(r">ConvertAir</(?:a></)?h[23]>", card):
+            if not re.search(r">" + product_pages.PRODUCTS[launched_key]["name"] + r"</(?:a></)?h[23]>", card):
                 return card
             card = card.replace("Bientôt sur Android", "Disponible sur Google Play")
-            cta = product_pages.store_button("convertair", config, verb="get")
+            cta = product_pages.store_button(launched_key, config, verb="get")
             return card.replace("</article>", '<div class="actions">' + cta + '</div></article>')
         for filename in ("index.html", "apps.html"):
             result[filename] = re.sub(

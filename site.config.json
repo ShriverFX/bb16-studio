@@ -22,7 +22,7 @@
     },
     "doccipher": {
       "package": "com.bb16studio.doccipher",
-      "published": false
+      "published": true
     },
     "hgq": {
       "package": "com.hgq.app",

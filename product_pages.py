@@ -346,7 +346,7 @@ def rating_section(key: str, config: dict) -> str:
     product = PRODUCTS[key]
     listing = store_listing(config, key)
     if listing["published"]:
-        text = ("ConvertAir est disponible sur Google Play." if key == "convertair" else
+        text = (f"{product['name']} est disponible sur Google Play." if key in ("convertair", "doccipher") else
             f"Vous utilisez {product['name']} ? Une note et quelques mots sur Google Play aident d'autres personnes à trouver l'application et nous disent quoi améliorer.")
     else:
         text = f"{product['name']} n'est pas encore sur Google Play. Le lien pour noter l'application apparaîtra ici dès sa publication."
@@ -382,11 +382,11 @@ def soon_block() -> str:
 def product_body(key: str, config: dict) -> str:
     p = dict(PRODUCTS[key])
     listing = store_listing(config, key)
-    if key == "convertair" and listing["published"]:
+    if key in ("convertair", "doccipher") and listing["published"]:
         p["status"] = "Disponible sur Google Play"
         p["faq"] = [
-            ("Où télécharger ConvertAir ?", "ConvertAir est disponible sur Google Play.")
-            if "Quand ConvertAir" in question else (question, answer)
+            (f"Où télécharger {p['name']} ?", f"{p['name']} est disponible sur Google Play.")
+            if f"Quand {p['name']}" in question else (question, answer)
             for question, answer in p["faq"]
         ]
     hero_cta = store_button(key, config, verb="get") if listing["published"] else ""
@@ -398,6 +398,8 @@ def product_body(key: str, config: dict) -> str:
     status, tour_title, grid_title = escape(p["status"]), escape(p["tour_title"]), escape(p["grid_title"])
     captures_note, pricing_intro = escape(p["captures_note"]), escape(p["pricing_intro"])
     soon = soon_block() if p["soon"] else ""
+    if key == "doccipher" and listing["published"]:
+        soon = soon.replace(" DocCipher n'est pas encore disponible sur Google Play.", "")
     secondary = " secondary" if hero_cta else ""
     status_class = "available" if listing["published"] else "pending"
 

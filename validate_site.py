@@ -296,9 +296,9 @@ def validate_products(config: dict, base_path: str) -> None:
         listing = listings.get(key) or {}
         if not re.fullmatch(r"[a-z][a-z0-9_]*(\.[a-z][a-z0-9_]*)+", str(listing.get("package", ""))) or not isinstance(listing.get("published"), bool):
             raise SystemExit(f"BAD_STORE_LISTING={key}")
-    # ConvertAir launch observed on 2026-10-25 and explicitly authorized by OWNER.
+    # ConvertAir public 2026-10-25; DocCipher public 2026-10-26, Console and Store observed.
     # Other products retain their independent publication gate.
-    for key in ("doccipher", "hgq"):
+    for key in ("hgq",):
         if listings[key]["published"]:
             raise SystemExit(f"COMING_SOON_MARKED_PUBLISHED={key}")
     # Texte décodé : l'apostrophe échappée (&#x27;) ne doit pas masquer un contrôle.

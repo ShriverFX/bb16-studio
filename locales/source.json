@@ -289,11 +289,12 @@
       "index.html"
     ]
   },
-  "c737e49bff2d": {
-    "source": "Bientôt sur Android",
+  "92e9becbc1f7": {
+    "source": "Télécharger DocCipher sur Google Play",
     "markup": true,
     "pages": [
       "apps.html",
+      "doccipher.html",
       "index.html"
     ]
   },
@@ -309,6 +310,14 @@
     "source": "Quiz multijoueur en temps réel autour de la culture jeu vidéo, avec comptes, amis et classements.",
     "markup": true,
     "pages": [
+      "index.html"
+    ]
+  },
+  "c737e49bff2d": {
+    "source": "Bientôt sur Android",
+    "markup": true,
+    "pages": [
+      "apps.html",
       "index.html"
     ]
   },
@@ -342,8 +351,8 @@
       "index.html"
     ]
   },
-  "45ee1a7febb8": {
-    "source": "<img class=\"app-icon\" src=\"/assets/apps/doccipher-icon-192.webp\" alt=\"\" width=\"192\" height=\"192\" loading=\"lazy\"><a class=\"rate-name\" href=\"/doccipher.html\">DocCipher</a><span class=\"store-pending\">Bientôt sur Google Play</span>",
+  "dcc74d3b13d9": {
+    "source": "<img class=\"app-icon\" src=\"/assets/apps/doccipher-icon-192.webp\" alt=\"\" width=\"192\" height=\"192\" loading=\"lazy\"><a class=\"rate-name\" href=\"/doccipher.html\">DocCipher</a><a class=\"button store-button\" href=\"https://play.google.com/store/apps/details?id=com.bb16studio.doccipher\" rel=\"noopener\">Noter DocCipher sur Google Play</a>",
     "markup": true,
     "pages": [
       "index.html"
@@ -747,7 +756,8 @@
     "source": "<span class=\"status available\">Disponible sur Google Play</span>",
     "markup": true,
     "pages": [
-      "convertair.html"
+      "convertair.html",
+      "doccipher.html"
     ]
   },
   "c9be31677363": {
@@ -1324,13 +1334,6 @@
       "doccipher.html"
     ]
   },
-  "30c4bf7ecfb8": {
-    "source": "<span class=\"status pending\">Bientôt sur Android</span>",
-    "markup": true,
-    "pages": [
-      "doccipher.html"
-    ]
-  },
   "343781c85d95": {
     "source": "Coffre DocCipher « Papiers de famille » : dix documents, parcours et échéances",
     "markup": false,
@@ -1597,8 +1600,8 @@
       "doccipher.html"
     ]
   },
-  "ac1999dba591": {
-    "source": "Leur implémentation locale est en validation. Elles seront proposées au lancement seulement si les revues de sécurité et les essais sur appareil requis sont concluants. DocCipher n'est pas encore disponible sur Google Play.",
+  "29703888f590": {
+    "source": "Leur implémentation locale est en validation. Elles seront proposées au lancement seulement si les revues de sécurité et les essais sur appareil requis sont concluants.",
     "markup": true,
     "pages": [
       "doccipher.html"
@@ -1821,29 +1824,22 @@
       "doccipher.html"
     ]
   },
-  "2bd1f8c3dd9b": {
-    "source": "Quand DocCipher sera-t-il disponible ?",
+  "268dda95c840": {
+    "source": "Où télécharger DocCipher ?",
     "markup": true,
     "pages": [
       "doccipher.html"
     ]
   },
-  "c6c1a7f389b3": {
-    "source": "DocCipher arrive bientôt sur Android. Il n'est pas encore disponible sur Google Play ; le lien apparaîtra sur cette page après sa publication.",
+  "b1f4db7b030e": {
+    "source": "DocCipher est disponible sur Google Play.",
     "markup": true,
     "pages": [
       "doccipher.html"
     ]
   },
-  "b8d0e63e88e5": {
-    "source": "DocCipher n'est pas encore sur Google Play. Le lien pour noter l'application apparaîtra ici dès sa publication.",
-    "markup": true,
-    "pages": [
-      "doccipher.html"
-    ]
-  },
-  "558a7da9d4e5": {
-    "source": "Bientôt sur Google Play",
+  "c804bba108ab": {
+    "source": "Noter DocCipher sur Google Play",
     "markup": true,
     "pages": [
       "doccipher.html"

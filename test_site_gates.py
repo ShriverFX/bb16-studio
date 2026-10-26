@@ -270,6 +270,18 @@ class SiteGateMutationTests(unittest.TestCase):
         self.assertNotIn("Bientôt sur Android", text)
         self.assertNotIn("n'est pas encore sur Google Play", text)
 
+    def test_doccipher_launch_has_links_and_no_stale_availability(self) -> None:
+        config = build_site.read_config()
+        self.assertTrue(config["store_listings"]["doccipher"]["published"])
+        url = "https://play.google.com/store/apps/details?id=com.bb16studio.doccipher"
+        for page in ("index.html", "apps.html", "doccipher.html"):
+            text = (validate_site.SITE / page).read_text(encoding="utf-8")
+            self.assertIn(f'href="{url}"', text)
+        text = (validate_site.SITE / "doccipher.html").read_text(encoding="utf-8")
+        self.assertNotIn("DocCipher n'est pas encore disponible", text)
+        self.assertNotIn("Bientôt sur Android", text)
+        self.assert_removal_is_rejected("doccipher.html", url, "MISSING_STORE_LINK=doccipher")
+
     def test_published_convertair_cannot_lose_its_store_link(self) -> None:
         self.assert_removal_is_rejected(
             "convertair.html",
@@ -281,7 +293,7 @@ class SiteGateMutationTests(unittest.TestCase):
         config = json.loads(
             (validate_site.SITE / "site.config.json").read_text(encoding="utf-8")
         )
-        for key in ("doccipher", "hgq"):
+        for key in ("hgq",):
             with self.subTest(key=key):
                 mutated = copy.deepcopy(config)
                 mutated["store_listings"][key]["published"] = True
