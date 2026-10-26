@@ -17,7 +17,13 @@ retirée pour correspondre aux publicités et achats intégrés décrits. Les r�
 et autres clauses juridiques sont conservés.
 Les fragments sources `content/hgq-*.html` sont exclus de l'export ; les corps
 rendus sont protégés par des hashes et tests de mutation. L'allowlist active
-contient 866 fichiers avec les variantes de langue, dont les deux pages légales HGQ dédiées.
+contient 869 fichiers avec les variantes de langue, dont les deux pages légales HGQ dédiées et le kit presse.
+
+Le kit presse bilingue français/anglais est accessible à `presse.html`, avec
+une fiche structurée `presse.json` et la présentation DocCipher V2 française.
+Ces trois fichiers sont explicitement autorisés dans l'export. La page presse
+est une source statique autonome conservée lors du build ; elle distingue les
+visuels de présentation des enregistrements runtime sur appareil.
 
 Site officiel statique de BB16 Studio, prévu pour GitHub Pages. Le site est
 généré sans dépendance externe par `build_site.py`. Il reste publiable depuis
