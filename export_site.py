@@ -48,8 +48,10 @@ ROOT_FILES = (
     "theme.js",
     "i18n.css",
     "locale.js",
+    "presse.html",
+    "presse.json",
 ) + tuple(localized_files())
-ASSET_FILES = tuple(sorted(set(CORE_ASSETS) | set(MEDIA_FILES) | set(localized_media())))
+ASSET_FILES = tuple(sorted(set(CORE_ASSETS) | set(MEDIA_FILES) | set(localized_media()) | {"assets/video/doccipher/presentation-v2-fr.mp4"}))
 ASSET_RULES = {
     "assets/apps": frozenset({".png", ".webp"}),
     "assets/branding": frozenset({".jpg", ".png", ".webp"}),

@@ -729,6 +729,7 @@ def write_support_files(config: dict, base_path: str) -> None:
     site_url = config.get("site_url")
     urls = [page_url(name, site_url, base_path) for name in ["index.html", "studio.html", "apps.html", "convertair.html", "convertair-privacy.html", "doccipher.html", "doccipher-privacy.html", "hgq.html", "hgq-privacy.html", "hgq-account-deletion.html", "support.html", "contact.html", "privacy.html", "legal.html", "data-deletion.html"]]
     urls = [url for url in urls if url]
+    urls += [url for url in [page_url("presse.html", site_url, base_path)] if url]
     if site_url:
         urls += [site_i18n.url(config, locale, filename) for locale in site_i18n.LOCALES if locale != "fr" for filename in site_i18n.PAGES if filename != "404.html"]
     if urls:

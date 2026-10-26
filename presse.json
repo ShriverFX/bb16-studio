@@ -1,0 +1,39 @@
+{
+  "publisher": "BB16 Studio",
+  "updated": "2026-10-26",
+  "contact": "bb16studio@gmail.com",
+  "press_url": "https://bb16studio.com/presse.html",
+  "media_classification": "PRESENTATION_VISUALS_NOT_DEVICE_RUNTIME_RECORDINGS",
+  "products": [
+    {
+      "premium": "Optional; offers and local prices shown on Google Play",
+      "features": [
+        "merge PDF",
+        "compress PDF",
+        "convert PDF and images",
+        "sign PDF"
+      ],
+      "name": "ConvertAir",
+      "play": "https://play.google.com/store/apps/details?id=com.bb16studio.convertair",
+      "policy": "https://bb16studio.com/convertair-privacy.html",
+      "free": "3 operations/day, no ads",
+      "platform": "Android",
+      "privacy": "Core document processing on device; purchases use Google Play and RevenueCat"
+    },
+    {
+      "play": "https://play.google.com/store/apps/details?id=com.bb16studio.doccipher",
+      "free": "1 vault, up to 15 documents, no time limit",
+      "name": "DocCipher",
+      "premium": "Optional one-time purchase, no subscription; local prices on Google Play",
+      "policy": "https://bb16studio.com/doccipher-privacy.html",
+      "platform": "Android",
+      "presentation": "https://bb16studio.com/assets/video/doccipher/presentation-v2-fr.mp4",
+      "privacy": "No DocCipher account; document content processed locally; purchases use Google Play and RevenueCat",
+      "features": [
+        "encrypted local document vault",
+        "name and content search",
+        "expiry dates"
+      ]
+    }
+  ]
+}
