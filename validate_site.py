@@ -398,6 +398,10 @@ def validate_products(config: dict, base_path: str) -> None:
         if not videos and page != "hgq.html":
             raise SystemExit(f"MISSING_VIDEOS={page}")
         for tag in videos:
+            if 'data-launch-presentation' in tag:
+                if page!='doccipher.html' or ' controls' not in tag or 'autoplay' in tag or 'preload="none"' not in tag or ' playsinline' not in tag:
+                    raise SystemExit(f'BAD_PRESENTATION_PLAYER={page}')
+                continue
             if re.search(r"\ssrc=|autoplay|poster=", tag) or not all(a in tag for a in ('preload="none"', " muted", " playsinline", 'aria-hidden="true"', "data-src=")):
                 raise SystemExit(f"BAD_VIDEO_TAG={page}:{tag}")
         video_files = sorted(set(re.findall(r'data-src="([^"]+\.mp4)"', text)))
@@ -409,6 +413,16 @@ def validate_products(config: dict, base_path: str) -> None:
             if len(raw) > VIDEO_MAX:
                 raise SystemExit(f"VIDEO_TOO_HEAVY={link}:{len(raw)}")
             video_bytes += len(raw)
+        if page=='doccipher.html':
+            if sum('data-launch-presentation' in tag for tag in videos)!=1:
+                raise SystemExit('MISSING_PRESENTATION_PLAYER')
+            launch=f'{base_path}assets/video/doccipher/presentation-v2.mp4'
+            if f'<source src="{launch}" type="video/mp4">' not in text:
+                raise SystemExit('MISSING_PRESENTATION_SOURCE')
+            raw=_local(base_path,launch).read_bytes()
+            if raw[4:8]!=b'ftyp' or len(raw)>400_000:
+                raise SystemExit('BAD_PRESENTATION_MP4')
+            video_bytes+=len(raw)
         image_bytes = 0
         eager_bytes = 0
         header_bytes = 0

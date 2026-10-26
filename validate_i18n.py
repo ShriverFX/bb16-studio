@@ -159,6 +159,12 @@ def product_weight(nodes, html_path, base):
         if target.endswith('.webp'): assert (i.ROOT/target).read_bytes()[8:12]==b'WEBP', target
     for target in videos:
         assert (i.ROOT/target).read_bytes()[4:8]==b'ftyp' and size(target)<=VIDEO_MAX, target
+    presentations=[relative(n.get('src')) for n in nodes if n.tag=='source' and n.get('src','').endswith('/presentation-v2.mp4')]
+    if html_path.name=='doccipher.html':
+        assert len(presentations)==1, (html_path,'missing-localized-presentation')
+    for target in presentations:
+        assert (i.ROOT/target).read_bytes()[4:8]==b'ftyp' and size(target)<=400_000, target
+        videos.add(target)
     initial=html_path.stat().st_size+sum(map(size,shared|headers))+sum(size(t) for t,eager in images.items() if eager and t not in headers)
     image_bytes=sum(size(t) for t in images if t not in headers)
     video_bytes=sum(map(size,videos))

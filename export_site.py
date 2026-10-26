@@ -15,7 +15,7 @@ from urllib.parse import urlsplit
 from build_site import ASSETS as CORE_ASSETS
 from product_pages import MEDIA_FILES, RETIRED_MEDIA
 from validate_site import validate_custom_domain
-from site_i18n import localized_files, localized_media
+from site_i18n import localized_files, localized_media, presentation_media
 
 
 SITE = Path(__file__).resolve().parent
@@ -51,7 +51,7 @@ ROOT_FILES = (
     "presse.html",
     "presse.json",
 ) + tuple(localized_files())
-ASSET_FILES = tuple(sorted(set(CORE_ASSETS) | set(MEDIA_FILES) | set(localized_media()) | {"assets/video/doccipher/presentation-v2-fr.mp4"}))
+ASSET_FILES = tuple(sorted(set(CORE_ASSETS) | set(MEDIA_FILES) | set(localized_media()) | set(presentation_media()) | {"assets/video/doccipher/presentation-v2-fr.mp4"}))
 ASSET_RULES = {
     "assets/apps": frozenset({".png", ".webp"}),
     "assets/branding": frozenset({".jpg", ".png", ".webp"}),

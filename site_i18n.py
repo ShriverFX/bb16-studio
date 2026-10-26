@@ -145,6 +145,10 @@ def localized_media():
             for name in list(p.SCREENS)+list(p.VIDEOS)
             for app in ('convertair','doccipher') if '/'+app+'/' in name]
 
+def presentation_media():
+    return [f'assets/{kind}/doccipher/'+('' if code=='fr' else code+'/')+'presentation-v2.'+ext
+            for code in LOCALES for kind,ext in [('video','mp4'),('screens','webp')]]
+
 def url(config, locale, filename):
     base=config.get('base_path','/')
     part=filename if locale=='fr' else f'{locale}/{filename}'
@@ -203,6 +207,19 @@ def decorate(tree,locale,filename,config,ui):
                 if para: para.children=[ui['capture_note']]
         if locale!='fr' and filename in ('convertair.html','doccipher.html') and n.tag=='figcaption':
             n.children=[ui['capture_note']]
+    if filename == 'doccipher.html':
+        media = base+'assets/video/doccipher/'+('' if locale=='fr' else locale+'/')
+        poster = base+'assets/screens/doccipher/'+('' if locale=='fr' else locale+'/')+'presentation-v2.webp'
+        title = 'DocCipher · '+LOCALES[locale]
+        player = parse('<section class="section" aria-labelledby="launch-video-title"><div class="container">'
+            '<h2 id="launch-video-title">'+escape(title)+'</h2>'
+            '<video data-launch-presentation controls playsinline preload="none" poster="'+escape(poster,quote=True)+'" '
+            'aria-label="'+escape(title,quote=True)+'" style="display:block;width:100%;max-width:360px;max-height:75vh;margin:24px auto;background:#0b1220">'
+            '<source src="'+escape(media+'presentation-v2.mp4',quote=True)+'" type="video/mp4"></video>'
+            '<p class="section-note">'+escape(ui['capture_note'])+'</p></div></section>').children[0]
+        main = next(n for n in walk(tree) if n.tag=='main')
+        hero = next((i for i,n in enumerate(main.children) if isinstance(n,Node) and n.get('id')=='presentation'),None)
+        main.children.insert(hero+1 if hero is not None else 0,player)
     return render(tree)
 
 def build(sources, config, *, preview_locales=None):

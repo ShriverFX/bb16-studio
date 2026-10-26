@@ -17,7 +17,13 @@ retirée pour correspondre aux publicités et achats intégrés décrits. Les r�
 et autres clauses juridiques sont conservés.
 Les fragments sources `content/hgq-*.html` sont exclus de l'export ; les corps
 rendus sont protégés par des hashes et tests de mutation. L'allowlist active
-contient 869 fichiers avec les variantes de langue, dont les deux pages légales HGQ dédiées et le kit presse.
+contient 913 fichiers avec les variantes de langue, dont les deux pages légales HGQ dédiées et le kit presse.
+
+Chaque page DocCipher propose la présentation V2 de sa langue, avec le lettrage officiel,
+une affiche locale et un lecteur sans lecture automatique (`preload="none"`).
+Les 22 variantes du site utilisent 21 films : `zh` et `zh-Hans` partagent le chinois simplifié.
+Les films sont des présentations animées de captures hôte avec données de démonstration,
+pas des enregistrements runtime sur téléphone. La revue linguistique native reste non observée.
 
 Le kit presse bilingue français/anglais est accessible à `presse.html`, avec
 une fiche structurée `presse.json` et la présentation DocCipher V2 française.
