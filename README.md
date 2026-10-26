@@ -17,7 +17,11 @@ retirée pour correspondre aux publicités et achats intégrés décrits. Les r�
 et autres clauses juridiques sont conservés.
 Les fragments sources `content/hgq-*.html` sont exclus de l'export ; les corps
 rendus sont protégés par des hashes et tests de mutation. L'allowlist active
-contient 913 fichiers avec les variantes de langue, dont les deux pages légales HGQ dédiées et le kit presse.
+contient 915 fichiers avec les variantes de langue, dont les deux pages légales HGQ dédiées et le kit presse.
+
+Le kit de relecture en portugais du Brésil est téléchargeable à
+`assets/downloads/kit-brasil.zip`, avec les présentations DocCipher V2 et ConvertAir.
+Le teaser ConvertAir est aussi disponible à `assets/video/convertair/pt-BR/teaser.mp4`.
 
 Chaque page DocCipher propose la présentation V2 de sa langue, avec le lettrage officiel,
 une affiche locale et un lecteur sans lecture automatique (`preload="none"`).

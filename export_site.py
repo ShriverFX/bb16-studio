@@ -51,12 +51,17 @@ ROOT_FILES = (
     "presse.html",
     "presse.json",
 ) + tuple(localized_files())
-ASSET_FILES = tuple(sorted(set(CORE_ASSETS) | set(MEDIA_FILES) | set(localized_media()) | set(presentation_media()) | {"assets/video/doccipher/presentation-v2-fr.mp4"}))
+ASSET_FILES = tuple(sorted(set(CORE_ASSETS) | set(MEDIA_FILES) | set(localized_media()) | set(presentation_media()) | {
+    "assets/video/doccipher/presentation-v2-fr.mp4",
+    "assets/video/convertair/pt-BR/teaser.mp4",
+    "assets/downloads/kit-brasil.zip",
+}))
 ASSET_RULES = {
     "assets/apps": frozenset({".png", ".webp"}),
     "assets/branding": frozenset({".jpg", ".png", ".webp"}),
     "assets/screens": frozenset({".webp"}),
     "assets/video": frozenset({".mp4"}),
+    "assets/downloads": frozenset({".zip"}),
 }
 HTML_LINK = re.compile(r'''(?:href|src|data-src|data-dark|data-light)="([^"]+)"''')
 CSS_URL = re.compile(r'''url\(\s*["']?([^"')]+)''', re.IGNORECASE)
