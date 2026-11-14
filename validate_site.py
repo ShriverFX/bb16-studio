@@ -8,14 +8,17 @@ import re
 import struct
 import json
 import hashlib
-from product_pages import RETIRED_MEDIA
+from datetime import date
+import site_i18n
+from product_pages import RETIRED_MEDIA, BRAND_TEASERS, brand_teaser
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urlsplit
 
 
 SITE = Path(__file__).resolve().parent
-PAGES = ["index.html", "studio.html", "apps.html", "convertair.html", "convertair-privacy.html", "doccipher.html", "doccipher-privacy.html", "hgq.html", "hgq-privacy.html", "hgq-account-deletion.html", "support.html", "contact.html", "privacy.html", "legal.html", "data-deletion.html", "404.html"]
+PUBLICATION_REFERENCE = SITE / "content/store-publication-reference.json"
+PAGES = ["index.html", "studio.html", "apps.html", "convertair.html", "convertair-privacy.html", "doccipher.html", "doccipher-privacy.html", "peaksolo.html", "peaksolo-privacy.html", "hgq.html", "hgq-privacy.html", "hgq-account-deletion.html", "support.html", "contact.html", "privacy.html", "legal.html", "data-deletion.html", "404.html"]
 FEEDBACK_PAGES = ("convertair-test.html", "doccipher-test.html")
 ASSETS = ["assets/branding/convertair-presentation.png", "assets/branding/doccipher-presentation.png", "assets/apps/convertair-icon-512.png", "assets/apps/doccipher-icon-512.png", "assets/branding/bb16-studio-logo.jpg", "assets/apps/hgq-logo.png", "assets/branding/bb16-studio-logo-dark.png"]
 ORIGINAL_LOGOS = {
@@ -33,9 +36,8 @@ PRIVACY_REQUIRED = {
     "convertair-privacy.html": PRIVACY_COMMON_REQUIRED + [
         "même si vous n'avez rien acheté",
         "even if you have bought nothing",
-        "version Android de ConvertAir annoncée pour Google Play",
-        "Cette politique couvre la version Android de ConvertAir",
-        "Android version of ConvertAir announced for Google Play",
+        "version Android de ConvertAir disponible sur Google Play",
+        "Android version of ConvertAir available on Google Play",
         "troisième résultat réussi réellement affiché",
         "jamais faite au démarrage, pendant un traitement, après une erreur ou après un lot partiellement réussi",
         "séparées d'au moins 60 jours",
@@ -63,11 +65,9 @@ PRIVACY_REQUIRED = {
         "USE_BIOMETRIC",
         "USE_FINGERPRINT",
         "WebDAV or Nextcloud synchronisation is not available",
-        "version Android de DocCipher annoncée pour Google Play",
-        "L'application n'y est pas encore disponible",
-        "Android version of DocCipher announced for Google Play",
-        "The app is not available there yet",
-        "Code de panique et coffre leurre prévus au lancement",
+        "version Android de DocCipher disponible sur Google Play",
+        "Android version of DocCipher available on Google Play",
+        "Code de panique et coffre leurre présentés dans l’offre Premium",
         "PIN distinct saisi deux fois, deux consentements",
         "confirmation de l'action irréversible",
         "Seule la saisie exacte du PIN de panique armé déclenche ensuite",
@@ -82,7 +82,7 @@ PRIVACY_REQUIRED = {
         "délai local d'au moins 90 jours",
         "DocCipher ne reçoit ni la note, ni le commentaire, ni le score",
         "Aucun document, coffre, PIN ou texte saisi ne passe par ce canal",
-        "Panic PIN and decoy vault planned for launch",
+        "Panic PIN and decoy vault presented in the Premium offer",
         "distinct PIN entered twice, two consent steps",
         "confirmation of the irreversible action",
         "Only entering the exact armed panic PIN then triggers",
@@ -164,12 +164,10 @@ CONVERTAIR_REVIEW_ACCESS_REQUIRED = [
     "operational and security logs",
     "catégories et durées de conservation varient",
     "categories and retention periods vary",
-    "20 octobre 2026",
-    "20 October 2026",
     "âgées de 13 ans ou plus",
     "aged 13 or older",
     "lorsqu'une personne mineure utilise l'application",
-    "when a minor uses the app",
+    "when a minor uses the app"
 ]
 PRIVACY_REQUIRED["convertair-privacy.html"].extend(CONVERTAIR_REVIEW_ACCESS_REQUIRED)
 
@@ -196,7 +194,7 @@ CONVERTAIR_PRIVACY_FORBIDDEN = [
     "tous les journaux sont conservés 3 jours",
     "all logs are retained for 3 days",
     "ne collecte sciemment aucune donnée les concernant",
-    "does not knowingly collect any data about them",
+    "does not knowingly collect any data about them"
 ]
 COMING_SOON_PRIVACY_FORBIDDEN = [
     "distribuée sur Google Play",
@@ -215,8 +213,17 @@ HGQ_CANONICAL_BODY_SHA256 = {
     # 2026-10-04 reviewed delta: pseudonymous UID, bounded deletion/retention,
     # Premium-only cash purchases and server reward verification records.
     "hgq-privacy.html": "c55e6757ade4cfa65de5594cccd5ab71a6f3c9032994a621de9e44a9b74771f4",
-    "hgq-account-deletion.html": "fa2f35888322c626fe38973c818904a331a12926a6f9268c5e5c075c10c37aee",
+    "hgq-account-deletion.html": "3639aa532461e5faa41a0fce162b63790fc366f6a93467f36d38c60bd2fb48e7",
 }
+
+
+def validate_brand_teaser(text: str, key: str, base_path: str = "/") -> None:
+    import brand_media
+    import site_i18n
+    try:
+        brand_media.validate_media_nodes(list(site_i18n.walk(site_i18n.parse(text))),key,'fr',base_path)
+    except ValueError as exc:
+        raise SystemExit('HGQ_UNATTESTED_VIDEO=' + key + '.html:' + str(exc)) from exc
 
 
 def validate_current_media_and_hgq_legal(texts: dict[str, str]) -> None:
@@ -231,18 +238,18 @@ def validate_current_media_and_hgq_legal(texts: dict[str, str]) -> None:
     for link in ("hgq-privacy.html", "hgq-account-deletion.html"):
         if f'href="/{link}"' not in hgq and f'href="{link}"' not in hgq:
             raise SystemExit("HGQ_DEDICATED_LEGAL_LINK_MISSING=" + link)
-    if "<video" in hgq:
-        raise SystemExit("HGQ_UNATTESTED_VIDEO=hgq.html")
+    validate_brand_teaser(hgq, 'hgq')
 
 PRODUCT_PRICES = {
     "convertair.html": ["19,99 €", "par an", "49,99 €", "au lancement, puis 59,99 €", "Soit environ 1,67 € par mois", "3 opérations par jour"],
     "doccipher.html": ["19,99 €", "paiement unique", "Jusqu'à 15 documents", "Pas d'abonnement"],
-    "hgq.html": ["3,99 €", "par mois", "24,99 €", "par an"],
 }
 # Formulation bornée imposée par la décision DocCipher D-0051.
 PANIC_REQUIRED = [
-    "Prévu dès le lancement · inclus dans Premium",
-    "implémentation locale est en validation",
+    "Offre présentée sur Google Play",
+    "La fiche Google Play de DocCipher 1.0.1 présente ces protections",
+    "elles ne constituent pas une validation de sécurité sur tous les appareils",
+    "Les options proposées dépendent de la version installée",
     "code PIN distinct saisi deux fois, deux consentements",
     "confirmation de l'action irréversible",
     "Seule la saisie exacte du PIN de panique armé déclenche cette action",
@@ -262,6 +269,41 @@ CONVERTAIR_REVIEW_REQUIRED = [
     "Aucun contenu de document ne passe par ces chemins",
 ]
 OVERCLAIM_FORBIDDEN = ["militaire", "military", "déni plausible", "plausible deniability", "effacement définitif", "irrécupérable", "indétectable", "undetectable"]
+OVERCLAIM_NEGATIVE_RESERVATIONS = (
+    "ne garantit pas que son existence soit indétectable",
+    "does not guarantee that its existence is undetectable",
+)
+
+
+def validate_security_claims(texts: dict[str, str]) -> None:
+    # Only these complete reservations, on the attributed product page, are
+    # allowed. Positive promises containing the same words remain forbidden.
+    checked = []
+    for page, text in texts.items():
+        if page == "doccipher.html":
+            for reservation in OVERCLAIM_NEGATIVE_RESERVATIONS:
+                text = text.replace(reservation, "[bounded reservation]")
+        checked.append(text)
+    lowered = "\n".join(checked).lower()
+    for token in OVERCLAIM_FORBIDDEN:
+        if token.lower() in lowered:
+            raise SystemExit("OVERCLAIM=" + token)
+    doccipher = texts["doccipher.html"]
+    protection = re.search(r'<section class="section" id="bientot">.*?</section>', doccipher, re.S)
+    if not protection or any(phrase not in protection.group(0) for phrase in PANIC_REQUIRED):
+        raise SystemExit("MISSING_PANIC_SOON_BLOCK")
+    outside = doccipher.replace(protection.group(0), "")
+    for node in site_i18n.walk(site_i18n.parse(outside)):
+        if node.tag not in {"p", "li", "summary", "h1", "h2", "h3", "h4"}:
+            continue
+        descendants = [x for child in node.children for x in site_i18n.walk(child)]
+        if any(x.tag in site_i18n.BLOCK for x in descendants):
+            continue
+        unit = html.unescape(re.sub(r"<[^>]+>", "", node.inner()))
+        if re.search(r"panique|leurre", unit, re.I) and "Google Play" not in unit:
+            raise SystemExit("PANIC_WITHOUT_STORE_ATTRIBUTION=" + unit[:120])
+
+
 REFERRAL_FORBIDDEN = ["code parrain", "parrainez", "referral", "?ref=", "&ref=", "utm_", "invitez vos amis", "récompense contre"]
 TRACKER_FORBIDDEN = ["googletagmanager", "google-analytics", "gtag(", "fbq(", "plausible.io", "matomo", "hotjar", "clarity.ms", "<iframe"]
 CSS_URL = re.compile(r'''url\(\s*["']?([^"')]+)''', re.IGNORECASE)
@@ -290,19 +332,99 @@ def validate_css_resources(css: str) -> None:
             raise SystemExit("BAD_CSS_RESOURCE_PATH=" + link)
 
 
+def validate_prelaunch_pages(texts: dict[str, str]) -> None:
+    for page in ('peaksolo.html', 'peaksolo-privacy.html', 'hgq.html'):
+        text = texts[page]
+        if re.search(r'\d[\d.,\s]*[€$£]|[€$£]\s*\d|play\.google\.com/store/apps/details', text):
+            raise SystemExit('UNVERIFIED_PRELAUNCH_OFFER=' + page)
+    if 'Bientôt sur Android' not in texts['peaksolo.html']:
+        raise SystemExit('PEAKSOLO_MISSING_PENDING')
+    policy = texts['peaksolo-privacy.html']
+    for phrase in (
+        'Politique préparatoire', 'RevenueCat', 'ML Kit',
+        'base chiffrée SQLCipher', 'anciennes bases Isar',
+        'fichiers hors base', 'clés doivent encore être vérifiés sur appareil',
+        'fichier chiffré exporté à', 'via le sélecteur système',
+        'pas de connexion Drive intégrée ni de synchronisation automatique',
+        'échanges des composants Google restent à vérifier avant la sortie',
+        'confirmation à chaque envoi',
+    ):
+        if phrase not in policy:
+            raise SystemExit('PEAKSOLO_MISSING_BOUNDARY=' + phrase)
+
+
+def validate_publication_reference(config: dict, reference: dict) -> None:
+    """Check the maintained publication record, never infer live availability."""
+    if reference.get("schema_version") != 1:
+        raise SystemExit("BAD_PUBLICATION_REFERENCE_SCHEMA")
+    facts = reference.get("applications") or {}
+    listings = config.get("store_listings") or {}
+    for key in ("convertair", "doccipher"):
+        record = facts.get(key) or {}
+        listing = listings.get(key) or {}
+        if not record or record.get("published") is not True:
+            raise SystemExit("PUBLICATION_REFERENCE_MISSING=" + key)
+        package = listing.get("package")
+        expected_url = f"https://play.google.com/store/apps/details?id={package}"
+        if (record.get("package") != package or record.get("public_url") != expected_url
+                or not re.fullmatch(r"\d+\.\d+\.\d+(?:[.+-][A-Za-z0-9.-]+)?", str(record.get("public_version", "")))):
+            raise SystemExit("PUBLICATION_REFERENCE_MISMATCH=" + key)
+        try:
+            public = date.fromisoformat(record["public_checked_on"])
+            console = date.fromisoformat(record["console_checked_on"])
+            published = date.fromisoformat(record["last_publication_on"])
+        except (KeyError, TypeError, ValueError):
+            raise SystemExit("BAD_PUBLICATION_REFERENCE_DATE=" + key)
+        if public < published or console < published:
+            raise SystemExit("BAD_PUBLICATION_REFERENCE_DATE=" + key)
+        if (not record.get("evidence") or record.get("runtime_qualification") != "NOT_CERTIFIED_BY_THIS_REFERENCE"):
+            raise SystemExit("BAD_PUBLICATION_REFERENCE_SCOPE=" + key)
+        if listing.get("published") is not True:
+            raise SystemExit("PUBLICATION_STATE_MISMATCH=" + key)
+    for key, listing in listings.items():
+        if key not in {"convertair", "doccipher"} and listing.get("published") is True:
+            raise SystemExit("COMING_SOON_MARKED_PUBLISHED=" + key)
+
+
+def validate_availability_markup(texts: dict[str, str], listings: dict) -> None:
+    """Bind each status to its own product, not an earlier neighbouring card."""
+    for key in ("convertair", "doccipher"):
+        published = listings[key]["published"]
+        expected = "Disponible sur Google Play" if published else "Bientôt sur Android"
+        for page in ("index.html", "apps.html"):
+            cards = []
+            for node in site_i18n.walk(site_i18n.parse(texts[page])):
+                if node.tag != "article" or "card" not in node.get("class", "").split():
+                    continue
+                links = [n.get("href", "") for n in site_i18n.walk(node) if n.tag == "a"]
+                if any(not urlsplit(link).netloc and urlsplit(link).path.rsplit("/", 1)[-1] == key + ".html" for link in links):
+                    cards.append(node)
+            if len(cards) != 1:
+                raise SystemExit(f"PRODUCT_CARD_IDENTITY={page}:{key}")
+            labels = [html.unescape(n.inner()).strip() for n in site_i18n.walk(cards[0])
+                      if n.tag == "p" and "meta" in n.get("class", "").split()]
+            if labels != [expected]:
+                raise SystemExit(f"MISSING_PRODUCT_AVAILABILITY={page}:{key}")
+        hero = [n for n in site_i18n.walk(site_i18n.parse(texts[key + ".html"]))
+                if n.tag == "p" and "hero-status" in n.get("class", "").split()]
+        statuses = [n for p in hero for n in site_i18n.walk(p)
+                    if n.tag == "span" and "status" in n.get("class", "").split()]
+        if (len(statuses) != 1 or html.unescape(statuses[0].inner()).strip() != expected
+                or ("pending" in statuses[0].get("class", "").split()) == published):
+            raise SystemExit("MISSING_PRODUCT_AVAILABILITY=" + key + ".html")
+
+
 def validate_products(config: dict, base_path: str) -> None:
     listings = config.get("store_listings") or {}
     for key in ("convertair", "doccipher", "hgq"):
         listing = listings.get(key) or {}
         if not re.fullmatch(r"[a-z][a-z0-9_]*(\.[a-z][a-z0-9_]*)+", str(listing.get("package", ""))) or not isinstance(listing.get("published"), bool):
             raise SystemExit(f"BAD_STORE_LISTING={key}")
-    # ConvertAir public 2026-10-25; DocCipher public 2026-10-26, Console and Store observed.
-    # Other products retain their independent publication gate.
-    for key in ("hgq",):
-        if listings[key]["published"]:
-            raise SystemExit(f"COMING_SOON_MARKED_PUBLISHED={key}")
+    validate_publication_reference(config, json.loads(PUBLICATION_REFERENCE.read_text(encoding="utf-8")))
     # Texte décodé : l'apostrophe échappée (&#x27;) ne doit pas masquer un contrôle.
     texts = {page: html.unescape((SITE / page).read_text(encoding="utf-8")) for page in PAGES}
+    validate_prelaunch_pages(texts)
+    validate_brand_teaser(texts['peaksolo.html'], 'peaksolo', base_path)
     all_text = "\n".join(texts.values())
     lowered = all_text.lower()
     for token in REFERRAL_FORBIDDEN + TRACKER_FORBIDDEN:
@@ -328,22 +450,7 @@ def validate_products(config: dict, base_path: str) -> None:
                 raise SystemExit(f"UNPUBLISHED_STORE_LINK={key}")
             if "Bientôt sur Google Play" not in texts[f"{key}.html"]:
                 raise SystemExit(f"MISSING_STORE_PENDING={key}")
-    for page in ("index.html", "apps.html"):
-        for key, name in (("convertair", "ConvertAir"), ("doccipher", "DocCipher")):
-            card = re.search(
-                rf'<article class="card[^>]*>.*?{name}.*?</article>', texts[page], re.S
-            )
-            expected = "Disponible sur Google Play" if listings[key]["published"] else "Bientôt sur Android"
-            if not card or expected not in card.group(0):
-                raise SystemExit(f"MISSING_COMING_SOON={page}:{key}")
-    for key in ("convertair", "doccipher"):
-        expected = "Disponible sur Google Play" if listings[key]["published"] else "Bientôt sur Android"
-        if expected not in texts[f"{key}.html"]:
-            raise SystemExit(f"MISSING_PRODUCT_COMING_SOON={key}")
-        if listings[key]["published"] and any(stale in texts[f"{key}.html"] for stale in (
-            "Bientôt sur Android", "n'est pas encore sur Google Play", "La V1 Android est en préparation"
-        )):
-            raise SystemExit(f"STALE_PUBLISHED_PRODUCT={key}")
+    validate_availability_markup(texts, listings)
     if "play.google.com/store/apps/details" in all_text and not any(l["published"] for l in listings.values()):
         raise SystemExit("STORE_LINK_WITHOUT_PUBLICATION")
     for page, required in PRODUCT_PRICES.items():
@@ -359,18 +466,7 @@ def validate_products(config: dict, base_path: str) -> None:
         raise SystemExit(
             "MISSING_CONVERTAIR_REVIEW_CLAIM=" + "|".join(missing_convertair_review)
         )
-    for token in OVERCLAIM_FORBIDDEN:
-        if token.lower() in lowered:
-            raise SystemExit("OVERCLAIM=" + token)
-    doccipher = texts["doccipher.html"]
-    soon = re.search(r'<section class="section" id="bientot">.*?</section>', doccipher, re.S)
-    if not soon or any(phrase not in soon.group(0) for phrase in PANIC_REQUIRED):
-        raise SystemExit("MISSING_PANIC_SOON_BLOCK")
-    outside = doccipher.replace(soon.group(0), "")
-    for match in re.finditer(r"panique|leurre", outside, re.I):
-        window = outside[max(0, match.start() - 200): match.end() + 200]
-        if not any(guard in window for guard in ("prévus dès le lancement", "validation", "Bientôt")):
-            raise SystemExit("PANIC_CLAIMED_AS_AVAILABLE=" + window[:120])
+    validate_security_claims(texts)
     for page, text in texts.items():
         if page not in {"doccipher.html", "doccipher-privacy.html"} and re.search(r"panique|coffre leurre", text, re.I):
             raise SystemExit("PANIC_OUTSIDE_DOCCIPHER=" + page)
@@ -380,21 +476,22 @@ def validate_products(config: dict, base_path: str) -> None:
     if "prefers-reduced-motion" not in css or "prefers-reduced-motion" not in script:
         raise SystemExit("MISSING_REDUCED_MOTION")
     shared = sum((SITE / name).stat().st_size for name in ("styles.css", "theme.js", "product.js"))
+    shared += sum((SITE / name.lstrip('/')).stat().st_size for name in set(CSS_URL.findall(css)))
     for page in PRODUCT_PAGES:
         text = texts[page]
         if 'class="product-page"' not in text or 'class="product-nav"' not in text:
             raise SystemExit(f"MISSING_PRODUCT_LAYOUT={page}")
         frames = re.findall(r'<div class="phone[^"]*" data-phone><div class="screen">', text)
         all_frames = re.findall(r'<div\b[^>]*\bclass="phone(?:\s[^"]*)?"[^>]*>', text)
-        if not frames or len(frames) != len(all_frames):
+        if len(frames) != len(all_frames) or (page != "hgq.html" and not frames):
             raise SystemExit(f"UNSHARED_PHONE_FRAME={page}")
         if "--screen-ratio" in text:
             raise SystemExit(f"APP_DEPENDENT_PHONE_GEOMETRY={page}")
         if f'src="{base_path}product.js?' not in text:
             raise SystemExit(f"MISSING_PRODUCT_SCRIPT={page}")
         videos = re.findall(r"<video[^>]*>", text)
-        if page == "hgq.html" and videos:
-            raise SystemExit("HGQ_UNATTESTED_VIDEO=" + page)
+        if page == "hgq.html":
+            validate_brand_teaser(text, 'hgq', base_path)
         if not videos and page != "hgq.html":
             raise SystemExit(f"MISSING_VIDEOS={page}")
         for tag in videos:
@@ -402,9 +499,13 @@ def validate_products(config: dict, base_path: str) -> None:
                 if page!='doccipher.html' or ' controls' not in tag or 'autoplay' in tag or 'preload="none"' not in tag or ' playsinline' not in tag:
                     raise SystemExit(f'BAD_PRESENTATION_PLAYER={page}')
                 continue
+            if page == 'hgq.html':
+                continue  # Exact branded figure, controls, caption and hashes checked above.
             if re.search(r"\ssrc=|autoplay|poster=", tag) or not all(a in tag for a in ('preload="none"', " muted", " playsinline", 'aria-hidden="true"', "data-src=")):
                 raise SystemExit(f"BAD_VIDEO_TAG={page}:{tag}")
         video_files = sorted(set(re.findall(r'data-src="([^"]+\.mp4)"', text)))
+        if page == 'hgq.html' and videos:
+            video_files.extend(re.findall(r'<video\b[^>]*\bsrc="([^"]+\.mp4)"', text))
         video_bytes = 0
         for link in video_files:
             raw = _local(base_path, link).read_bytes()
@@ -442,6 +543,10 @@ def validate_products(config: dict, base_path: str) -> None:
             image_bytes += size
             if 'loading="lazy"' not in tag:
                 eager_bytes += size
+        if page == 'hgq.html' and videos:
+            poster_bytes = sum(_local(base_path,link).stat().st_size for link in set(re.findall(r'<video\b[^>]*\bposter="([^"]+)"',text)))
+            image_bytes += poster_bytes
+            eager_bytes += poster_bytes  # Poster fetch is conservatively included in initial weight.
         # Product pages count both local header derivatives in their initial budget.
         initial = len(text.encode("utf-8")) + shared + eager_bytes + header_bytes
         if video_bytes > PAGE_VIDEOS_MAX or image_bytes > PAGE_IMAGES_MAX or initial > PAGE_INITIAL_MAX:

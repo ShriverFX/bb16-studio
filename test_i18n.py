@@ -4,18 +4,27 @@ import site_i18n as i
 from validate_i18n import validate_catalog_content, validate_commercial
 
 class LocalizationTests(unittest.TestCase):
+    def validate_fixture(self, locale, data, units):
+        # The validator also enforces mandatory policy disclosures. Keep a
+        # complete real catalogue around these small synthetic mutations.
+        complete_units=json.loads((i.ROOT/'locales/source.json').read_text(encoding='utf-8'))
+        complete_data=i.catalog(locale,complete_units)
+        complete_units.update(units)
+        complete_data.update(data)
+        validate_catalog_content(locale,complete_data,complete_units)
+
     def test_policy_date_accepts_correct_local_order_not_another_date(self):
         units={'b60764210cd2':{'source':'Dernière mise à jour : 1 octobre 2026','markup':False}}
-        validate_catalog_content('ja',{'b60764210cd2':'最終更新日：2026年10月1日'},units)
+        self.validate_fixture('ja',{'b60764210cd2':'最終更新日：2026年10月1日'},units)
         with self.assertRaisesRegex(ValueError,'changed-number-price-or-date'):
-            validate_catalog_content('ja',{'b60764210cd2':'最終更新日：2026年11月1日'},units)
+            self.validate_fixture('ja',{'b60764210cd2':'最終更新日：2026年11月1日'},units)
 
     def test_security_delay_and_price_cannot_change_during_translation(self):
         units={'x':{'source':'Au moins 90 jours. Prix : 19,99 €.', 'markup':False}}
-        validate_catalog_content('en',{'x':'At least 90 days. Price: €19.99.'},units)
+        self.validate_fixture('en',{'x':'At least 90 days. Price: €19.99.'},units)
         for value in ('At least 9 days. Price: €19.99.','At least 90 days. Price: €1.99.'):
             with self.assertRaisesRegex(ValueError,'changed-number-price-or-date'):
-                validate_catalog_content('en',{'x':value},units)
+                self.validate_fixture('en',{'x':value},units)
 
     def test_updated_policy_date_rejects_stale_day(self):
         units={'new':{'source':'Dernière mise à jour : 14 octobre 2026','markup':False}}
@@ -23,18 +32,32 @@ class LocalizationTests(unittest.TestCase):
             ('ja','最終更新日：2026年10月14日','最終更新日：2026年10月1日'),
             ('vi','Cập nhật: 14 tháng 10 năm 2026','Cập nhật: 1 tháng 10 năm 2026'),
         ):
-            validate_catalog_content(locale,{'new':good},units)
+            self.validate_fixture(locale,{'new':good},units)
             with self.assertRaisesRegex(ValueError,'changed-number-price-or-date'):
-                validate_catalog_content(locale,{'new':bad},units)
+                self.validate_fixture(locale,{'new':bad},units)
+
+    def test_november_date_rejects_october_and_preserves_local_order(self):
+        units={'new':{'source':'Dernière mise à jour : 3 novembre 2026','markup':False}}
+        for locale,good,bad in (
+            ('ja','最終更新日：2026年11月3日','最終更新日：2026年10月3日'),
+            ('ko','최종 업데이트: 2026년 11월 3일','최종 업데이트: 2026년 10월 3일'),
+            ('zh-Hans','最后更新：2026年11月3日','最后更新：2026年10月3日'),
+            ('zh-Hant','最後更新：2026年11月3日','最後更新：2026年10月3日'),
+            ('vi','Cập nhật: 3 tháng 11 năm 2026','Cập nhật: 3 tháng 10 năm 2026'),
+        ):
+            with self.subTest(locale=locale):
+                self.validate_fixture(locale,{'new':good},units)
+                with self.assertRaisesRegex(ValueError,'changed-number-price-or-date'):
+                    self.validate_fixture(locale,{'new':bad},units)
 
     def test_french_disguised_as_english_is_rejected(self):
         source='Vous pouvez conserver vos documents dans votre coffre. Cette page décrit les données de votre appareil.'
         units={'x':{'source':source,'markup':False}}
         with self.assertRaisesRegex(ValueError,'I18N_CONTENT'):
-            validate_catalog_content('en',{'x':'English: '+source},units)
+            self.validate_fixture('en',{'x':'English: '+source},units)
         with self.assertRaisesRegex(ValueError,'I18N_CONTENT'):
-            validate_catalog_content('en',{'x':source.replace('données','data')},units)
-        validate_catalog_content('en',{'x':'You can keep your documents in your vault. This page describes the data on your device.'},units)
+            self.validate_fixture('en',{'x':source.replace('données','data')},units)
+        self.validate_fixture('en',{'x':'You can keep your documents in your vault. This page describes the data on your device.'},units)
 
     def test_html_translation_signature_allows_reordering_not_new_links(self):
         source='Voir <a href="/privacy.html">la politique</a> et <strong>les limites</strong>.'
@@ -57,7 +80,9 @@ class LocalizationTests(unittest.TestCase):
     def test_catalogue_includes_scripts_and_region_without_alias_fallback(self):
         self.assertEqual(len(i.LOCALES),22)
         self.assertTrue({'zh','zh-Hans','zh-Hant','pt','pt-BR'}.issubset(i.LOCALES))
-        self.assertEqual(len(i.localized_files()),21*12)
+        self.assertEqual(len(i.localized_files()),21*14)
+        self.assertIn('en/peaksolo.html',i.localized_files())
+        self.assertIn('en/peaksolo-privacy.html',i.localized_files())
         self.assertEqual(len(set(i.localized_media())),21*26)
 
     def test_convertair_revenuecat_rights_tokens_and_meaning_are_guarded(self):
@@ -97,14 +122,14 @@ class LocalizationTests(unittest.TestCase):
         units=json.loads((i.ROOT/'locales/source.json').read_text(encoding='utf-8'))
         locale='zh-Hant'; key='4cd480f1d99c'
         data=json.loads((i.ROOT/'locales'/f'{locale}.json').read_text(encoding='utf-8'))
-        self.assertEqual(data[key],'ConvertAir 隱私政策：本機文件、購買和 Google Play 元件。')
+        self.assertEqual(data[key],'ConvertAir 隱私權政策：本機文件、購買與 Google Play 元件。')
         broken=dict(data); broken[key]='ConvertAir ?私政策：本地文?、??和 Google Play ?件。'
-        with self.assertRaisesRegex(ValueError,'missing-reviewed-locale-semantics'):
+        with self.assertRaisesRegex(ValueError,'ZH_HANT_ENCODING_DAMAGED'):
             validate_catalog_content(locale,broken,units)
 
     def test_convertair_guards_do_not_require_absent_units_in_partial_fixtures(self):
         units={'x': {'source':'Au moins 90 jours. Prix : 19,99 €.'}}
-        validate_catalog_content('en',{'x':'At least 90 days. Price: €19.99.'},units)
+        self.validate_fixture('en',{'x':'At least 90 days. Price: €19.99.'},units)
 
     def test_convertair_review_access_tokens_and_age_scope_are_guarded(self):
         units=json.loads((i.ROOT/'locales/source.json').read_text(encoding='utf-8'))
@@ -132,7 +157,7 @@ class LocalizationTests(unittest.TestCase):
 
     def test_convertair_review_access_guards_ignore_unrelated_partial_fixtures(self):
         units={'x': {'source':'Au moins 90 jours. Prix : 19,99 €.'}}
-        validate_catalog_content('en',{'x':'At least 90 days. Price: €19.99.'},units)
+        self.validate_fixture('en',{'x':'At least 90 days. Price: €19.99.'},units)
 
     def test_commercial_gate_rejects_old_price_period_and_missing_disclosure(self):
         units=json.loads((i.ROOT/'locales/source.json').read_text(encoding='utf-8'))

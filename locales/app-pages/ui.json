@@ -1,0 +1,11 @@
+{
+"ro":{"language":"Limbă","pause_all":"Puneți previzualizările pe pauză","resume_all":"Reluați previzualizările","pause_one":"Puneți previzualizarea pe pauză","play_one":"Redați previzualizarea animată"},
+"sv":{"language":"Språk","pause_all":"Pausa förhandsvisningarna","resume_all":"Återuppta förhandsvisningarna","pause_one":"Pausa förhandsvisningen","play_one":"Visa den animerade förhandsvisningen"},
+"cs":{"language":"Jazyk","pause_all":"Pozastavit náhledy","resume_all":"Obnovit náhledy","pause_one":"Pozastavit náhled","play_one":"Přehrát animovaný náhled"},
+"el":{"language":"Γλώσσα","pause_all":"Παύση προεπισκοπήσεων","resume_all":"Συνέχιση προεπισκοπήσεων","pause_one":"Παύση προεπισκόπησης","play_one":"Προβολή κινούμενης προεπισκόπησης"},
+"ms":{"language":"Bahasa","pause_all":"Jeda pratonton","resume_all":"Sambung pratonton","pause_one":"Jeda pratonton ini","play_one":"Lihat pratonton animasi"},
+"he":{"language":"שפה","pause_all":"השהיית התצוגות המקדימות","resume_all":"המשך התצוגות המקדימות","pause_one":"השהיית התצוגה המקדימה","play_one":"הצגת התצוגה המקדימה המונפשת"},
+"fa":{"language":"زبان","pause_all":"توقف پیش‌نمایش‌ها","resume_all":"ادامه پیش‌نمایش‌ها","pause_one":"توقف پیش‌نمایش","play_one":"نمایش پیش‌نمایش متحرک"},
+"ur":{"language":"زبان","pause_all":"پیش نظارے روکیں","resume_all":"پیش نظارے دوبارہ چلائیں","pause_one":"پیش نظارہ روکیں","play_one":"متحرک پیش نظارہ دیکھیں"},
+"bn":{"language":"ভাষা","pause_all":"প্রিভিউগুলো বিরত করুন","resume_all":"প্রিভিউগুলো আবার চালান","pause_one":"প্রিভিউ বিরত করুন","play_one":"অ্যানিমেটেড প্রিভিউ দেখুন"}
+}

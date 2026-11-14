@@ -6,6 +6,7 @@ from __future__ import annotations
 import contextlib
 import copy
 import io
+import html
 import json
 import tempfile
 import unittest
@@ -51,6 +52,14 @@ class SiteGateMutationTests(unittest.TestCase):
             changed = texts["hgq.html"].replace('href="/' + link + '"', 'href="/other.html"').replace('href="' + link + '"', 'href="other.html"')
             with self.subTest(link=link), self.assertRaisesRegex(SystemExit, "HGQ_DEDICATED_LEGAL_LINK_MISSING"):
                 validate_site.validate_current_media_and_hgq_legal({**texts, "hgq.html": changed})
+
+    def test_hgq_unverified_player_or_link_is_rejected(self) -> None:
+        text = (validate_site.SITE / 'hgq.html').read_text(encoding='utf-8')
+        validate_site.validate_brand_teaser(text, 'hgq')
+        for injected in ('<video src="/unverified-gameplay.mp4"></video>',
+                         '<a href="/assets/video/brand/hgq-presentation-fr.mp4">Voir</a>'):
+            with self.subTest(injected=injected), self.assertRaisesRegex(SystemExit, 'HGQ_UNATTESTED_VIDEO'):
+                validate_site.validate_brand_teaser(text + injected, 'hgq')
 
     def test_hgq_admob_disclosure_cannot_lose_sdk_data_or_purposes(self) -> None:
         texts = {name: (validate_site.SITE / name).read_text(encoding="utf-8") for name in validate_site.PAGES}
@@ -215,6 +224,37 @@ class SiteGateMutationTests(unittest.TestCase):
                     "doccipher.html", phrase, "MISSING_PANIC_SOON_BLOCK"
                 )
 
+    def test_security_reservations_do_not_allow_positive_promises(self) -> None:
+        texts = {page: html.unescape((validate_site.SITE / page).read_text(encoding="utf-8"))
+                 for page in validate_site.PAGES}
+        validate_site.validate_security_claims(texts)
+        for reservation in validate_site.OVERCLAIM_NEGATIVE_RESERVATIONS:
+            positive = reservation.replace("ne garantit pas que", "garantit que").replace(
+                "does not guarantee", "guarantees"
+            )
+            mutated = dict(texts)
+            mutated["doccipher.html"] += "<p>" + positive + "</p>"
+            with self.subTest(reservation=reservation), self.assertRaisesRegex(SystemExit, "OVERCLAIM="):
+                validate_site.validate_security_claims(mutated)
+        mutated = dict(texts)
+        mutated["index.html"] += "<p>" + validate_site.OVERCLAIM_NEGATIVE_RESERVATIONS[0] + "</p>"
+        with self.assertRaisesRegex(SystemExit, "OVERCLAIM="):
+            validate_site.validate_security_claims(mutated)
+
+    def test_panic_claims_require_attribution_in_the_same_text_unit(self) -> None:
+        texts = {page: html.unescape((validate_site.SITE / page).read_text(encoding="utf-8"))
+                 for page in validate_site.PAGES}
+        for phrase in (
+            "<p>Google Play</p><p>Le coffre leurre est en validation.</p>",
+            "<details><summary>Le PIN de panique est prévu.</summary><p>Google Play</p></details>",
+        ):
+            mutated = dict(texts)
+            mutated["doccipher.html"] += phrase
+            with self.subTest(phrase=phrase), self.assertRaisesRegex(
+                SystemExit, "PANIC_WITHOUT_STORE_ATTRIBUTION="
+            ):
+                validate_site.validate_security_claims(mutated)
+
     def test_convertair_review_privacy_boundaries_are_mandatory(self) -> None:
         phrases = (
             "troisième résultat réussi réellement affiché",
@@ -258,49 +298,103 @@ class SiteGateMutationTests(unittest.TestCase):
             "MISSING_CONVERTAIR_REVIEW_CLAIM",
         )
 
-    def test_convertair_launch_has_download_links_and_no_pending_claims(self) -> None:
-        config = build_site.read_config()
-        self.assertTrue(config["store_listings"]["convertair"]["published"])
-        url = "https://play.google.com/store/apps/details?id=com.bb16studio.convertair"
-        for page in ("index.html", "apps.html", "convertair.html"):
-            text = (validate_site.SITE / page).read_text(encoding="utf-8")
-            self.assertIn(f'href="{url}"', text)
-            self.assertIn("Disponible sur Google Play", text)
-        text = (validate_site.SITE / "convertair.html").read_text(encoding="utf-8")
-        self.assertNotIn("Bientôt sur Android", text)
-        self.assertNotIn("n'est pas encore sur Google Play", text)
-
-    def test_doccipher_launch_has_links_and_no_stale_availability(self) -> None:
-        config = build_site.read_config()
-        self.assertTrue(config["store_listings"]["doccipher"]["published"])
-        url = "https://play.google.com/store/apps/details?id=com.bb16studio.doccipher"
-        for page in ("index.html", "apps.html", "doccipher.html"):
-            text = (validate_site.SITE / page).read_text(encoding="utf-8")
-            self.assertIn(f'href="{url}"', text)
-        text = (validate_site.SITE / "doccipher.html").read_text(encoding="utf-8")
-        self.assertNotIn("DocCipher n'est pas encore disponible", text)
-        self.assertNotIn("Bientôt sur Android", text)
-        self.assert_removal_is_rejected("doccipher.html", url, "MISSING_STORE_LINK=doccipher")
-
-    def test_published_convertair_cannot_lose_its_store_link(self) -> None:
-        self.assert_removal_is_rejected(
-            "convertair.html",
-            "https://play.google.com/store/apps/details?id=com.bb16studio.convertair",
-            "MISSING_STORE_LINK=convertair",
-        )
-
-    def test_other_store_listings_stay_unpublished_for_coming_soon(self) -> None:
+    def test_publication_flags_match_the_dated_reference(self) -> None:
         config = json.loads(
             (validate_site.SITE / "site.config.json").read_text(encoding="utf-8")
         )
-        for key in ("hgq",):
+        reference = json.loads(validate_site.PUBLICATION_REFERENCE.read_text(encoding="utf-8"))
+        validate_site.validate_publication_reference(config, reference)
+        for key in ("convertair", "doccipher"):
             with self.subTest(key=key):
                 mutated = copy.deepcopy(config)
-                mutated["store_listings"][key]["published"] = True
+                mutated["store_listings"][key]["published"] = False
                 with self.assertRaisesRegex(
-                    SystemExit, f"COMING_SOON_MARKED_PUBLISHED={key}"
+                    SystemExit, f"PUBLICATION_STATE_MISMATCH={key}"
                 ):
-                    validate_site.validate_products(mutated, mutated["base_path"])
+                    validate_site.validate_publication_reference(mutated, reference)
+        for key in ("hgq", "peaksolo"):
+            with self.subTest(key=key):
+                mutated = copy.deepcopy(config)
+                mutated["store_listings"][key] = {"package": "com.example." + key, "published": True}
+                with self.assertRaisesRegex(SystemExit, f"COMING_SOON_MARKED_PUBLISHED={key}"):
+                    validate_site.validate_publication_reference(mutated, reference)
+
+    def test_publication_reference_cannot_promote_another_package_or_device_proof(self) -> None:
+        config = json.loads((validate_site.SITE / "site.config.json").read_text(encoding="utf-8"))
+        reference = json.loads(validate_site.PUBLICATION_REFERENCE.read_text(encoding="utf-8"))
+        for key in ("convertair", "doccipher"):
+            with self.subTest(key=key, mutation="missing"):
+                mutated = copy.deepcopy(reference)
+                del mutated["applications"][key]
+                with self.assertRaisesRegex(SystemExit, "PUBLICATION_REFERENCE_MISSING=" + key):
+                    validate_site.validate_publication_reference(config, mutated)
+            with self.subTest(key=key, mutation="package"):
+                mutated = copy.deepcopy(reference)
+                mutated["applications"][key]["package"] = "com.example.other"
+                with self.assertRaisesRegex(SystemExit, "PUBLICATION_REFERENCE_MISMATCH=" + key):
+                    validate_site.validate_publication_reference(config, mutated)
+            with self.subTest(key=key, mutation="runtime"):
+                mutated = copy.deepcopy(reference)
+                mutated["applications"][key]["runtime_qualification"] = "ALL_DEVICE_TESTS_PASSED"
+                with self.assertRaisesRegex(SystemExit, "BAD_PUBLICATION_REFERENCE_SCOPE=" + key):
+                    validate_site.validate_publication_reference(config, mutated)
+
+    def test_available_status_belongs_to_each_card_and_hero(self) -> None:
+        config = json.loads((validate_site.SITE / "site.config.json").read_text(encoding="utf-8"))
+        texts = {page: (validate_site.SITE / page).read_text(encoding="utf-8")
+                 for page in ("index.html", "apps.html", "convertair.html", "doccipher.html")}
+        validate_site.validate_availability_markup(texts, config["store_listings"])
+        needle = '<p class="meta">Disponible sur Google Play</p>'
+        for page in ("index.html", "apps.html"):
+            text = texts[page]
+            self.assertEqual(text.count(needle), 2)
+            last = text.rfind(needle)
+            edited = text[:last] + '<p class="meta">Bientôt sur Android</p>' + text[last + len(needle):]
+            with self.subTest(page=page), self.assertRaisesRegex(SystemExit, f"MISSING_PRODUCT_AVAILABILITY={page}:doccipher"):
+                validate_site.validate_availability_markup({**texts, page: edited}, config["store_listings"])
+        for key in ("convertair", "doccipher"):
+            page = key + ".html"
+            edited = texts[page].replace('<span class="status">Disponible sur Google Play</span>',
+                                         '<span class="status pending">Disponible sur Google Play</span>')
+            self.assertNotEqual(edited, texts[page])
+            with self.subTest(key=key), self.assertRaisesRegex(SystemExit, "MISSING_PRODUCT_AVAILABILITY=" + page):
+                validate_site.validate_availability_markup({**texts, page: edited}, config["store_listings"])
+
+    def test_prelaunch_pages_reject_offers_store_links_and_missing_peak_privacy_boundaries(self) -> None:
+        texts = {
+            page: (validate_site.SITE / page).read_text(encoding="utf-8")
+            for page in ("peaksolo.html", "peaksolo-privacy.html", "hgq.html")
+        }
+        for page, text in texts.items():
+            with self.subTest(page=page, mutation="price"):
+                with self.assertRaisesRegex(SystemExit, "UNVERIFIED_PRELAUNCH_OFFER=" + page):
+                    validate_site.validate_prelaunch_pages({**texts, page: text + "<p>9,99 €</p>"})
+            with self.subTest(page=page, mutation="play_link"):
+                with self.assertRaisesRegex(SystemExit, "UNVERIFIED_PRELAUNCH_OFFER=" + page):
+                    validate_site.validate_prelaunch_pages(
+                        {**texts, page: text + "https://play.google.com/store/apps/details?id=com.example"}
+                    )
+
+        for phrase in (
+            "Politique préparatoire",
+            "RevenueCat",
+            "ML Kit",
+            "base chiffrée SQLCipher",
+            "anciennes bases Isar",
+            "fichiers hors base",
+            "clés doivent encore être vérifiés sur appareil",
+            "fichier chiffré exporté à",
+            "via le sélecteur système",
+            "pas de connexion Drive intégrée ni de synchronisation automatique",
+            "échanges des composants Google restent à vérifier avant la sortie",
+            "confirmation à chaque envoi",
+        ):
+            with self.subTest(page="peaksolo-privacy.html", phrase=phrase):
+                edited = texts["peaksolo-privacy.html"].replace(phrase, "")
+                with self.assertRaisesRegex(SystemExit, "PEAKSOLO_MISSING_BOUNDARY=" + phrase):
+                    validate_site.validate_prelaunch_pages(
+                        {**texts, "peaksolo-privacy.html": edited}
+                    )
 
     def test_export_target_is_exactly_site_directory(self) -> None:
         self.assertEqual(export_site.resolve_output("_site"), export_site.SITE / "_site")
@@ -314,10 +408,18 @@ class SiteGateMutationTests(unittest.TestCase):
             path.relative_to(export_site.SITE).as_posix()
             for path in export_site.publication_files()
         }
-        self.assertEqual(len(names), 915)
+        self.assertEqual(len(names), 1037)
         self.assertTrue(set(export_site.presentation_media()) <= names)
         self.assertTrue({"presse.html", "presse.json", "assets/video/doccipher/presentation-v2-fr.mp4"} <= names)
         self.assertTrue({"assets/video/convertair/pt-BR/teaser.mp4", "assets/downloads/kit-brasil.zip"} <= names)
+        self.assertTrue({
+            'assets/video/brand/peaksolo-presentation-fr.mp4',
+            'assets/branding/peaksolo-presentation-fr.webp',
+        } <= names)
+        self.assertNotIn('assets/video/brand/hgq-presentation-fr.mp4', names)
+        self.assertNotIn('assets/branding/hgq-presentation-fr.webp', names)
+        self.assertNotIn('assets/branding/hgq-presentation-fr.png', names)
+        self.assertNotIn('assets/branding/peaksolo-presentation-fr.png', names)
         self.assertTrue({'i18n.css', 'locale.js', 'ar/convertair.html',
                          'zh-Hant/doccipher-privacy.html',
                          'assets/screens/doccipher/ja/coffre.webp'} <= names)
@@ -326,6 +428,7 @@ class SiteGateMutationTests(unittest.TestCase):
                          "google.com, pub-7532135517195314, DIRECT, f08c47fec0942fa0")
         self.assertTrue({"hgq-privacy.html", "hgq-account-deletion.html"} <= names)
         self.assertFalse(names & export_site.RETIRED_MEDIA)
+        self.assertFalse(names & {"assets/screens/hgq/connexion.webp", "assets/screens/hgq/inscription.webp"})
         self.assertIn("CNAME", names)
         self.assertIn("convertair-test.html", names)
         self.assertIn("doccipher-test.html", names)
@@ -340,6 +443,7 @@ class SiteGateMutationTests(unittest.TestCase):
             "validate_site.py",
             "content/hgq-privacy.html",
             "content/hgq-account-deletion.html",
+            "content/brand-teaser-provenance-20261102.json",
             "locales/source.json",
             "locales/en.json",
             "I18N.md",

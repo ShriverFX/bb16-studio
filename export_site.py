@@ -16,6 +16,9 @@ from build_site import ASSETS as CORE_ASSETS
 from product_pages import MEDIA_FILES, RETIRED_MEDIA
 from validate_site import validate_custom_domain
 from site_i18n import localized_files, localized_media, presentation_media
+from app_pages_i18n import extra_files
+from hgq_showcase import PAD_MEDIA
+from hgq_runtime_media import FILES as HGQ_RUNTIME_MEDIA
 
 
 SITE = Path(__file__).resolve().parent
@@ -39,6 +42,8 @@ ROOT_FILES = (
     "index.html",
     "legal.html",
     "privacy.html",
+    "peaksolo.html",
+    "peaksolo-privacy.html",
     "product.js",
     "robots.txt",
     "sitemap.xml",
@@ -50,8 +55,13 @@ ROOT_FILES = (
     "locale.js",
     "presse.html",
     "presse.json",
-) + tuple(localized_files())
-ASSET_FILES = tuple(sorted(set(CORE_ASSETS) | set(MEDIA_FILES) | set(localized_media()) | set(presentation_media()) | {
+) + tuple(localized_files()) + tuple(extra_files())
+FONT_FILES = (
+    "assets/fonts/manrope-regular.ttf",
+    "assets/fonts/manrope-bold.ttf",
+    "assets/fonts/OFL-Manrope.txt",
+)
+ASSET_FILES = tuple(sorted(set(CORE_ASSETS) | set(MEDIA_FILES) | set(localized_media()) | set(FONT_FILES) | set(presentation_media()) | set(PAD_MEDIA) | set(HGQ_RUNTIME_MEDIA) | {
     "assets/video/doccipher/presentation-v2-fr.mp4",
     "assets/video/convertair/pt-BR/teaser.mp4",
     "assets/downloads/kit-brasil.zip",
@@ -59,6 +69,7 @@ ASSET_FILES = tuple(sorted(set(CORE_ASSETS) | set(MEDIA_FILES) | set(localized_m
 ASSET_RULES = {
     "assets/apps": frozenset({".png", ".webp"}),
     "assets/branding": frozenset({".jpg", ".png", ".webp"}),
+    "assets/fonts": frozenset({".ttf", ".txt"}),
     "assets/screens": frozenset({".webp"}),
     "assets/video": frozenset({".mp4"}),
     "assets/downloads": frozenset({".zip"}),
@@ -203,6 +214,9 @@ def validate_disposable_output(output: Path, expected: list[Path]) -> None:
     if not output.is_dir() or output.is_symlink():
         raise SystemExit(f"EXPORT_OUTPUT_NOT_DISPOSABLE={output}")
     expected_names = {path.relative_to(SITE).as_posix() for path in expected}
+    if output == SITE / "_site":
+        # A disposable export from an earlier release may still contain retired assets.
+        expected_names.update(RETIRED_MEDIA)
     expected_dirs = {
         parent.as_posix()
         for name in expected_names

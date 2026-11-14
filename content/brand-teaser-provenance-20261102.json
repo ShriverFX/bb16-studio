@@ -1,0 +1,763 @@
+{
+  "media_kind": "BRAND_TEASER",
+  "runtime_capture": false,
+  "ui_capture": false,
+  "soundtrack": false,
+  "languages": [
+    "ar",
+    "bn",
+    "cs",
+    "de",
+    "el",
+    "en",
+    "es",
+    "fa",
+    "fr",
+    "he",
+    "hi",
+    "id",
+    "it",
+    "ja",
+    "ko",
+    "ms",
+    "nl",
+    "pl",
+    "pt",
+    "ro",
+    "ru",
+    "sv",
+    "th",
+    "tr",
+    "uk",
+    "ur",
+    "vi",
+    "zh"
+  ],
+  "source": "All34 angle01 R3 timeless brand masters; site language selection is explicit, no silent French fallback.",
+  "files": {
+    "assets/video/brand/peaksolo-presentation-en.mp4": {
+      "bytes": 159764,
+      "sha256": "441923bdf2246225e55f8d201176c95d41d2305108f2574f21826b3259345ec3",
+      "app": "peaksolo",
+      "locale": "en",
+      "source_id": "peaksolo-en-teaser-01",
+      "source_sha256": "441923bdf2246225e55f8d201176c95d41d2305108f2574f21826b3259345ec3",
+      "derivation": "R3 MP4 exact bytes"
+    },
+    "assets/branding/peaksolo-presentation-en.webp": {
+      "bytes": 10010,
+      "sha256": "b2a00c59a0c0a1e0210475d18576f92503789adc2a29c94be475e38f234d0b7a",
+      "app": "peaksolo",
+      "locale": "en",
+      "source_id": "peaksolo-en-teaser-01",
+      "source_sha256": "54f947dd060f8ce24306f969621840adf2220a141548666d804018c984669731",
+      "derivation": "R3 PNG -> WebP360x640 LANCZOS quality85"
+    },
+    "assets/video/brand/peaksolo-presentation-fr.mp4": {
+      "bytes": 161811,
+      "sha256": "d6da4de2bc647ec3d6c5377a2c32d37e6e927cf53ec6c1d9e89059e815f86d1a",
+      "app": "peaksolo",
+      "locale": "fr",
+      "source_id": "peaksolo-fr-teaser-01",
+      "source_sha256": "d6da4de2bc647ec3d6c5377a2c32d37e6e927cf53ec6c1d9e89059e815f86d1a",
+      "derivation": "R3 MP4 exact bytes"
+    },
+    "assets/branding/peaksolo-presentation-fr.webp": {
+      "bytes": 9610,
+      "sha256": "80bfb3f371a1677acfcaa698c26035422dcdd065ecfe4fd6cbd606d127f5db2e",
+      "app": "peaksolo",
+      "locale": "fr",
+      "source_id": "peaksolo-fr-teaser-01",
+      "source_sha256": "d5f681e962965e9a928c0ea91eedf07792376fa97ffbf43257d57e121fa1ceb7",
+      "derivation": "R3 PNG -> WebP360x640 LANCZOS quality85"
+    },
+    "assets/video/brand/peaksolo-presentation-es.mp4": {
+      "bytes": 125082,
+      "sha256": "c87bdf903c1105b9550af26fd4df0909b94bfdee45904068dc3088cf9a9e4a08",
+      "app": "peaksolo",
+      "locale": "es",
+      "source_id": "peaksolo-es-teaser-01",
+      "source_sha256": "c87bdf903c1105b9550af26fd4df0909b94bfdee45904068dc3088cf9a9e4a08",
+      "derivation": "R3 MP4 exact bytes"
+    },
+    "assets/branding/peaksolo-presentation-es.webp": {
+      "bytes": 9124,
+      "sha256": "81e83a3bf0ddb803a37a59a791e5ec284ddd889a136fa58a554ec7db3b742da6",
+      "app": "peaksolo",
+      "locale": "es",
+      "source_id": "peaksolo-es-teaser-01",
+      "source_sha256": "e9f4123421eca708a11c7eae9f44d6d8becc201787e9b2cb172930ff5e88b684",
+      "derivation": "R3 PNG -> WebP360x640 LANCZOS quality85"
+    },
+    "assets/video/brand/peaksolo-presentation-pt.mp4": {
+      "bytes": 119841,
+      "sha256": "4c64c837ef58993d1e8d911d65655c5ff9a5f4c52128595770d6a1e8afd8b378",
+      "app": "peaksolo",
+      "locale": "pt",
+      "source_id": "peaksolo-pt-teaser-01",
+      "source_sha256": "4c64c837ef58993d1e8d911d65655c5ff9a5f4c52128595770d6a1e8afd8b378",
+      "derivation": "R3 MP4 exact bytes"
+    },
+    "assets/branding/peaksolo-presentation-pt.webp": {
+      "bytes": 8340,
+      "sha256": "cb50643774bb198e960ecdea2ef2367602b455b0455cce5051d97e9e4804fc0b",
+      "app": "peaksolo",
+      "locale": "pt",
+      "source_id": "peaksolo-pt-teaser-01",
+      "source_sha256": "39e83c5e749a66d1a7d8c6e5674476dc1d079e6a0c5da405137ba58187bdd07e",
+      "derivation": "R3 PNG -> WebP360x640 LANCZOS quality85"
+    },
+    "assets/video/brand/peaksolo-presentation-de.mp4": {
+      "bytes": 127621,
+      "sha256": "06ff95ac1d60d8af41f383e3312117194d301448f769e86204b974528aea0388",
+      "app": "peaksolo",
+      "locale": "de",
+      "source_id": "peaksolo-de-teaser-01",
+      "source_sha256": "06ff95ac1d60d8af41f383e3312117194d301448f769e86204b974528aea0388",
+      "derivation": "R3 MP4 exact bytes"
+    },
+    "assets/branding/peaksolo-presentation-de.webp": {
+      "bytes": 9630,
+      "sha256": "4bba7580753099f8787218dcf75fd9d939b0a08be106cfc2e655acfc86c1d6bb",
+      "app": "peaksolo",
+      "locale": "de",
+      "source_id": "peaksolo-de-teaser-01",
+      "source_sha256": "7d3cef7348159b02fe8841093247efbb9906f897bafaa1036d8d8dc36f19e38c",
+      "derivation": "R3 PNG -> WebP360x640 LANCZOS quality85"
+    },
+    "assets/video/brand/peaksolo-presentation-it.mp4": {
+      "bytes": 118642,
+      "sha256": "5e8da6fd5cc749bad6e03e911bb640f979904403b6944629fcd2d64386e75652",
+      "app": "peaksolo",
+      "locale": "it",
+      "source_id": "peaksolo-it-teaser-01",
+      "source_sha256": "5e8da6fd5cc749bad6e03e911bb640f979904403b6944629fcd2d64386e75652",
+      "derivation": "R3 MP4 exact bytes"
+    },
+    "assets/branding/peaksolo-presentation-it.webp": {
+      "bytes": 8912,
+      "sha256": "772fdfce169a1f19468b56a78fee7c116a7d6c4b44288b1ab99b8e0db3b60531",
+      "app": "peaksolo",
+      "locale": "it",
+      "source_id": "peaksolo-it-teaser-01",
+      "source_sha256": "46746007fecbed3be08585cdf57d830647a432ec1c535681d201b93cb73bdfb2",
+      "derivation": "R3 PNG -> WebP360x640 LANCZOS quality85"
+    },
+    "assets/video/brand/peaksolo-presentation-nl.mp4": {
+      "bytes": 118930,
+      "sha256": "802c300adee3f8961556e917863da18f570eca9acb1d383a51e422a36959d67e",
+      "app": "peaksolo",
+      "locale": "nl",
+      "source_id": "peaksolo-nl-teaser-01",
+      "source_sha256": "802c300adee3f8961556e917863da18f570eca9acb1d383a51e422a36959d67e",
+      "derivation": "R3 MP4 exact bytes"
+    },
+    "assets/branding/peaksolo-presentation-nl.webp": {
+      "bytes": 8468,
+      "sha256": "8932913aa7b6aca243b77bc44023fdf6d74d6c507a2807fe372580b05857b229",
+      "app": "peaksolo",
+      "locale": "nl",
+      "source_id": "peaksolo-nl-teaser-01",
+      "source_sha256": "9d4916646aa66f7c020befa682eab4237228c27436d39c4e7665080da1668a85",
+      "derivation": "R3 PNG -> WebP360x640 LANCZOS quality85"
+    },
+    "assets/video/brand/peaksolo-presentation-ru.mp4": {
+      "bytes": 126573,
+      "sha256": "a4368cb325aba29f26987c9930cb85a59894e4a92b24672aab9d9fd70af5bfea",
+      "app": "peaksolo",
+      "locale": "ru",
+      "source_id": "peaksolo-ru-teaser-01",
+      "source_sha256": "a4368cb325aba29f26987c9930cb85a59894e4a92b24672aab9d9fd70af5bfea",
+      "derivation": "R3 MP4 exact bytes"
+    },
+    "assets/branding/peaksolo-presentation-ru.webp": {
+      "bytes": 8764,
+      "sha256": "7ccc300873f5f55e36a71a502f719ef1f8a1cec713e9612791f3aea6c7f51218",
+      "app": "peaksolo",
+      "locale": "ru",
+      "source_id": "peaksolo-ru-teaser-01",
+      "source_sha256": "c2f6963c6927da4c8eefbf754caf02c76cffdb289eb9c9c71356029eefaa2593",
+      "derivation": "R3 PNG -> WebP360x640 LANCZOS quality85"
+    },
+    "assets/video/brand/peaksolo-presentation-uk.mp4": {
+      "bytes": 129605,
+      "sha256": "45440b855b9197ad2b1a265cca1b8d73892c745e0b349b10fdbd52afffdb4e50",
+      "app": "peaksolo",
+      "locale": "uk",
+      "source_id": "peaksolo-uk-teaser-01",
+      "source_sha256": "45440b855b9197ad2b1a265cca1b8d73892c745e0b349b10fdbd52afffdb4e50",
+      "derivation": "R3 MP4 exact bytes"
+    },
+    "assets/branding/peaksolo-presentation-uk.webp": {
+      "bytes": 9150,
+      "sha256": "630926cc6b3743e064b509e799f95899455693efdf98730cce89f758cb7fce6c",
+      "app": "peaksolo",
+      "locale": "uk",
+      "source_id": "peaksolo-uk-teaser-01",
+      "source_sha256": "e55c5d1cf62bb7a9470e15c8a908b88ea431e2743b9f2e387f35d01a55d46d4b",
+      "derivation": "R3 PNG -> WebP360x640 LANCZOS quality85"
+    },
+    "assets/video/brand/peaksolo-presentation-pl.mp4": {
+      "bytes": 122659,
+      "sha256": "1504836eceadacc88b134ed0bbda04f26215c531e0428009279955c4aa13fb1b",
+      "app": "peaksolo",
+      "locale": "pl",
+      "source_id": "peaksolo-pl-teaser-01",
+      "source_sha256": "1504836eceadacc88b134ed0bbda04f26215c531e0428009279955c4aa13fb1b",
+      "derivation": "R3 MP4 exact bytes"
+    },
+    "assets/branding/peaksolo-presentation-pl.webp": {
+      "bytes": 9134,
+      "sha256": "46ead57c71c67a044ef7b49585422289356f3d8b9ff4775d8323a7a29c616f9e",
+      "app": "peaksolo",
+      "locale": "pl",
+      "source_id": "peaksolo-pl-teaser-01",
+      "source_sha256": "49da3fe6885143d217708df0c3d5ecb73f3a7f054364d45200ca3d833857b8a7",
+      "derivation": "R3 PNG -> WebP360x640 LANCZOS quality85"
+    },
+    "assets/video/brand/peaksolo-presentation-ro.mp4": {
+      "bytes": 122299,
+      "sha256": "8960f62c2f9ed251c1cbafd33216d555520396f9e4361b4a36cbf39bce2fb85c",
+      "app": "peaksolo",
+      "locale": "ro",
+      "source_id": "peaksolo-ro-teaser-01",
+      "source_sha256": "8960f62c2f9ed251c1cbafd33216d555520396f9e4361b4a36cbf39bce2fb85c",
+      "derivation": "R3 MP4 exact bytes"
+    },
+    "assets/branding/peaksolo-presentation-ro.webp": {
+      "bytes": 8872,
+      "sha256": "4f1e943f4ab37706a78526cd8ea64d56353c2d9f89c381be788bb816795baa22",
+      "app": "peaksolo",
+      "locale": "ro",
+      "source_id": "peaksolo-ro-teaser-01",
+      "source_sha256": "a212f97b3ead727aab769a0becc9878e5889f626e995be8195cbdc60baa4631e",
+      "derivation": "R3 PNG -> WebP360x640 LANCZOS quality85"
+    },
+    "assets/video/brand/peaksolo-presentation-sv.mp4": {
+      "bytes": 120813,
+      "sha256": "0e1fbe6288e1aec4563c3cd5c50bbd008c9d9c6c7145accc3aafd2f6822a6f28",
+      "app": "peaksolo",
+      "locale": "sv",
+      "source_id": "peaksolo-sv-teaser-01",
+      "source_sha256": "0e1fbe6288e1aec4563c3cd5c50bbd008c9d9c6c7145accc3aafd2f6822a6f28",
+      "derivation": "R3 MP4 exact bytes"
+    },
+    "assets/branding/peaksolo-presentation-sv.webp": {
+      "bytes": 8846,
+      "sha256": "0ec512a8f07bf3fa8530b6988db09b106dedb2a3a67af73ff0262107f1a1efae",
+      "app": "peaksolo",
+      "locale": "sv",
+      "source_id": "peaksolo-sv-teaser-01",
+      "source_sha256": "dd1049552d838bab05b83ec8b3281be501dfddf9261ce365bddbdacdc29b5d54",
+      "derivation": "R3 PNG -> WebP360x640 LANCZOS quality85"
+    },
+    "assets/video/brand/peaksolo-presentation-cs.mp4": {
+      "bytes": 121120,
+      "sha256": "cbfee0b9c1becd70e0d08f296bf45019b58d967ef670342801ec46973304e327",
+      "app": "peaksolo",
+      "locale": "cs",
+      "source_id": "peaksolo-cs-teaser-01",
+      "source_sha256": "cbfee0b9c1becd70e0d08f296bf45019b58d967ef670342801ec46973304e327",
+      "derivation": "R3 MP4 exact bytes"
+    },
+    "assets/branding/peaksolo-presentation-cs.webp": {
+      "bytes": 8974,
+      "sha256": "5e7cb9484cd65d0ba63eddcdaa346d43ef527b0d133811299e1ec7c2167421f6",
+      "app": "peaksolo",
+      "locale": "cs",
+      "source_id": "peaksolo-cs-teaser-01",
+      "source_sha256": "2a019c88fa33fea916e39aaf38168989a7068a8b9fe4e5c8fa4ff5eb18f1993d",
+      "derivation": "R3 PNG -> WebP360x640 LANCZOS quality85"
+    },
+    "assets/video/brand/peaksolo-presentation-el.mp4": {
+      "bytes": 135685,
+      "sha256": "1925a9cbfd8011ff32ddea75b8642ee88d9dfafb20246fbd079072faa7aceb9f",
+      "app": "peaksolo",
+      "locale": "el",
+      "source_id": "peaksolo-el-teaser-01",
+      "source_sha256": "1925a9cbfd8011ff32ddea75b8642ee88d9dfafb20246fbd079072faa7aceb9f",
+      "derivation": "R3 MP4 exact bytes"
+    },
+    "assets/branding/peaksolo-presentation-el.webp": {
+      "bytes": 9630,
+      "sha256": "4f4ace0fa48a5b27a8065aefb7e49c1c592e8be7d55c9196bee6b1c994c06e1c",
+      "app": "peaksolo",
+      "locale": "el",
+      "source_id": "peaksolo-el-teaser-01",
+      "source_sha256": "a4677de6c93850e9afee52dee0b781bbbecd7fe62c1c53d555325a810502bfc1",
+      "derivation": "R3 PNG -> WebP360x640 LANCZOS quality85"
+    },
+    "assets/video/brand/peaksolo-presentation-tr.mp4": {
+      "bytes": 121934,
+      "sha256": "ffe3aee559ea1845a410e640b5ef36999556cda97b2074a40b2753674c4e1e0a",
+      "app": "peaksolo",
+      "locale": "tr",
+      "source_id": "peaksolo-tr-teaser-01",
+      "source_sha256": "ffe3aee559ea1845a410e640b5ef36999556cda97b2074a40b2753674c4e1e0a",
+      "derivation": "R3 MP4 exact bytes"
+    },
+    "assets/branding/peaksolo-presentation-tr.webp": {
+      "bytes": 8950,
+      "sha256": "42f796a93ba525f5a39521cd7aeed4555566dc99cb901685e24c8a9ba1a40abc",
+      "app": "peaksolo",
+      "locale": "tr",
+      "source_id": "peaksolo-tr-teaser-01",
+      "source_sha256": "1891cb68b6630019993d7223337e70a0e19b9b59ff1f3adb95e24b17d87ddcfd",
+      "derivation": "R3 PNG -> WebP360x640 LANCZOS quality85"
+    },
+    "assets/video/brand/peaksolo-presentation-ar.mp4": {
+      "bytes": 109661,
+      "sha256": "74040020b3f79dd40b56d581965143a35c28b12728ce89e474bf86ee887c0bec",
+      "app": "peaksolo",
+      "locale": "ar",
+      "source_id": "peaksolo-ar-teaser-01",
+      "source_sha256": "74040020b3f79dd40b56d581965143a35c28b12728ce89e474bf86ee887c0bec",
+      "derivation": "R3 MP4 exact bytes"
+    },
+    "assets/branding/peaksolo-presentation-ar.webp": {
+      "bytes": 7812,
+      "sha256": "1c1133b32b290944c66615b65dc3134774d50217c4fdb9658b7260b04033c866",
+      "app": "peaksolo",
+      "locale": "ar",
+      "source_id": "peaksolo-ar-teaser-01",
+      "source_sha256": "9b8948c6cdcd347d062d552394866555809b3be34b68f97b3fa2a72ef2cb018a",
+      "derivation": "R3 PNG -> WebP360x640 LANCZOS quality85"
+    },
+    "assets/video/brand/peaksolo-presentation-he.mp4": {
+      "bytes": 117397,
+      "sha256": "911161df63e7aafd31a843b04901f8883b0c6b3fa48f956c4a7b6b16063c8177",
+      "app": "peaksolo",
+      "locale": "he",
+      "source_id": "peaksolo-he-teaser-01",
+      "source_sha256": "911161df63e7aafd31a843b04901f8883b0c6b3fa48f956c4a7b6b16063c8177",
+      "derivation": "R3 MP4 exact bytes"
+    },
+    "assets/branding/peaksolo-presentation-he.webp": {
+      "bytes": 8774,
+      "sha256": "747a948a4ceb4f66d0231bbb45f6ac8fddd967089a82716f134d296b6e267cac",
+      "app": "peaksolo",
+      "locale": "he",
+      "source_id": "peaksolo-he-teaser-01",
+      "source_sha256": "fabcea002ea1d42f2dbe873aa5db118835e1293476f171f4648394948988b4ed",
+      "derivation": "R3 PNG -> WebP360x640 LANCZOS quality85"
+    },
+    "assets/video/brand/peaksolo-presentation-fa.mp4": {
+      "bytes": 117243,
+      "sha256": "a41b8ce6e7168686cd75a51b4f0faba346f3baa77402711c3637c72e68f1ddfe",
+      "app": "peaksolo",
+      "locale": "fa",
+      "source_id": "peaksolo-fa-teaser-01",
+      "source_sha256": "a41b8ce6e7168686cd75a51b4f0faba346f3baa77402711c3637c72e68f1ddfe",
+      "derivation": "R3 MP4 exact bytes"
+    },
+    "assets/branding/peaksolo-presentation-fa.webp": {
+      "bytes": 8748,
+      "sha256": "5b595a4951e4ab550ce133100a3422a5faa3aec97611340bd9e6157b313a9617",
+      "app": "peaksolo",
+      "locale": "fa",
+      "source_id": "peaksolo-fa-teaser-01",
+      "source_sha256": "cce50f2547ab64104027c8e35d46be5018aa921975fa86b0861506e4c2a5a94c",
+      "derivation": "R3 PNG -> WebP360x640 LANCZOS quality85"
+    },
+    "assets/video/brand/peaksolo-presentation-ur.mp4": {
+      "bytes": 110459,
+      "sha256": "95cb4847d297d23143ea99698b06c730909f8dc0c575197dc49a52cf8434c72d",
+      "app": "peaksolo",
+      "locale": "ur",
+      "source_id": "peaksolo-ur-teaser-01",
+      "source_sha256": "95cb4847d297d23143ea99698b06c730909f8dc0c575197dc49a52cf8434c72d",
+      "derivation": "R3 MP4 exact bytes"
+    },
+    "assets/branding/peaksolo-presentation-ur.webp": {
+      "bytes": 7554,
+      "sha256": "53622ef587ce4c29d5b6857cb5582c15c6cf7711acdf306be4711e4ae086030a",
+      "app": "peaksolo",
+      "locale": "ur",
+      "source_id": "peaksolo-ur-teaser-01",
+      "source_sha256": "a3be3e95773bee3e4541d1aa6916400e657d25b9a2ab053428200914bdb8f25e",
+      "derivation": "R3 PNG -> WebP360x640 LANCZOS quality85"
+    },
+    "assets/video/brand/peaksolo-presentation-hi.mp4": {
+      "bytes": 111065,
+      "sha256": "8ea58934f0eed0db783a38d690ce9d04281a0e23fdd1b470bc109a10e4cab4cb",
+      "app": "peaksolo",
+      "locale": "hi",
+      "source_id": "peaksolo-hi-teaser-01",
+      "source_sha256": "8ea58934f0eed0db783a38d690ce9d04281a0e23fdd1b470bc109a10e4cab4cb",
+      "derivation": "R3 MP4 exact bytes"
+    },
+    "assets/branding/peaksolo-presentation-hi.webp": {
+      "bytes": 7798,
+      "sha256": "a878de4a5f478a4bfdacc2fd9da9a4e0ea0591b84ea2994930ff94956d951856",
+      "app": "peaksolo",
+      "locale": "hi",
+      "source_id": "peaksolo-hi-teaser-01",
+      "source_sha256": "01e6daecf46095eb4b26f15f213541cec60bd41c9902d396513dae0f07f9c99e",
+      "derivation": "R3 PNG -> WebP360x640 LANCZOS quality85"
+    },
+    "assets/video/brand/peaksolo-presentation-bn.mp4": {
+      "bytes": 116899,
+      "sha256": "9aceefe9f7f133873a9e8ea68c915158c42d2561c5e9c6823e84f7a12f4672ad",
+      "app": "peaksolo",
+      "locale": "bn",
+      "source_id": "peaksolo-bn-teaser-01",
+      "source_sha256": "9aceefe9f7f133873a9e8ea68c915158c42d2561c5e9c6823e84f7a12f4672ad",
+      "derivation": "R3 MP4 exact bytes"
+    },
+    "assets/branding/peaksolo-presentation-bn.webp": {
+      "bytes": 8030,
+      "sha256": "1ccec0e4f43aeab10a6b3a468cc6e788099be64396daa71dc03597952dcfd6bd",
+      "app": "peaksolo",
+      "locale": "bn",
+      "source_id": "peaksolo-bn-teaser-01",
+      "source_sha256": "d510b795dcaced3e88cc033c14faa0c4f81995cbf33c8ed126e2df8dcc8b3a8b",
+      "derivation": "R3 PNG -> WebP360x640 LANCZOS quality85"
+    },
+    "assets/video/brand/peaksolo-presentation-id.mp4": {
+      "bytes": 119337,
+      "sha256": "f42f369954de6d86cb5903b4e852ffb9e632a1b3c7064b0bb34750f150fb7b47",
+      "app": "peaksolo",
+      "locale": "id",
+      "source_id": "peaksolo-id-teaser-01",
+      "source_sha256": "f42f369954de6d86cb5903b4e852ffb9e632a1b3c7064b0bb34750f150fb7b47",
+      "derivation": "R3 MP4 exact bytes"
+    },
+    "assets/branding/peaksolo-presentation-id.webp": {
+      "bytes": 8916,
+      "sha256": "d066251448a301b79d4716bf5c8378ccf0c86f18a7b305b0db5814ab0900e600",
+      "app": "peaksolo",
+      "locale": "id",
+      "source_id": "peaksolo-id-teaser-01",
+      "source_sha256": "ee438005fa17620cea1400e8cb628cd56605eb386b7c295e2e0eb04cd367fea0",
+      "derivation": "R3 PNG -> WebP360x640 LANCZOS quality85"
+    },
+    "assets/video/brand/peaksolo-presentation-ms.mp4": {
+      "bytes": 125795,
+      "sha256": "4e68ca7b7ad5e85e5876e30d6e09737cde20b7c64cda015f66972029a43ce28c",
+      "app": "peaksolo",
+      "locale": "ms",
+      "source_id": "peaksolo-ms-teaser-01",
+      "source_sha256": "4e68ca7b7ad5e85e5876e30d6e09737cde20b7c64cda015f66972029a43ce28c",
+      "derivation": "R3 MP4 exact bytes"
+    },
+    "assets/branding/peaksolo-presentation-ms.webp": {
+      "bytes": 9510,
+      "sha256": "81ecdcd83c1c1c279bf193429cf02a0590380c6ac6793df3166325b06ab952fc",
+      "app": "peaksolo",
+      "locale": "ms",
+      "source_id": "peaksolo-ms-teaser-01",
+      "source_sha256": "144399ec681b7a387a7ce983166796718dacdbedce8d45fc46d1676aae8f3bdb",
+      "derivation": "R3 PNG -> WebP360x640 LANCZOS quality85"
+    },
+    "assets/video/brand/peaksolo-presentation-vi.mp4": {
+      "bytes": 133695,
+      "sha256": "3b35acb23eb023722aa11a20c330d433042394eb13bea1401172009dbbf41185",
+      "app": "peaksolo",
+      "locale": "vi",
+      "source_id": "peaksolo-vi-teaser-01",
+      "source_sha256": "3b35acb23eb023722aa11a20c330d433042394eb13bea1401172009dbbf41185",
+      "derivation": "R3 MP4 exact bytes"
+    },
+    "assets/branding/peaksolo-presentation-vi.webp": {
+      "bytes": 10106,
+      "sha256": "04f3f78b68246bad2d2e3ba266ec93b8f4fde982e49dba5042194bc5c15bb7ff",
+      "app": "peaksolo",
+      "locale": "vi",
+      "source_id": "peaksolo-vi-teaser-01",
+      "source_sha256": "d7406f758926bb7cc523250bd37b59effaae8571962b6645d42a824315de56d8",
+      "derivation": "R3 PNG -> WebP360x640 LANCZOS quality85"
+    },
+    "assets/video/brand/peaksolo-presentation-th.mp4": {
+      "bytes": 106809,
+      "sha256": "fb88fda6b1c67d43f8ea713f01db9e499125d63835c37b692c99ae00219f929a",
+      "app": "peaksolo",
+      "locale": "th",
+      "source_id": "peaksolo-th-teaser-01",
+      "source_sha256": "fb88fda6b1c67d43f8ea713f01db9e499125d63835c37b692c99ae00219f929a",
+      "derivation": "R3 MP4 exact bytes"
+    },
+    "assets/branding/peaksolo-presentation-th.webp": {
+      "bytes": 7694,
+      "sha256": "cb021cc125e86caf4e5b3c8b65ceb882eb02e89f586a57213c35a3552a148d3f",
+      "app": "peaksolo",
+      "locale": "th",
+      "source_id": "peaksolo-th-teaser-01",
+      "source_sha256": "fb59d22180fac032977725376809b696197c01b53623298d49dce9155a9ca318",
+      "derivation": "R3 PNG -> WebP360x640 LANCZOS quality85"
+    },
+    "assets/video/brand/peaksolo-presentation-ja.mp4": {
+      "bytes": 111113,
+      "sha256": "2b5292926e70d07066fd5f29320a156a790037c2d506a2b9b382ea9e5268902c",
+      "app": "peaksolo",
+      "locale": "ja",
+      "source_id": "peaksolo-ja-teaser-01",
+      "source_sha256": "2b5292926e70d07066fd5f29320a156a790037c2d506a2b9b382ea9e5268902c",
+      "derivation": "R3 MP4 exact bytes"
+    },
+    "assets/branding/peaksolo-presentation-ja.webp": {
+      "bytes": 7624,
+      "sha256": "2f7741ce3c836871654b50dde6e5fc798f670b51cd39a13d456ad8f7dddb32c5",
+      "app": "peaksolo",
+      "locale": "ja",
+      "source_id": "peaksolo-ja-teaser-01",
+      "source_sha256": "6661ab067eda43012a3ef79e6a9025974d317e6960c89e06cf4770bd75cdc683",
+      "derivation": "R3 PNG -> WebP360x640 LANCZOS quality85"
+    },
+    "assets/video/brand/peaksolo-presentation-ko.mp4": {
+      "bytes": 109064,
+      "sha256": "17466860f163aa3c72349e4e4267295dc2efe8e98b9644e57d6198c2e5178734",
+      "app": "peaksolo",
+      "locale": "ko",
+      "source_id": "peaksolo-ko-teaser-01",
+      "source_sha256": "17466860f163aa3c72349e4e4267295dc2efe8e98b9644e57d6198c2e5178734",
+      "derivation": "R3 MP4 exact bytes"
+    },
+    "assets/branding/peaksolo-presentation-ko.webp": {
+      "bytes": 7348,
+      "sha256": "81f75bbc914104170e6e5214b9a3aa35ae004e5b0e8547867ab10e3712cb85af",
+      "app": "peaksolo",
+      "locale": "ko",
+      "source_id": "peaksolo-ko-teaser-01",
+      "source_sha256": "275d214541f7a32eb6420d68dcc8b90e7618aa69026e15d7e2882d6c6a1d9546",
+      "derivation": "R3 PNG -> WebP360x640 LANCZOS quality85"
+    },
+    "assets/video/brand/peaksolo-presentation-zh.mp4": {
+      "bytes": 108506,
+      "sha256": "1b9bd4e8a11e3f5543d43ef853ae751caf10441bd99636f2854465f95df7c637",
+      "app": "peaksolo",
+      "locale": "zh",
+      "source_id": "peaksolo-zh-teaser-01",
+      "source_sha256": "1b9bd4e8a11e3f5543d43ef853ae751caf10441bd99636f2854465f95df7c637",
+      "derivation": "R3 MP4 exact bytes"
+    },
+    "assets/branding/peaksolo-presentation-zh.webp": {
+      "bytes": 7552,
+      "sha256": "d6f4bcc3194db8974737987f9294b73aa0633564ba31578be6b2d2d9c22bf357",
+      "app": "peaksolo",
+      "locale": "zh",
+      "source_id": "peaksolo-zh-teaser-01",
+      "source_sha256": "afe897bbf85c4c98ce73f3c60d1d125676b8d214b5f7729047be693291be6ccf",
+      "derivation": "R3 PNG -> WebP360x640 LANCZOS quality85"
+    },
+    "assets/video/brand/hgq-presentation-en.mp4": {
+      "bytes": 112795,
+      "sha256": "27f482db9c139ce48f2ed23bb2582fc8131985c957b17b81f130b6e7236f4098",
+      "app": "hgq",
+      "locale": "en",
+      "source_id": "hgq-en-android-brand-20261109",
+      "source_sha256": "27f482db9c139ce48f2ed23bb2582fc8131985c957b17b81f130b6e7236f4098",
+      "derivation": "Illustrated reconstruction with the Android app logo, pad assets, palette and gamepad layout. No gameplay footage."
+    },
+    "assets/branding/hgq-presentation-en.webp": {
+      "bytes": 19228,
+      "sha256": "98475771ed96197a28decc5dbba78f9f21b34575ba1835c82f63f60ecb67056e",
+      "app": "hgq",
+      "locale": "en",
+      "source_id": "hgq-en-android-brand-20261109",
+      "source_sha256": "98475771ed96197a28decc5dbba78f9f21b34575ba1835c82f63f60ecb67056e",
+      "derivation": "Illustrated reconstruction with the Android app logo, pad assets, palette and gamepad layout. No gameplay footage."
+    },
+    "assets/video/brand/hgq-presentation-es.mp4": {
+      "bytes": 123911,
+      "sha256": "f5f1aff36b9f2f20d1b469febcf5d595f5aa2a7467607f938970e9dfff8685d3",
+      "app": "hgq",
+      "locale": "es",
+      "source_id": "hgq-es-android-brand-20261109",
+      "source_sha256": "f5f1aff36b9f2f20d1b469febcf5d595f5aa2a7467607f938970e9dfff8685d3",
+      "derivation": "Illustrated reconstruction with the Android app logo, pad assets, palette and gamepad layout. No gameplay footage."
+    },
+    "assets/branding/hgq-presentation-es.webp": {
+      "bytes": 20540,
+      "sha256": "27dfcf9b1468b43ed8008ee9edbfc319351b9652c34eda556ee93d0966c29cbd",
+      "app": "hgq",
+      "locale": "es",
+      "source_id": "hgq-es-android-brand-20261109",
+      "source_sha256": "27dfcf9b1468b43ed8008ee9edbfc319351b9652c34eda556ee93d0966c29cbd",
+      "derivation": "Illustrated reconstruction with the Android app logo, pad assets, palette and gamepad layout. No gameplay footage."
+    },
+    "assets/video/brand/hgq-presentation-fr.mp4": {
+      "bytes": 119251,
+      "sha256": "fa9975a620a389b92efb47e4cb5284d1d488679a7b5fd729a2692bd61083f2da",
+      "app": "hgq",
+      "locale": "fr",
+      "source_id": "hgq-fr-android-brand-20261109",
+      "source_sha256": "fa9975a620a389b92efb47e4cb5284d1d488679a7b5fd729a2692bd61083f2da",
+      "derivation": "Illustrated reconstruction with the Android app logo, pad assets, palette and gamepad layout. No gameplay footage."
+    },
+    "assets/branding/hgq-presentation-fr.webp": {
+      "bytes": 20462,
+      "sha256": "40efcbc131ad2d5b1abed9669febb1971c7d2ac4bbf9d562523ad28eb4e5ff74",
+      "app": "hgq",
+      "locale": "fr",
+      "source_id": "hgq-fr-android-brand-20261109",
+      "source_sha256": "40efcbc131ad2d5b1abed9669febb1971c7d2ac4bbf9d562523ad28eb4e5ff74",
+      "derivation": "Illustrated reconstruction with the Android app logo, pad assets, palette and gamepad layout. No gameplay footage."
+    },
+    "assets/video/brand/hgq-presentation-ja.mp4": {
+      "bytes": 115015,
+      "sha256": "38aaae784185f8205eb52e3aed74a8c4a2d43ecc6a9141d1c659d581cf53dd19",
+      "app": "hgq",
+      "locale": "ja",
+      "source_id": "hgq-ja-android-brand-20261109",
+      "source_sha256": "38aaae784185f8205eb52e3aed74a8c4a2d43ecc6a9141d1c659d581cf53dd19",
+      "derivation": "Illustrated reconstruction with the Android app logo, pad assets, palette and gamepad layout. No gameplay footage."
+    },
+    "assets/branding/hgq-presentation-ja.webp": {
+      "bytes": 19248,
+      "sha256": "d55a12a7aa30c2a0b302a5ba2b1459d2d402337fbf01db1a43a9b5443afab1e5",
+      "app": "hgq",
+      "locale": "ja",
+      "source_id": "hgq-ja-android-brand-20261109",
+      "source_sha256": "d55a12a7aa30c2a0b302a5ba2b1459d2d402337fbf01db1a43a9b5443afab1e5",
+      "derivation": "Illustrated reconstruction with the Android app logo, pad assets, palette and gamepad layout. No gameplay footage."
+    },
+    "assets/video/brand/hgq-presentation-ko.mp4": {
+      "bytes": 108191,
+      "sha256": "800b30e1e9c0f3e5c4d5ca42158e4d354d42faa9e69592be988d90ec448d2fcd",
+      "app": "hgq",
+      "locale": "ko",
+      "source_id": "hgq-ko-android-brand-20261109",
+      "source_sha256": "800b30e1e9c0f3e5c4d5ca42158e4d354d42faa9e69592be988d90ec448d2fcd",
+      "derivation": "Illustrated reconstruction with the Android app logo, pad assets, palette and gamepad layout. No gameplay footage."
+    },
+    "assets/branding/hgq-presentation-ko.webp": {
+      "bytes": 19132,
+      "sha256": "ff7cc0970b9e42ee781273b12aadf16c168fcf47afcfd65590ef03599b70c1d6",
+      "app": "hgq",
+      "locale": "ko",
+      "source_id": "hgq-ko-android-brand-20261109",
+      "source_sha256": "ff7cc0970b9e42ee781273b12aadf16c168fcf47afcfd65590ef03599b70c1d6",
+      "derivation": "Illustrated reconstruction with the Android app logo, pad assets, palette and gamepad layout. No gameplay footage."
+    },
+    "assets/video/brand/hgq-presentation-pt.mp4": {
+      "bytes": 120357,
+      "sha256": "7e1390929e96fee05bf801162a0a2839c3bc01e804d34e95f4b0427ed3a10228",
+      "app": "hgq",
+      "locale": "pt",
+      "source_id": "hgq-pt-android-brand-20261109",
+      "source_sha256": "7e1390929e96fee05bf801162a0a2839c3bc01e804d34e95f4b0427ed3a10228",
+      "derivation": "Illustrated reconstruction with the Android app logo, pad assets, palette and gamepad layout. No gameplay footage."
+    },
+    "assets/branding/hgq-presentation-pt.webp": {
+      "bytes": 20312,
+      "sha256": "a66c1d2ba8890edcd9e2da6057079214752b9ecdcc4dafc3315e2b4c1029957a",
+      "app": "hgq",
+      "locale": "pt",
+      "source_id": "hgq-pt-android-brand-20261109",
+      "source_sha256": "a66c1d2ba8890edcd9e2da6057079214752b9ecdcc4dafc3315e2b4c1029957a",
+      "derivation": "Illustrated reconstruction with the Android app logo, pad assets, palette and gamepad layout. No gameplay footage."
+    }
+  },
+  "source_revision": "HGQ_PEAKSOLO_LAUNCH_MASTERS_20261102_R3",
+  "source_manifest": "HGQ_PEAKSOLO_LAUNCH_MASTERS_20261102_R3/MANIFEST.json",
+  "source_manifest_sha256": "b5fecc59ae17aff630aea5df6f72a1eaf6dc40d1b095de1ac286b2cf79d1b8ae",
+  "class": "BRAND_TEASER",
+  "runtime": false,
+  "app_languages": {
+    "peaksolo": [
+      "en",
+      "fr",
+      "es",
+      "pt",
+      "de",
+      "it",
+      "nl",
+      "ru",
+      "uk",
+      "pl",
+      "ro",
+      "sv",
+      "cs",
+      "el",
+      "tr",
+      "ar",
+      "he",
+      "fa",
+      "ur",
+      "hi",
+      "bn",
+      "id",
+      "ms",
+      "vi",
+      "th",
+      "ja",
+      "ko",
+      "zh"
+    ],
+    "hgq": [
+      "en",
+      "es",
+      "fr",
+      "ja",
+      "ko",
+      "pt"
+    ]
+  },
+  "caption_labels": {
+    "fr": "Présentation de marque en préparation",
+    "en": "Brand presentation in preparation",
+    "ar": "عرض تعريفي بالعلامة قيد الإعداد",
+    "he": "סרטון היכרות עם המותג בהכנה",
+    "fa": "ویدیوی معرفی برند در دست آماده‌سازی",
+    "ur": "برانڈ کی تعارفی ویڈیو تیاری میں ہے",
+    "hi": "ब्रांड परिचय वीडियो तैयार हो रहा है",
+    "bn": "ব্র্যান্ড পরিচিতির ভিডিও তৈরি হচ্ছে",
+    "th": "วิดีโอแนะนำแบรนด์กำลังจัดทำ",
+    "ja": "ブランド紹介動画・準備中",
+    "ko": "브랜드 소개 영상 준비 중",
+    "zh": "品牌介绍视频筹备中",
+    "es": "Presentación de marca en preparación",
+    "pt": "Apresentação da marca em preparação",
+    "de": "Markenpräsentation in Vorbereitung",
+    "it": "Presentazione del marchio in preparazione",
+    "nl": "Merkpresentatie in voorbereiding",
+    "ro": "Prezentare de brand în pregătire",
+    "sv": "Varumärkespresentation under förberedelse",
+    "cs": "Představení značky se připravuje",
+    "ru": "Презентация бренда в подготовке",
+    "uk": "Презентація бренду в підготовці",
+    "pl": "Prezentacja marki w przygotowaniu",
+    "el": "Η παρουσίαση της μάρκας ετοιμάζεται",
+    "tr": "Marka tanıtımı hazırlanıyor",
+    "id": "Presentasi merek sedang disiapkan",
+    "ms": "Persembahan jenama sedang disediakan",
+    "vi": "Video giới thiệu thương hiệu đang được chuẩn bị"
+  },
+  "caption_source_copy_sha256": {
+    "copy-complex.json": "20da688b30a7b56422ad6ebd703a12de094c5092bb4beb4b386e7ca3bc78249f",
+    "copy-europe-a.json": "4ebf467fd00eeda4340d0aad5acdbf4f7fca18ed1389157fcae221d2abf931bb",
+    "copy-europe-b.json": "1b50013d7aa5c3ed92582da438259b1cd52fb2c1d13866305def95f32909683f"
+  },
+  "language_review": "AI_REVIEW_ONLY_NATIVE_NOT_OBSERVED",
+  "hgq_showcase_revision": {
+    "date": "2026-11-09",
+    "runtime_capture": false,
+    "audio": false,
+    "duration_seconds": 14,
+    "locales": [
+      "fr",
+      "en",
+      "es",
+      "pt",
+      "ja",
+      "ko"
+    ],
+    "renderer": "scripts/render_hgq_showcase.py",
+    "palette_source": "lib/theme/app_colors.dart",
+    "layout_source": "lib/modules/game/game_screen.dart",
+    "asset_source_sha256": {
+      "Logo_hgq_fond_transparent.png": "531f93ab06abc92be87e4f1aaa102271f57c536f05f1f41bc825096e85fe5a9c",
+      "Pad_blue_fond_transparent.png": "715f5d04c99150202e6d2559e6205ca25afc91dfcee9fdc934a65fa9658192b2",
+      "Pad_green_fond_transparent.png": "3d9c9d84891c9a97751fa1fbea464200da0ad0a09fc4eee02560601cb8f10b0d",
+      "Pad_yellow_fond_transparent.png": "c3428961a00dad0228bb966f937523da57ba94999964eb50f519880f622d438b",
+      "Pad_red_fond_transparent.png": "a4ef441a7a5abb98fdbec1b39734ea02271926a03d95cfa97eeca1a55ed80186"
+    },
+    "web_pad_sha256": {
+      "assets/apps/hgq-pad-blue.webp": "425474561c8d974e1f0d60ee4a3b95c316caf76ec4a00d3ca2c99d3b317b4835",
+      "assets/apps/hgq-pad-green.webp": "939203fdd883210a1c0b55f7ccca8d10a2e74262b66bc8ac47f246ffc7ea8b88",
+      "assets/apps/hgq-pad-yellow.webp": "3b446ec3f7e08c17ad533bc1299ff938169352ada983ce6ee3f664f27263874f",
+      "assets/apps/hgq-pad-red.webp": "8ab4272bc1a3c20245a69896f6db006a1f097195a12ac5567492fe020458b709"
+    },
+    "title_font_sha256": "d57a701c99b2a55ea12fc932146a4429ed98c039a7b513a968f98f17117b6edc"
+  }
+}

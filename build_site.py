@@ -14,6 +14,7 @@ from html import escape
 
 import product_pages
 import site_i18n
+import suite_pages
 
 
 SITE = Path(__file__).resolve().parent
@@ -22,6 +23,7 @@ CONFIG_PATH = SITE / "site.config.json"
 CSS_PATH = SITE / "styles.css"
 
 ASSETS = {
+    "assets/apps/peaksolo-icon-192.webp": None,
     "assets/branding/convertair-presentation.png": BB16 / "10_STUDIO/ConvertAir/assets/branding/convertair_presentation.png",
     "assets/branding/doccipher-presentation.png": BB16 / "10_STUDIO/DocCipher/assets/branding/doccipher_presentation.png",
     "assets/apps/convertair-icon-512.png": BB16 / "10_STUDIO/ConvertAir/assets/store/icon-512.png",
@@ -69,12 +71,12 @@ def validate_site_url(site_url: str | None) -> str | None:
 
 
 def prefix_internal_links(markup: str, base_path: str) -> str:
-    """Prefix local href/src values so GitHub Pages 404s remain navigable."""
+    """Prefix local links/media values so nested preview and Pages URLs work."""
     def replace(match: re.Match[str]) -> str:
         attribute, value, closing = match.groups()
         return f'{attribute}{base_path}{value}{closing}'
 
-    pattern = r'((?:href|src)=["\'])(?![A-Za-z][A-Za-z0-9+.-]*:|/|#)([^"\']+)(["\'])'
+    pattern = r'((?:href|src|poster)=["\'])(?![A-Za-z][A-Za-z0-9+.-]*:|/|#)([^"\']+)(["\'])'
     return re.sub(pattern, replace, markup)
 
 
@@ -89,7 +91,7 @@ def header(active: str, compact: bool = False) -> str:
     return f'''<a class="skip-link" href="#main">Aller au contenu</a>
 <header class="site-header">
   <nav class="nav" aria-label="Navigation principale">
-    <a class="wordmark" href="index.html" aria-label="BB16 Studio — Accueil"><img class="wordmark-logo logo-dark" src="{dark_logo}" alt="" width="{dark_size}" height="{dark_size}"><img class="wordmark-logo logo-light" src="{light_logo}" alt="" width="{light_size}" height="{light_size}"></a>
+    <a class="wordmark" href="index.html" aria-label="BB16 Studio — Accueil"><img class="wordmark-logo logo-dark" src="{dark_logo}" alt="" width="{dark_size}" height="{dark_size}"><img class="wordmark-logo logo-light" src="{light_logo}" alt="" width="{light_size}" height="{light_size}"><span class="wordmark-name">BB16 Studio</span></a>
     <div class="nav-links">{"".join(links)}</div>
     <div class="theme-switch" role="group" aria-label="Apparence" hidden><button class="theme-option" type="button" data-set-theme="light" aria-pressed="false">Clair</button><button class="theme-option" type="button" data-set-theme="dark" aria-pressed="false">Sombre</button></div>
   </nav>
@@ -98,6 +100,7 @@ def header(active: str, compact: bool = False) -> str:
 
 def footer(config: dict) -> str:
     platforms = {
+        "x": ("X", {"x.com", "www.x.com"}),
         "instagram": ("Instagram", {"www.instagram.com", "instagram.com"}),
         "tiktok": ("TikTok", {"www.tiktok.com", "tiktok.com"}),
         "linkedin": ("LinkedIn · fondateur", {"www.linkedin.com", "linkedin.com"}),
@@ -116,13 +119,13 @@ def footer(config: dict) -> str:
     socials = f'<nav class="footer-socials" aria-label="Réseaux du studio">{"".join(links)}</nav>' if links else ""
     return f'''<footer class="footer"><div class="container footer-grid">
   <span>© 2026 BB16 Studio · projets numériques indépendants</span>
-  <span class="footer-links"><a href="privacy.html">Confidentialité</a><a href="legal.html">Mentions légales</a><a href="contact.html">Contact</a></span>
+  <span class="footer-links"><a href="support.html">Support</a><a href="privacy.html">Confidentialité</a><a href="legal.html">Mentions légales</a><a href="contact.html">Contact</a></span>
   {socials}
 </div></footer>'''
 
 
 def document(title: str, description: str, active: str, body: str, config: dict, filename: str, scripts: tuple[str, ...] = ()) -> str:
-    compact = "product.js" in scripts
+    compact = True
     dark_icon = "assets/branding/bb16-studio-logo-dark-256.webp" if compact else "assets/branding/bb16-studio-logo-dark.png"
     light_icon = "assets/branding/bb16-studio-logo-light-256.webp" if compact else "assets/branding/bb16-studio-logo.jpg"
     icon_type = "image/webp" if compact else "image/png"
@@ -138,6 +141,7 @@ def document(title: str, description: str, active: str, body: str, config: dict,
     asset_version = hashlib.sha256(CSS_PATH.read_bytes() + (SITE / "theme.js").read_bytes() + (SITE / "product.js").read_bytes()).hexdigest()[:12]
     extra_scripts = "".join(f'\n  <script src="{name}?v={asset_version}" defer></script>' for name in scripts)
     body_class = ' class="product-page"' if "product.js" in scripts else ""
+    body = suite_pages.enrich_policy(body, filename)
     raw = f'''<!doctype html>
 <html lang="fr">
 <head>
@@ -228,14 +232,12 @@ def product_page(kind: str, config: dict) -> tuple[str, str]:
 #    vient du DPA public de RevenueCat, pas d'une acceptation constatée pour le
 #    compte BB16. Sans confirmation que ce DPA s'applique au compte, retirer la
 #    phrase « Vous pouvez en demander une copie » et la mention des clauses.
-# 7. Télémétrie ML Kit (audit store CA-12, NOT_OBSERVED). Les composants
-#    datatransport de ML Kit sont retirés des manifestes, mais aucune capture
-#    réseau sur appareil n'a été faite. Les pages disent donc seulement qu'aucun
-#    SDK d'analytics n'est intégré et que ces composants sont retirés, pas
-#    « aucune télémétrie ». L'affirmation que l'application n'ouvre de
-#    connexion que pour les achats (ConvertAir et DocCipher) repose sur le même
-#    point : une capture (OCR, numérisation, relance) la confirme ou oblige à
-#    la corriger.
+# 7. Diagnostics ML Kit (documentation Google consultée le 19/10/2026). Les
+#    SDK Android collectent des informations techniques pour le diagnostic et
+#    l'analyse d'utilisation, même lorsque le contenu documentaire reste traité
+#    sur l'appareil. La politique ConvertAir les décrit donc explicitement et ne
+#    prétend plus que le retrait de composants de manifeste supprime toute
+#    collecte. Une capture réseau sur appareil reste NOT_OBSERVED.
 # ---------------------------------------------------------------------------
 
 
@@ -265,10 +267,10 @@ def convertair_privacy_body(email: str) -> str:
 <p class="eyebrow">ConvertAir · application mobile</p>
 <h1>Politique de confidentialité</h1>
 <p class="lede">ConvertAir traite vos documents sur votre appareil. Cette page décrit ce que l'application fait réellement, ce qu'elle ne fait pas, les données d'achat qu'elle envoie et son recours borné aux services Google Play.</p>
-<p class="meta">Dernière mise à jour : 20 octobre 2026 · <a href="#english">Read this page in English</a></p>
+<p class="meta">Dernière mise à jour : 3 novembre 2026 · <a href="#english">Read this page in English</a></p>
 
 <h2>Responsable du traitement</h2>
-<p>Le responsable du traitement est BB16 Studio, éditeur de ConvertAir. Pour toute question ou demande sur vos données, écrivez à <a href="mailto:{email}">{email}</a>. Cette politique couvre la version Android de ConvertAir annoncée pour Google Play.</p>
+<p>Le responsable du traitement est BB16 Studio, éditeur de ConvertAir. Pour toute question ou demande sur vos données, écrivez à <a href="mailto:{email}">{email}</a>. Cette politique couvre la version Android de ConvertAir disponible sur Google Play.</p>
 
 <h2>Vos documents restent sur votre appareil</h2>
 <p>La numérisation, les conversions, l'assemblage, la compression, l'annotation, la signature et la reconnaissance de texte (OCR) s'exécutent sur votre téléphone. Lors de ces traitements documentaires locaux, aucun document, aucune image et aucun texte reconnu n'est transmis à BB16 Studio ni à un tiers.</p>
@@ -362,10 +364,10 @@ def convertair_privacy_body(email: str) -> str:
 <div lang="en">
 <h2 id="english">English version</h2>
 <p class="lede">ConvertAir processes your documents on your device. This page describes what the app actually does, what it does not do, the purchase data it sends and its bounded use of Google Play services.</p>
-<p class="meta">Last updated: 20 October 2026 · <a href="#main">Lire cette page en français</a></p>
+<p class="meta">Last updated: 3 November 2026 · <a href="#main">Lire cette page en français</a></p>
 
 <h3>Data controller</h3>
-<p>The data controller is BB16 Studio, publisher of ConvertAir. For any question or request about your data, write to <a href="mailto:{email}">{email}</a>. This policy covers the Android version of ConvertAir announced for Google Play.</p>
+<p>The data controller is BB16 Studio, publisher of ConvertAir. For any question or request about your data, write to <a href="mailto:{email}">{email}</a>. This policy covers the Android version of ConvertAir available on Google Play.</p>
 
 <h3>Your documents stay on your device</h3>
 <p>Scanning, conversions, merging, compression, annotation, signing and text recognition (OCR) all run on your phone. During this local document processing, no document, no image and no recognised text is sent to BB16 Studio or to any third party.</p>
@@ -478,10 +480,10 @@ def doccipher_privacy_body(email: str) -> str:
 <p class="eyebrow">DocCipher · application mobile</p>
 <h1>Politique de confidentialité</h1>
 <p class="lede">DocCipher conserve vos documents dans un coffre chiffré sur votre appareil. Il n'existe ni compte DocCipher ni serveur documentaire BB16 Studio.</p>
-<p class="meta">Dernière mise à jour : 14 octobre 2026 · <a href="#english">Read this page in English</a></p>
+<p class="meta">Dernière mise à jour : 3 novembre 2026 · <a href="#english">Read this page in English</a></p>
 
 <h2>Responsable du traitement</h2>
-<p>Le responsable du traitement est BB16 Studio, éditeur de DocCipher. Pour toute question ou demande sur vos données, écrivez à <a href="mailto:{email}">{email}</a>. Cette politique couvre la version Android de DocCipher annoncée pour Google Play. L'application n'y est pas encore disponible.</p>
+<p>Le responsable du traitement est BB16 Studio, éditeur de DocCipher. Pour toute question ou demande sur vos données, écrivez à <a href="mailto:{email}">{email}</a>. Cette politique couvre la version Android de DocCipher disponible sur Google Play.</p>
 
 <h2>Documents et chiffrement local</h2>
 <p>Les documents importés, leurs aperçus, le texte reconnu par OCR, les dossiers, les tags et les données du coffre restent dans l'espace privé de l'application. Le coffre est chiffré sur l'appareil. BB16 Studio ne reçoit ni vos documents, ni leur contenu, ni votre mot de passe, ni votre matériel de récupération.</p>
@@ -502,7 +504,7 @@ def doccipher_privacy_body(email: str) -> str:
 <h2>Déverrouillage biométrique</h2>
 <p>Si vous l'activez, le déverrouillage biométrique passe par l'invite du système Android. DocCipher ne reçoit que sa réponse, identité confirmée ou non : il n'accède à aucune empreinte, à aucune image de visage ni à aucun gabarit biométrique, qui restent dans la zone sécurisée de l'appareil. La biométrie ne remplace pas votre code PIN, qui reste nécessaire.</p>
 
-<h2>Code de panique et coffre leurre prévus au lancement</h2>
+<h2>Code de panique et coffre leurre présentés dans l’offre Premium</h2>
 <p>Ces deux fonctions facultatives sont prévues dans le droit Premium à vie, sans supplément. Leur implémentation locale est en validation ; leur disponibilité publique reste conditionnée aux revues de sécurité et aux essais sur appareil requis.</p>
 <p>Le code de panique s'active volontairement après authentification par le mot de passe maître, avec un PIN distinct saisi deux fois, deux consentements et une confirmation de l'action irréversible. Vous choisissez certains coffres ou tous les coffres. Seule la saisie exacte du PIN de panique armé déclenche ensuite, sans nouveau dialogue, la suppression logique des fichiers, clés locales, caches et miniatures des coffres choisis. Elle ne garantit pas l'écrasement physique du stockage. Les sauvegardes exportées, copies cloud et autres sauvegardes externes ne sont pas supprimées.</p>
 <p>Le coffre leurre est un coffre local séparé, avec son propre PIN, ses propres clés et son propre contenu. Quand il est ouvert, seul son contenu est affiché. Cette protection contre un regard occasionnel est documentée publiquement ; elle ne garantit ni qu'un observateur ignore son existence, ni qu'une analyse de l'appareil ne puisse la distinguer.</p>
@@ -575,10 +577,10 @@ def doccipher_privacy_body(email: str) -> str:
 <div lang="en">
 <h2 id="english">English version</h2>
 <p class="lede">DocCipher keeps your documents in an encrypted vault on your device. There is no DocCipher account and no BB16 Studio document server.</p>
-<p class="meta">Last updated: 14 October 2026 · <a href="#main">Lire cette page en français</a></p>
+<p class="meta">Last updated: 3 November 2026 · <a href="#main">Lire cette page en français</a></p>
 
 <h3>Data controller</h3>
-<p>The data controller is BB16 Studio, publisher of DocCipher. For any question or request about your data, write to <a href="mailto:{email}">{email}</a>. This policy covers the Android version of DocCipher announced for Google Play. The app is not available there yet.</p>
+<p>The data controller is BB16 Studio, publisher of DocCipher. For any question or request about your data, write to <a href="mailto:{email}">{email}</a>. This policy covers the Android version of DocCipher available on Google Play.</p>
 
 <h3>Documents and local encryption</h3>
 <p>Imported documents, previews, recognised text, folders, tags and vault data remain in the app's private storage. The vault is encrypted on the device. BB16 Studio receives neither your documents nor their content, your password or your recovery material.</p>
@@ -599,7 +601,7 @@ def doccipher_privacy_body(email: str) -> str:
 <h3>Biometric unlock</h3>
 <p>If you turn it on, biometric unlock uses the Android system prompt. DocCipher only receives its answer, identity confirmed or not: it has no access to any fingerprint, face image or biometric template, which stay in the device's secure area. Biometrics do not replace your PIN, which is still required.</p>
 
-<h3>Panic PIN and decoy vault planned for launch</h3>
+<h3>Panic PIN and decoy vault presented in the Premium offer</h3>
 <p>These two optional features are planned as part of the lifetime Premium entitlement, at no extra charge. Their local implementation is still being validated; public availability remains subject to the required security reviews and device tests.</p>
 <p>The panic PIN is enrolled voluntarily after master-password authentication, with a distinct PIN entered twice, two consent steps and confirmation of the irreversible action. You select specific vaults or all vaults. Only entering the exact armed panic PIN then triggers, without another dialog, logical deletion of the selected vaults' files, local keys, caches and thumbnails. It does not guarantee physical overwriting of storage. Exported backups, cloud copies and other external backups are not deleted.</p>
 <p>The decoy vault is a separate local vault with its own PIN, keys and content. While it is open, only its content is shown. This protection from casual observation is publicly documented; it cannot guarantee that an observer is unaware of its existence or that device analysis cannot distinguish it.</p>
@@ -676,25 +678,28 @@ def hgq_legal_page(kind: str, config: dict) -> str:
     title = {"privacy": "Confidentialité HGQ", "account-deletion": "Suppression de compte HGQ"}[kind]
     filename = f"hgq-{kind}.html"
     body = (SITE / "content" / filename).read_text(encoding="utf-8").strip()
-    body = f'<section class="section"><div class="container prose"><!-- HGQ_CANONICAL_BEGIN -->{body}<!-- HGQ_CANONICAL_END --></div></section>'
+    body = f'<section class="section"><div class="container prose hgq-policy"><!-- HGQ_CANONICAL_BEGIN -->{body}<!-- HGQ_CANONICAL_END --></div></section>'
     return document(title, title + " — Hard Gamer Quiz.", "apps.html", body, config, filename)
 
 
-def _pages(config: dict) -> dict[str, str]:
+def pages(config: dict) -> dict[str, str]:
     email = escape(config["contact_email"])
     return {
-        "index.html": document("Accueil", "BB16 Studio crée des applications sobres, locales et utiles.", "index.html", f'''<section class="hero"><div class="container hero-copy"><h1>Des outils qui respectent votre attention.</h1><p class="lede">Nous concevons des expériences utiles autour des documents, de la confidentialité et du jeu compétitif. Chaque projet avance avec des limites explicites.</p><div class="actions"><a class="button" href="apps.html">Découvrir les apps</a><a class="button secondary" href="studio.html">Notre approche</a></div></div></section>
-<section class="section alt"><div class="container"><div class="section-head"><div><p class="eyebrow">Projets en cours</p><h2>Trois produits, trois usages.</h2></div><p>Les pages produit présentent les applications et leur état de préparation.</p></div><div class="grid"><article class="card icon-card"><img class="app-icon" src="assets/apps/convertair-icon-512.png" alt="Icône ConvertAir"><div><h3><a class="card-link" href="convertair.html">ConvertAir</a></h3><p>Scanner, convertir et signer vos documents, traités sur le téléphone.</p><p class="meta">Bientôt sur Android</p></div></article><article class="card icon-card"><img class="app-icon" src="assets/apps/doccipher-icon-512.png" alt="Icône DocCipher"><div><h3><a class="card-link" href="doccipher.html">DocCipher</a></h3><p>Un coffre chiffré sur le téléphone pour vos papiers importants.</p><p class="meta">Bientôt sur Android</p></div></article><article class="card icon-card"><img class="app-icon hgq-icon" src="assets/apps/hgq-logo.png" alt="Logo HGQ" width="709" height="784"><div><h3><a class="card-link" href="hgq.html">HGQ</a></h3><p>Quiz multijoueur en temps réel autour de la culture jeu vidéo, avec comptes, amis et classements.</p><p class="meta">Bientôt sur Android</p></div></article></div></div></section>
+        "index.html": document("Accueil", "BB16 Studio crée des applications sobres, locales et utiles.", "index.html", f'''<section class="hero"><div class="container hero-copy"><h1>Vos documents. Votre activité.</h1><p class="lede">Préparez vos documents avec ConvertAir, protégez-les avec DocCipher. PeakSolo se prépare à compléter la suite pour votre activité.</p><div class="actions"><a class="button" href="apps.html">Découvrir les apps</a><a class="button secondary" href="studio.html">Notre approche</a></div></div></section>
+<section class="section alt"><div class="container"><div class="section-head"><div><p class="eyebrow">Projets en cours</p><h2>Une suite, trois usages complémentaires.</h2></div><p>Les pages produit présentent les applications et leur état de préparation.</p></div><div class="grid"><article class="card icon-card"><img class="app-icon" src="assets/apps/convertair-icon-192.webp" alt="Icône ConvertAir"><div><h3><a class="card-link" href="convertair.html">ConvertAir</a></h3><p>Scanner, convertir et signer vos documents, traités sur le téléphone.</p><p class="meta">{product_pages.availability_label(config, "convertair")}</p></div></article><article class="card icon-card"><img class="app-icon" src="assets/apps/doccipher-icon-192.webp" alt="Icône DocCipher"><div><h3><a class="card-link" href="doccipher.html">DocCipher</a></h3><p>Un coffre chiffré sur le téléphone pour vos papiers importants.</p><p class="meta">{product_pages.availability_label(config, "doccipher")}</p></div></article>{suite_pages.peaksolo_card()}</div></div></section>
+{suite_pages.suite_intro()}
 {product_pages.home_rating_section(config)}
 <section class="section alt"><div class="container"><div class="section-head"><div><p class="eyebrow">Écrire à l'équipe</p><h2>Une question sur un projet ?</h2></div><p>Le support public passe par une adresse unique. N'envoyez jamais de mot de passe, clé privée ou document sensible par email.</p></div><a class="email-box" href="mailto:{email}">{email}</a></div></section>''', config, "index.html"),
         "studio.html": document("BB16 Studio", "L'approche BB16 Studio : produits locaux, privacy claire et décisions vérifiables.", "studio.html", '''<section class="section"><div class="container prose"><p class="eyebrow">L'atelier</p><h1>Le studio</h1><p class="lede">Un studio indépendant qui préfère les produits lisibles aux promesses bruyantes.</p><h2>Construire avec des limites claires</h2><p>Nous travaillons sur des applications où la confiance compte : documents personnels, données de compte, parties compétitives. Les fonctions sont décrites selon leur état réel.</p><div class="grid"><article class="card"><h3>Local d'abord</h3><p>Quand le produit le permet, les opérations sensibles restent sur l'appareil. Les connexions nécessaires sont isolées et expliquées.</p></article><article class="card"><h3>Privacy compréhensible</h3><p>Les pages de confidentialité distinguent le site, l'application et les services tiers. Aucune télémétrie marketing n'est ajoutée à ce site.</p></article><article class="card"><h3>Une mise en route progressive</h3><p>Chaque application est présentée avec son périmètre actuel et son prochain jalon.</p></article></div><div class="actions"><a class="button" href="apps.html">Voir les applications</a><a class="button secondary" href="contact.html">Nous contacter</a></div></div></section>''', config, "studio.html"),
-        "apps.html": document("Applications", "Découvrez les projets applicatifs de BB16 Studio.", "apps.html", '''<section class="section"><div class="container"><p class="eyebrow">Catalogue</p><h1>Nos applications</h1><p class="lede">Chaque fiche indique le rôle du produit et son état de préparation.</p><div class="grid"><article class="card"><div class="icon-card"><img class="app-icon" src="assets/apps/convertair-icon-512.png" alt="Icône ConvertAir"><div><h2>ConvertAir</h2><p>Outils documentaires et PDF sur appareil.</p></div></div><p style="margin-top:1rem">Scanner, convertir, organiser et travailler sur des documents dans le périmètre Android V1.</p><p class="meta">Bientôt sur Android</p><div class="actions"><a class="button secondary" href="convertair.html">Lire la fiche</a></div></article><article class="card"><div class="icon-card"><img class="app-icon" src="assets/apps/doccipher-icon-512.png" alt="Icône DocCipher"><div><h2>DocCipher</h2><p>Coffre documentaire local-first.</p></div></div><p style="margin-top:1rem">Chiffrer, conserver et exporter des documents selon le format et les limites du projet.</p><p class="meta">Bientôt sur Android</p><div class="actions"><a class="button secondary" href="doccipher.html">Lire la fiche</a></div></article><article class="card"><div class="icon-card"><img class="app-icon hgq-icon" src="assets/apps/hgq-logo.png" alt="Logo HGQ" width="709" height="784"><div><h2>HGQ</h2><p>Quiz multijoueur temps réel.</p></div></div><p style="margin-top:1rem">Défier d'autres joueurs, progresser et jouer dans un environnement connecté.</p><p class="meta">Bientôt sur Android</p><div class="actions"><a class="button secondary" href="hgq.html">Lire la fiche</a></div></article></div></div></section>''', config, "apps.html"),
+        "apps.html": document("Applications", "Découvrez les projets applicatifs de BB16 Studio.", "apps.html", f'''<section class="section"><div class="container"><p class="eyebrow">Catalogue</p><h1>Nos applications</h1><p class="lede">Chaque fiche indique le rôle du produit et son état de préparation.</p><div class="grid app-catalogue"><article class="card"><div class="icon-card"><img class="app-icon" src="assets/apps/convertair-icon-192.webp" alt="Icône ConvertAir"><div><h2>ConvertAir</h2><p>Outils documentaires et PDF sur appareil.</p></div></div><p style="margin-top:1rem">Scanner, convertir, organiser et travailler sur des documents dans le périmètre Android V1.</p><p class="meta">{product_pages.availability_label(config, "convertair")}</p><div class="actions"><a class="button secondary" href="convertair.html">Lire la fiche</a></div></article><article class="card"><div class="icon-card"><img class="app-icon" src="assets/apps/doccipher-icon-192.webp" alt="Icône DocCipher"><div><h2>DocCipher</h2><p>Coffre documentaire local-first.</p></div></div><p style="margin-top:1rem">Chiffrer, conserver et exporter des documents selon le format et les limites du projet.</p><p class="meta">{product_pages.availability_label(config, "doccipher")}</p><div class="actions"><a class="button secondary" href="doccipher.html">Lire la fiche</a></div></article>{suite_pages.peaksolo_card()}</div></div></section><section class="section hgq-catalogue-feature"><div class="container hgq-catalogue-panel"><img src="assets/apps/hgq-logo-192.webp" width="192" height="212" loading="lazy" decoding="async" alt=""><div class="prose"><p class="eyebrow">Autres projets</p><h2>HGQ</h2><p>Un projet de quiz en préparation. Les fonctions et offres seront précisées à sa sortie.</p><div class="actions"><a class="button secondary" href="hgq.html">Lire la fiche</a></div></div></div></section>{suite_pages.suite_intro()}''', config, "apps.html"),
         "convertair.html": product_page("convertair", config)[1],
         "doccipher.html": product_page("doccipher", config)[1],
+        "peaksolo.html": document("PeakSolo", "PeakSolo : un projet de gestion d’activité complémentaire à ConvertAir et DocCipher, en préparation.", "apps.html", suite_pages.peaksolo_body(), config, "peaksolo.html", scripts=("product.js",)),
+        "peaksolo-privacy.html": document("Politique de confidentialité PeakSolo", "PeakSolo : politique préparatoire, données métier, achats et limites avant la sortie.", "apps.html", suite_pages.peaksolo_privacy_body(config["contact_email"]), config, "peaksolo-privacy.html"),
         "hgq.html": product_page("hgq", config)[1],
         "hgq-privacy.html": hgq_legal_page("privacy", config),
         "hgq-account-deletion.html": hgq_legal_page("account-deletion", config),
-        "support.html": document("Support", "Contacter le support public de BB16 Studio.", "support.html", f'''<section class="section"><div class="container prose"><p class="eyebrow">Aide et retours</p><h1>Support</h1><p class="lede">Une adresse publique pour les questions produit, les problèmes d'accès et les demandes liées aux données.</p><a class="email-box" href="mailto:{email}">{email}</a><h2>Pour obtenir une réponse utile</h2><ul><li>Indiquez l'application concernée : ConvertAir, DocCipher ou HGQ.</li><li>Décrivez le comportement observé et l'appareil ou la version si vous les connaissez.</li><li>Ne joignez jamais de mot de passe, clé privée, phrase de récupération, fichier de coffre ou document personnel.</li></ul><div class="callout"><p>Pour une suppression HGQ, utilisez d'abord le parcours dans l'application. Si vous avez perdu l'accès, la <a href="data-deletion.html">page de suppression</a> explique les informations minimales à fournir.</p></div><h2>Retour produit</h2><p>Les idées et signalements sont lus selon les capacités de l'équipe et l'état du projet. Un message reçu ne vaut pas promesse de fonctionnalité, de délai ou de publication.</p></div></section>''', config, "support.html"),
+        "support.html": document("Support", "Contacter le support public de BB16 Studio.", "support.html", f'''<section class="section"><div class="container prose"><p class="eyebrow">Aide et retours</p><h1>Support</h1><p class="lede">Une adresse publique pour les questions produit, les problèmes d'accès et les demandes liées aux données.</p><a class="email-box" href="mailto:{email}">{email}</a><h2>Pour obtenir une réponse utile</h2><ul><li>Indiquez l'application concernée : ConvertAir, DocCipher, PeakSolo ou HGQ.</li><li>Décrivez le comportement observé et l'appareil ou la version si vous les connaissez.</li><li>Ne joignez jamais de mot de passe, clé privée, phrase de récupération, fichier de coffre ou document personnel.</li></ul><div class="callout"><p>Pour une suppression HGQ, utilisez d'abord le parcours dans l'application. Si vous avez perdu l'accès, la <a href="data-deletion.html">page de suppression</a> explique les informations minimales à fournir.</p></div><h2>Retour produit</h2><p>Les idées et signalements sont lus selon les capacités de l'équipe et l'état du projet. Un message reçu ne vaut pas promesse de fonctionnalité, de délai ou de publication.</p></div></section>''', config, "support.html"),
         "contact.html": document("Contact", "Coordonnées publiques de BB16 Studio.", "contact.html", f'''<section class="section"><div class="container prose"><p class="eyebrow">Parlons du produit</p><h1>Contact</h1><p class="lede">Pour une question générale, un retour utilisateur ou un sujet de confidentialité :</p><p><a class="email-box" href="mailto:{email}">{email}</a></p><h2>Quel message envoyer ?</h2><p>Un sujet précis, le nom du produit et les étapes reproductibles nous aideront à vous répondre. Pour la sécurité, restez descriptif et ne transmettez aucune donnée secrète.</p><h2>Identité légale</h2><p>Les informations légales publiques de l'éditeur seront ajoutées après validation par le propriétaire. Cette page affiche uniquement une adresse de contact confirmée ; elle ne constitue pas une identité légale complète.</p></div></section>''', config, "contact.html"),
         "privacy.html": document("Confidentialité", "Politique de confidentialité du site statique BB16 Studio.", "privacy.html", f'''<section class="section"><div class="container prose"><p class="eyebrow">Site web</p><h1>Confidentialité</h1><p class="lede">Ce site est un site statique de présentation. Il est conçu pour fonctionner sans compte et sans outil d'analyse marketing.</p><h2>Données du site</h2><p>BB16 Studio ne place pas de cookie analytique, de pixel publicitaire ou de SDK de suivi sur cette version du site. Le choix du mode clair ou sombre est mémorisé uniquement dans le navigateur, sans transmission à BB16 Studio. Un hébergeur peut traiter les journaux techniques nécessaires à la distribution HTTPS ; ces journaux relèvent de son propre fonctionnement et de ses règles publiques.</p><h2>Retours des testeurs</h2><p>Les formulaires <a href="convertair-test.html">ConvertAir</a> et <a href="doccipher-test.html">DocCipher</a> préparent un retour sur votre appareil. Les réponses ne sont pas envoyées automatiquement au studio. La mémorisation dans votre navigateur est facultative ; vous pouvez la désactiver ou réinitialiser le formulaire. Vous choisissez ensuite de télécharger le fichier ou de copier le résumé, puis de le transmettre à Lucas. Si vous le transmettez, le studio reçoit les informations que vous avez choisies pour comprendre votre retour. Utilisez un pseudo facultatif et des données fictives ; ne renseignez aucun PIN, mot de passe, secret ou document privé.</p><h2>Contact</h2><p>Si vous écrivez à <a href="mailto:{email}">{email}</a>, l'équipe reçoit les informations que vous choisissez d'inclure pour répondre à votre message. N'envoyez pas de secret ou de document sensible.</p><h2>Applications</h2><p>Cette page concerne le site BB16 Studio. Les applications ont leurs propres données, services tiers et parcours de suppression. Pour ConvertAir, consultez la <a href="convertair-privacy.html">confidentialité ConvertAir</a> ; pour DocCipher, la <a href="doccipher-privacy.html">confidentialité DocCipher</a>. Pour HGQ, la politique publiée par l'application est disponible sur <a href="hgq-privacy.html">la page de confidentialité HGQ</a>.</p><p>La <a href="data-deletion.html">page de suppression HGQ</a> du site reprend le parcours utilisateur connu et le canal de contact actuel.</p><h2>Mise à jour</h2><p>Cette page sera mise à jour lorsque l'identité légale, l'hébergement final ou les services du site changeront.</p></div></section>''', config, "privacy.html"),
         "convertair-privacy.html": document("Politique de confidentialité ConvertAir", "Politique de confidentialité de ConvertAir : documents locaux, achats et composants Google Play.", "apps.html", convertair_privacy_body(email), config, "convertair-privacy.html"),
@@ -705,33 +710,15 @@ def _pages(config: dict) -> dict[str, str]:
     }
 
 
-def pages(config: dict) -> dict[str, str]:
-    result = _pages(config)
-    for launched_key in ("convertair", "doccipher"):
-        if not product_pages.store_listing(config, launched_key)["published"]:
-            continue
-        def launch_card(match):
-            card = match.group(0)
-            if not re.search(r">" + product_pages.PRODUCTS[launched_key]["name"] + r"</(?:a></)?h[23]>", card):
-                return card
-            card = card.replace("Bientôt sur Android", "Disponible sur Google Play")
-            cta = product_pages.store_button(launched_key, config, verb="get")
-            return card.replace("</article>", '<div class="actions">' + cta + '</div></article>')
-        for filename in ("index.html", "apps.html"):
-            result[filename] = re.sub(
-                r'<article\b[^>]*>(?:(?!</article>).)*?</article>',
-                launch_card, result[filename], flags=re.S,
-            )
-    return result
-
-
 def write_support_files(config: dict, base_path: str) -> None:
     site_url = config.get("site_url")
-    urls = [page_url(name, site_url, base_path) for name in ["index.html", "studio.html", "apps.html", "convertair.html", "convertair-privacy.html", "doccipher.html", "doccipher-privacy.html", "hgq.html", "hgq-privacy.html", "hgq-account-deletion.html", "support.html", "contact.html", "privacy.html", "legal.html", "data-deletion.html"]]
+    urls = [page_url(name, site_url, base_path) for name in ["index.html", "studio.html", "apps.html", "convertair.html", "convertair-privacy.html", "doccipher.html", "doccipher-privacy.html", "peaksolo.html", "peaksolo-privacy.html", "hgq.html", "hgq-privacy.html", "hgq-account-deletion.html", "support.html", "contact.html", "privacy.html", "legal.html", "data-deletion.html"]]
     urls = [url for url in urls if url]
     urls += [url for url in [page_url("presse.html", site_url, base_path)] if url]
     if site_url:
         urls += [site_i18n.url(config, locale, filename) for locale in site_i18n.LOCALES if locale != "fr" for filename in site_i18n.PAGES if filename != "404.html"]
+        import app_pages_i18n
+        urls += [site_url.rstrip('/')+base_path+filename for filename in app_pages_i18n.extra_files()]
     if urls:
         body = "\n".join(f"  <url><loc>{escape(url)}</loc></url>" for url in urls)
     else:
@@ -773,6 +760,8 @@ def main() -> None:
     root_config = dict(config, base_path="/")
     output = pages(config)
     output.update(site_i18n.build(pages(root_config), config))
+    import app_pages_i18n
+    output.update(app_pages_i18n.build(pages(root_config),config))
     for filename, content in output.items():
         target = SITE / filename
         target.parent.mkdir(parents=True, exist_ok=True)

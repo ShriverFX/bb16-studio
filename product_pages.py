@@ -12,9 +12,9 @@ présence.
 
 HONNÊTETÉ — aucune fonction non publiée n'est présentée comme disponible.
 Le code de panique et le coffre leurre de DocCipher (décision D-0051,
-IMPLEMENTED_LOCAL_UNVALIDATED) sont annoncés pour le lancement, sous réserve
-des revues de sécurité et essais sur appareil encore requis. Leur formulation
-publique reste bornée par la décision.
+IMPLEMENTED_LOCAL_UNVALIDATED) sont attribués à l’offre observée sur Google
+Play. Cette attribution ne vaut pas recette de sécurité ou essai appareil ;
+leur conception et leurs limites restent explicites.
 """
 
 from __future__ import annotations
@@ -22,6 +22,7 @@ from __future__ import annotations
 from html import escape
 from pathlib import Path
 import json
+import brand_media
 
 SITE = Path(__file__).resolve().parent
 STUDIO = SITE.parent  # C:\BB16\10_STUDIO
@@ -31,6 +32,11 @@ COMMERCIAL = json.loads((SITE / "content/commercial-reference.json").read_text(e
 def reference_price(app: str, offer: str) -> str:
     """Dated France catalogue reference; never infer a buyer's country from language."""
     cents = COMMERCIAL[app][offer + "_cents"]
+    return f"{cents // 100},{cents % 100:02d} €"
+
+
+def annual_monthly_reference(app: str) -> str:
+    cents = (COMMERCIAL[app]["annual_cents"] + 6) // 12
     return f"{cents // 100},{cents % 100:02d} €"
 
 CA_FR = STUDIO / "ConvertAir" / "docs" / "poc" / "screenshots-gate6" / "fr"
@@ -57,6 +63,9 @@ def _hgq(name: str) -> Path:
 
 # Clé publiée -> (application, fichier source dans le dépôt de l'app).
 HISTORICAL_SCREENS: dict[str, tuple[str, Path]] = {
+    # Écrans d’accès HGQ retirés de l’export public.
+    "assets/screens/hgq/connexion.webp": ("hgq", HGQ_STORE / "hgq_01_login.png"),
+    "assets/screens/hgq/inscription.webp": ("hgq", HGQ_STORE / "hgq_02_signup.png"),
     "assets/screens/hgq/creer.webp": ("hgq", _hgq("21-28-33-109")),
     "assets/screens/hgq/salon.webp": ("hgq", _hgq("21-45-38-403")),
     "assets/screens/hgq/resultat.webp": ("hgq", _hgq("22-06-05-486")),
@@ -79,9 +88,6 @@ SCREENS: dict[str, tuple[str, Path]] = {
     "assets/screens/doccipher/import.webp": ("doccipher", DC_FR / "06-import-summary.png"),
     "assets/screens/doccipher/confiance.webp": ("doccipher", DC_FR / "07-trust.png"),
     "assets/screens/doccipher/ajout.webp": ("doccipher", DC_FR / "08-photo.png"),
-    # Captures sans adresse email ni donnée de compte visible.
-    "assets/screens/hgq/connexion.webp": ("hgq", HGQ_STORE / "hgq_01_login.png"),
-    "assets/screens/hgq/inscription.webp": ("hgq", HGQ_STORE / "hgq_02_signup.png"),
 }
 
 # Vidéo publiée -> segments (capture, mouvement). « scroll » : zoom marqué et
@@ -123,8 +129,10 @@ ICONS: dict[str, tuple[str, tuple[int, int]]] = {
     "assets/apps/hgq-logo-192.webp": ("assets/apps/hgq-logo.png", (192, 212)),
 }
 
-MEDIA_FILES = sorted(SCREENS) + sorted(VIDEOS) + sorted(ICONS)
-RETIRED_MEDIA = frozenset(HISTORICAL_SCREENS) | frozenset(HISTORICAL_VIDEOS)
+# These title-card films contain no application UI and are never runtime proof.
+BRAND_TEASERS = brand_media.BRAND_TEASERS
+MEDIA_FILES = sorted(SCREENS) + sorted(VIDEOS) + sorted(ICONS) + brand_media.MEDIA_FILES
+RETIRED_MEDIA = frozenset(HISTORICAL_SCREENS) | frozenset(HISTORICAL_VIDEOS) | brand_media.RETIRED_HGQ_MEDIA
 
 
 def screen_size(app: str, width: int) -> tuple[int, int]:
@@ -170,7 +178,7 @@ PRODUCTS: dict[str, dict] = {
         "pricing_intro": "Premium débloque les opérations illimitées, l'export sans filigrane et le traitement par lot.",
         "plans": [
             ("Gratuit", "0 €", "", ["3 opérations par jour", "Traitement sur l'appareil", "Sans compte"], False),
-            ("Annuel", reference_price("convertair", "annual"), "par an", ["Premium complet", "Soit environ 1,67 € par mois", "Résiliable à tout moment dans Google Play"], True),
+            ("Annuel", reference_price("convertair", "annual"), "par an", ["Premium complet", f"Soit environ {annual_monthly_reference('convertair')} par mois", "Résiliable à tout moment dans Google Play"], True),
             ("À vie", reference_price("convertair", "lifetime_launch"), f"au lancement, puis {reference_price('convertair', 'lifetime_standard')}", ["Premium complet", "Paiement unique"], False),
         ],
         "privacy": [
@@ -184,7 +192,7 @@ PRODUCTS: dict[str, dict] = {
             ("Que permet la version gratuite ?", "Trois opérations par jour, traitées sur l'appareil et sans compte. Premium lève la limite, retire le filigrane des exports et ajoute le traitement par lot."),
             ("Comment résilier un abonnement ?", "Dans Google Play, à tout moment. L'accès Premium reste actif jusqu'à la fin de la période payée. L'offre à vie est un paiement unique, sans renouvellement."),
             ("Faut-il une connexion Internet ?", "Les traitements documentaires fonctionnent sur l'appareil. Consulter les offres à jour, acheter et restaurer Premium nécessite Internet. L'accès Premium hors ligne s'appuie sur les droits déjà enregistrés sur cet appareil."),
-            ("Quand ConvertAir sera-t-il disponible ?", "La V1 Android est en préparation. Le lien Google Play apparaîtra sur cette page dès la publication. Une version iOS est à l'étude."),
+            ("Où télécharger ConvertAir ?", "ConvertAir est disponible sur Google Play pour Android. Consultez sa fiche pour vérifier la disponibilité pour votre compte et la compatibilité de votre appareil. Une version iOS est à l'étude."),
         ],
         "captures_note": "Captures de l'application en français, prises sur une version de préparation.",
     },
@@ -196,7 +204,7 @@ PRODUCTS: dict[str, dict] = {
         "eyebrow": "Coffre documentaire · Android",
         "lede": "Vos papiers importants, chiffrés sur votre téléphone. Sans compte, sans serveur documentaire, avec une sauvegarde que vous choisissez.",
         "status": "Bientôt sur Android",
-        "points": ["Coffre chiffré sur l'appareil", "Gratuit jusqu'à 15 documents", "Premium : 19,99 € une seule fois"],
+        "points": ["Coffre chiffré sur l'appareil", "Gratuit jusqu'à 15 documents", f"Premium : {reference_price('doccipher', 'lifetime')} une seule fois"],
         "hero": ("assets/screens/doccipher/coffre.webp", "Coffre DocCipher « Papiers de famille » : dix documents, parcours et échéances"),
         "tour_title": "Vos papiers, rangés et protégés.",
         "tour": [
@@ -210,14 +218,14 @@ PRODUCTS: dict[str, dict] = {
             ("Chercher et filtrer", "Par mot, par catégorie, par émetteur : le bon papier en quelques lettres.", "assets/screens/doccipher/recherche.webp", "assets/video/doccipher/recherche.mp4", "Recherche filtrée dans DocCipher"),
             ("Importer par lots", "Un bilan clair après l'import : ce qui est ajouté, ce qui se trouvait déjà dans le coffre.", "assets/screens/doccipher/import.webp", "assets/video/doccipher/import.mp4", "Bilan d'import de plusieurs fichiers"),
             ("Ce que DocCipher envoie", "Un écran dit exactement ce qui sort : aucun document, titre, catégorie ni nombre de documents n'accompagne un achat.", "assets/screens/doccipher/confiance.webp", "assets/video/doccipher/confiance.mp4", "Écran « Ce que DocCipher envoie »"),
-            ("Premium en un seul paiement", "19,99 €, pas d'abonnement : la limite de 15 documents disparaît et vous pouvez ajouter des documents dans plusieurs coffres.", "assets/screens/doccipher/premium.webp", "assets/video/doccipher/premium.mp4", "Offre DocCipher Premium à 19,99 €"),
+            ("Premium en un seul paiement", f"{reference_price('doccipher', 'lifetime')}, pas d'abonnement : la limite de 15 documents disparaît et vous pouvez ajouter des documents dans plusieurs coffres.", "assets/screens/doccipher/premium.webp", "assets/video/doccipher/premium.mp4", f"Offre DocCipher Premium à {reference_price('doccipher', 'lifetime')}"),
         ],
         "also": ["Déverrouillage biométrique par l'invite d'Android ; le code PIN reste nécessaire.", "Sauvegarde .dcvault chiffrée, exportée là où vous le décidez.", "Kit de récupération à imprimer ou enregistrer en PDF.", "Reconnaissance de texte sur l'appareil."],
         "soon": True,
         "pricing_intro": "Un seul achat, pour toujours. Pas d'abonnement.",
         "plans": [
             ("Gratuit", "0 €", "", ["Jusqu'à 15 documents", "Coffre chiffré sur l'appareil", "Sans compte"], False),
-            ("Premium", reference_price("doccipher", "lifetime"), "paiement unique", ["Plus de limite de 15 documents", "Des documents dans plusieurs coffres", "Code de panique et coffre leurre prévus dès le lancement", "Droit Premium à vie, sans supplément pour ces protections"], True),
+            ("Premium", reference_price("doccipher", "lifetime"), "paiement unique", ["Plus de limite de 15 documents", "Des documents dans plusieurs coffres", "Codes d’urgence inclus dans l’offre Premium présentée sur Google Play.", "Droit Premium à vie, sans supplément pour ces protections"], True),
         ],
         "privacy": [
             ("Chiffré sur l'appareil", "Documents, aperçus, texte reconnu et données du coffre restent dans l'espace privé de l'application, chiffrés."),
@@ -228,11 +236,11 @@ PRODUCTS: dict[str, dict] = {
         "faq": [
             ("Et si j'oublie mon mot de passe ?", "Votre mot de passe maître n'est ni enregistré ni envoyé : personne, pas même BB16 Studio, ne peut le réinitialiser. Le kit de récupération (phrase et code QR), à imprimer ou enregistrer, sert à cela."),
             ("Mes documents sont-ils sauvegardés en ligne ?", "Non. Vous exportez vous-même une sauvegarde .dcvault chiffrée vers l'emplacement de votre choix. La synchronisation WebDAV ou Nextcloud n'est pas disponible dans cette version."),
-            ("Premium est-il un abonnement ?", "Non : 19,99 € une seule fois. Sans achat, DocCipher reste utilisable jusqu'à 15 documents."),
+            ("Premium est-il un abonnement ?", f"Non : {reference_price('doccipher', 'lifetime')} une seule fois. Sans achat, DocCipher reste utilisable jusqu'à 15 documents."),
             ("Faut-il une connexion Internet ?", "Le coffre fonctionne sur l'appareil. Consulter les offres à jour, acheter et restaurer Premium nécessite Internet. L'accès Premium hors ligne s'appuie sur les droits déjà enregistrés sur cet appareil."),
             ("Quelles données servent aux achats ?", "Aucun compte BB16 à créer. RevenueCat traite un identifiant pseudonyme, des informations techniques et l'historique des achats pour gérer Premium et les statistiques de ventes. Il ne reçoit pas vos documents."),
-            ("Le code de panique et le coffre leurre seront-ils présents au lancement ?", "Ils sont prévus dès le lancement et inclus dans le droit Premium à vie, sans supplément. Leur implémentation locale reste en validation : ils ne seront rendus disponibles que si les revues de sécurité et les essais sur appareil requis sont concluants."),
-            ("Quand DocCipher sera-t-il disponible ?", "DocCipher arrive bientôt sur Android. Il n'est pas encore disponible sur Google Play ; le lien apparaîtra sur cette page après sa publication."),
+            ("Que sont le PIN de panique et le coffre leurre annoncés sur Google Play ?", "La fiche Google Play de DocCipher 1.0.1 présente ces deux protections dans l’offre Premium à vie, sans supplément. Le PIN de panique est conçu pour supprimer logiquement les coffres sélectionnés présents sur l’appareil ; vos sauvegardes externes restent en place. Cette suppression ne garantit pas l’effacement physique du stockage. Le PIN leurre ouvre un coffre local séparé : il vise à protéger contre un regard occasionnel et ne garantit pas que son existence soit indétectable. La configuration est volontaire ; les options proposées dépendent de la version installée."),
+            ("Où télécharger DocCipher ?", "DocCipher est disponible sur Google Play pour Android. Consultez sa fiche pour vérifier la disponibilité pour votre compte et la compatibilité de votre appareil."),
         ],
         "captures_note": "Captures de l'application en français, avec un coffre d'exemple.",
     },
@@ -261,10 +269,7 @@ PRODUCTS: dict[str, dict] = {
         "also": ["Amis et recherche de joueurs.", "Profil, historique des parties et statistiques.", "Classements.", "Suppression du compte depuis les paramètres de l'application."],
         "soon": None,
         "pricing_intro": "Une formule Premium est prévue. Son contenu sera détaillé à la sortie.",
-        "plans": [
-            ("Premium mensuel", "3,99 €", "par mois", ["Résiliable à tout moment dans Google Play"], False),
-            ("Premium annuel", "24,99 €", "par an", ["Soit environ 2,08 € par mois"], True),
-        ],
+        "plans": [],
         "privacy": [
             ("Un compte, et c'est tout", "HGQ utilise un compte (email ou Google), vos statistiques de jeu et vos amis pour faire fonctionner les parties en ligne."),
             ("Suppression dans l'application", "Paramètres, puis Mon compte, puis Supprimer mon compte. Sans accès, écrivez au support."),
@@ -274,7 +279,7 @@ PRODUCTS: dict[str, dict] = {
         "faq": [
             ("Quand HGQ sera-t-il disponible ?", "Bientôt sur Android. Le lien Google Play apparaîtra sur cette page dès la publication."),
             ("Faut-il un compte ?", "Oui : il porte vos statistiques, vos amis et vos classements. La connexion se fait par email ou avec Google."),
-            ("Que contiendra Premium ?", "Les prix sont fixés — 3,99 € par mois ou 24,99 € par an — mais le contenu de Premium sera annoncé avec la sortie. Rien n'est promis avant."),
+            ("Que contiendra Premium ?", "Le contenu et les offres seront précisés après leur validation, à la sortie."),
             ("Comment supprimer mon compte ?", "Depuis l'application : Paramètres, Mon compte, Supprimer mon compte. La page Suppression de compte explique la marche à suivre si vous n'avez plus accès."),
         ],
         "captures_note": "Découvrez les écrans de connexion et de création de compte.",
@@ -295,6 +300,10 @@ def store_listing(config: dict, key: str) -> dict:
     return {"package": listing["package"], "published": listing.get("published") is True}
 
 
+def availability_label(config: dict, key: str) -> str:
+    return "Disponible sur Google Play" if store_listing(config, key)["published"] else "Bientôt sur Android"
+
+
 def screen_img(app: str, src: str, alt: str, eager: bool = False) -> str:
     w, h = screen_size(app, SCREEN_WIDTH)
     loading = 'fetchpriority="high"' if eager else 'loading="lazy"'
@@ -306,6 +315,11 @@ def video_tag(video: str) -> str:
     # Pas de src : product.js la pose au besoin (chargement différé), jamais
     # quand l'utilisateur demande moins d'animations.
     return f'<video data-src="{video}" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>'
+
+
+def brand_teaser(key: str) -> str:
+    """User-controlled brand presentation, explicitly separate from app demos."""
+    return brand_media.brand_teaser(key)
 
 
 def phone_frame(inner: str, extra_class: str = "") -> str:
@@ -346,8 +360,7 @@ def rating_section(key: str, config: dict) -> str:
     product = PRODUCTS[key]
     listing = store_listing(config, key)
     if listing["published"]:
-        text = (f"{product['name']} est disponible sur Google Play." if key in ("convertair", "doccipher") else
-            f"Vous utilisez {product['name']} ? Une note et quelques mots sur Google Play aident d'autres personnes à trouver l'application et nous disent quoi améliorer.")
+        text = f"Vous utilisez {product['name']} ? Une note et quelques mots sur Google Play aident d'autres personnes à trouver l'application et nous disent quoi améliorer."
     else:
         text = f"{product['name']} n'est pas encore sur Google Play. Le lien pour noter l'application apparaîtra ici dès sa publication."
     icon = icon_tag(key)
@@ -363,14 +376,14 @@ def home_rating_section(config: dict) -> str:
     for key, product in PRODUCTS.items():
         name = product["name"]
         rows.append(f'<li class="rate-row">{icon_tag(key)}<a class="rate-name" href="{key}.html">{name}</a>{store_button(key, config)}</li>')
-    return f'''<section class="section" id="noter"><div class="container"><div class="section-head"><div><p class="eyebrow">Notez-nous sur le Store</p><h2>Votre avis nous fait avancer.</h2></div><p>Une note sur Google Play aide d'autres personnes à trouver nos applications. Un avis honnête, rien en échange : pas de parrainage, pas de récompense. Chaque lien apparaît dès que l'application est publiée.</p></div><ul class="rate-list">{"".join(rows)}</ul></div></section>'''
+    return f'''<section class="section" id="noter"><div class="container"><details class="rating-disclosure"><summary>Votre avis nous fait avancer.</summary><div class="section-head"><p class="eyebrow">Notez-nous sur le Store</p><p>Une note sur Google Play aide d'autres personnes à trouver nos applications. Un avis honnête, rien en échange : pas de parrainage, pas de récompense. Chaque lien apparaît dès que l'application est publiée.</p></div><ul class="rate-list">{"".join(rows)}</ul></details></div></section>'''
 
 
 def soon_block() -> str:
     return '''<section class="section" id="bientot"><div class="container"><div class="soon">
-  <p class="soon-badge">Prévu dès le lancement · inclus dans Premium</p>
-  <h2>Deux protections prévues dès le lancement.</h2>
-  <p class="soon-intro">Leur implémentation locale est en validation. Elles seront proposées au lancement seulement si les revues de sécurité et les essais sur appareil requis sont concluants. DocCipher n'est pas encore disponible sur Google Play.</p>
+  <p class="soon-badge">Offre présentée sur Google Play</p>
+  <h2>Deux protections décrites dans l’offre Premium.</h2>
+  <p class="soon-intro">La fiche Google Play de DocCipher 1.0.1 présente ces protections dans l’offre Premium à vie, sans supplément. Les descriptions ci-dessous précisent leur conception et leurs limites ; elles ne constituent pas une validation de sécurité sur tous les appareils. Les options proposées dépendent de la version installée.</p>
   <div class="soon-grid">
     <article class="soon-item"><h3>Code de panique</h3><p>Une option Premium que vous activez volontairement avec votre mot de passe maître, un code PIN distinct saisi deux fois, deux consentements et une confirmation de l'action irréversible. Vous choisissez certains coffres ou tous les coffres.</p><p>Le PIN armé déclenche un effacement logique des fichiers, clés locales, caches et miniatures des coffres choisis : « Effacer les coffres présents sur cet appareil. Vos sauvegardes externes ne sont pas supprimées. » Seule la saisie exacte du PIN de panique armé déclenche cette action. L'opération ne promet pas un effacement physique du stockage du téléphone.</p></article>
     <article class="soon-item"><h3>Coffre leurre</h3><p>Un coffre local séparé, avec son propre PIN, ses propres clés et son propre contenu, à ouvrir si quelqu'un regarde par-dessus votre épaule ou vous demande d'ouvrir l'application.</p><p>La fonction est documentée publiquement : elle protège d'un regard occasionnel, elle ne garantit pas qu'un observateur ignore son existence ni qu'une analyse de l'appareil ne la distingue.</p></article>
@@ -380,28 +393,22 @@ def soon_block() -> str:
 
 
 def product_body(key: str, config: dict) -> str:
-    p = dict(PRODUCTS[key])
+    if key == "hgq":
+        # Deferred product: do not advertise unverified prices or gameplay.
+        return deferred_hgq_body(config)
+    p = PRODUCTS[key]
     listing = store_listing(config, key)
-    if key in ("convertair", "doccipher") and listing["published"]:
-        p["status"] = "Disponible sur Google Play"
-        p["faq"] = [
-            (f"Où télécharger {p['name']} ?", f"{p['name']} est disponible sur Google Play.")
-            if f"Quand {p['name']}" in question else (question, answer)
-            for question, answer in p["faq"]
-        ]
     hero_cta = store_button(key, config, verb="get") if listing["published"] else ""
     points = "".join(f"<li>{escape(x)}</li>" for x in p["points"])
     hero_src, hero_alt = p["hero"]
     hero_icon = icon_tag(key, "hero-icon", lazy=False)
     eyebrow, name, lede = escape(p["eyebrow"]), escape(p["name"]), escape(p["lede"])
     headline = "".join(f"<span>{escape(line)}</span>" for line in p["headline"])
-    status, tour_title, grid_title = escape(p["status"]), escape(p["tour_title"]), escape(p["grid_title"])
+    status, tour_title, grid_title = escape(availability_label(config, key)), escape(p["tour_title"]), escape(p["grid_title"])
+    status_class = "status" if listing["published"] else "status pending"
     captures_note, pricing_intro = escape(p["captures_note"]), escape(p["pricing_intro"])
     soon = soon_block() if p["soon"] else ""
-    if key == "doccipher" and listing["published"]:
-        soon = soon.replace(" DocCipher n'est pas encore disponible sur Google Play.", "")
     secondary = " secondary" if hero_cta else ""
-    status_class = "available" if listing["published"] else "pending"
 
     steps = []
     layers = []
@@ -460,7 +467,7 @@ def product_body(key: str, config: dict) -> str:
     <p class="lede">{lede}</p>
     <ul class="hero-points">{points}</ul>
     <div class="actions">{hero_cta}<a class="button{secondary}" href="#fonctions">Voir les fonctions</a><a class="button secondary" href="#prix">Prix</a></div>
-    <p class="hero-status"><span class="status {status_class}">{status}</span></p>
+    <p class="hero-status"><span class="{status_class}">{status}</span></p>
   </div>
   <figure class="hero-device">{phone(key, hero_src, hero_alt, eager=True)}<figcaption>Capture réelle de {name}</figcaption></figure>
 </div></section>
@@ -489,3 +496,10 @@ def product_body(key: str, config: dict) -> str:
   <p class="meta">Une autre question ? <a href="contact.html">Écrivez-nous</a>.</p>
 </div></section>
 {rating_section(key, config)}'''
+
+
+def deferred_hgq_body(config: dict) -> str:
+    return f'''<nav class="product-nav" aria-label="Dans cette page"><div class="container product-nav-inner"><a class="product-nav-name" href="#presentation">HGQ</a><div class="product-nav-links"><a href="#univers">L'univers</a><a href="#apercus">Aperçus</a><a href="#confidentialite">Confidentialité</a><a href="#faq">FAQ</a></div></div></nav>
+<div id="hgq-showcase"></div>
+<section class="section" id="confidentialite"><div class="container prose"><p class="eyebrow">Confidentialité et compte</p><h2>Les informations utiles avant de jouer.</h2><p>HGQ utilise des services en ligne. Ses politiques détaillent les données de compte et de jeu, les achats, les publicités et les services tiers.</p><div class="actions"><a class="button secondary" href="hgq-privacy.html">Lire la confidentialité HGQ</a><a class="button secondary" href="hgq-account-deletion.html">Lire la procédure de suppression du compte</a></div></div></section>
+<section class="section alt" id="faq"><div class="container faq"><p class="eyebrow">Questions fréquentes</p><h2>Avant la sortie.</h2><details class="faq-item"><summary>Quand pourrai-je installer HGQ ?</summary><p>Le lien officiel Google Play sera ajouté après la publication. Aucune date de sortie n'est annoncée ici.</p></details><details class="faq-item"><summary>Où seront annoncés les modes et les offres ?</summary><p>Sur cette page et dans la fiche officielle de la version publiée. Aucun achat n'est proposé sur cette présentation.</p></details><p class="meta">Une question sur le projet ? <a href="support.html">Contacter le support BB16 Studio</a>.</p></div></section>{rating_section('hgq',config)}'''

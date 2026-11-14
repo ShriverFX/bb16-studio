@@ -16,7 +16,7 @@ LOCALES = {'fr':'Français','en':'English','de':'Deutsch','es':'Español','it':'
  'zh':'中文','zh-Hans':'简体中文','zh-Hant':'繁體中文'}
 PAGES = ('index.html','studio.html','apps.html','convertair.html','doccipher.html',
  'support.html','contact.html','privacy.html','legal.html','convertair-privacy.html',
- 'doccipher-privacy.html','404.html')
+ 'doccipher-privacy.html','peaksolo.html','peaksolo-privacy.html','404.html')
 VOID = set('area base br col embed hr img input link meta param source track wbr'.split())
 BLOCK = set('div section article nav ul ol dl table header footer main p li h1 h2 h3 h4 details summary'.split())
 UNITS = set('p li h1 h2 h3 h4 summary a button label title span figcaption legend option dt dd'.split())
@@ -71,7 +71,7 @@ def unit_id(value): return hashlib.sha256(value.encode()).hexdigest()[:12]
 def needs_translation(value):
     plain=unescape(re.sub('<[^>]+>', '', value)).strip()
     return bool(plain and re.search(r'[A-Za-zÀ-ÿ]',plain) and
-        plain not in {'BB16 Studio','BB16Studio','ConvertAir','DocCipher','HGQ','Hard Gamer Quiz',
+        plain not in {'BB16 Studio','BB16Studio','ConvertAir','DocCipher','PeakSolo','HGQ','Hard Gamer Quiz',
                       'Instagram','TikTok','LinkedIn','Discord','X','Android','Google Play','YouTube',
                       'YouTube Shorts','Premium','Free','PDF','FAQ','OCR','01 / 04','01 / 03'} and
         not re.fullmatch(r'[^\s]+@[^\s]+|https?://\S+',plain))
@@ -155,25 +155,37 @@ def url(config, locale, filename):
     if filename=='index.html': part='' if locale=='fr' else locale+'/'
     return (config.get('site_url') or '').rstrip('/')+base+part
 
+def page_locales(filename):
+    if filename in ('hgq.html','peaksolo.html'):
+        import app_pages_i18n
+        return app_pages_i18n.page_locales(filename[:-5])
+    return LOCALES
+
 def navigation(locale,filename,config,ui):
     base=config.get('base_path','/')
     links=[]
-    for code,label in LOCALES.items():
+    locales=page_locales(filename)
+    for code,label in locales.items():
         target=filename if code=='fr' else code+'/'+filename
         current=' aria-current="page"' if code==locale else ''
         links.append(f'<a href="{escape(base+target)}" lang="{code}" hreflang="{code}"{current}>{escape(label)}</a>')
-    return parse('<details class="language-picker"><summary aria-label="'+escape(ui['language'],quote=True)+'"><span aria-hidden="true">◎</span> '+LOCALES[locale]+'</summary><nav class="language-list" aria-label="'+escape(ui['language'],quote=True)+'">'+''.join(links)+'</nav></details>').children[0]
+    current_label = ui['language'] + ' : ' + locales[locale]
+    return parse('<details class="language-picker"><summary aria-label="'+escape(current_label,quote=True)+'"><span aria-hidden="true">◎</span> '+locales[locale]+'</summary><nav class="language-list" aria-label="'+escape(ui['language'],quote=True)+'">'+''.join(links)+'</nav></details>').children[0]
 
 def decorate(tree,locale,filename,config,ui):
     base=config.get('base_path','/')
+    if filename=='peaksolo.html':
+        # Reviewed media captions are separate from the unchanged page catalogues.
+        import brand_media
+        brand_media.inject_peaksolo(tree,locale)
     html=next(n for n in walk(tree) if n.tag=='html')
-    html.set('lang',locale); html.set('dir','rtl' if locale=='ar' else 'ltr')
+    html.set('lang',locale); html.set('dir','rtl' if locale in {'ar','he','fa','ur'} else 'ltr')
     for key in ('pause_all','resume_all','pause_one','play_one'): html.set('data-'+key.replace('_','-'),ui[key])
     head=next(n for n in walk(tree) if n.tag=='head')
     version=hashlib.sha256((ROOT/'i18n.css').read_bytes()+(ROOT/'locale.js').read_bytes()).hexdigest()[:12]
     head.children.append(Node('link',[('rel','stylesheet'),('href','/i18n.css?v='+version)]))
     head.children.append(Node('script',[('src','/locale.js?v='+version),('defer',None)]))
-    for code in LOCALES:
+    for code in page_locales(filename):
         head.children.append(Node('link',[('rel','alternate'),('hreflang',code),('href',url(config,code,filename))]))
     head.children.append(Node('link',[('rel','alternate'),('hreflang','x-default'),('href',url(config,'fr',filename))]))
     for n in list(walk(tree)):
@@ -188,13 +200,20 @@ def decorate(tree,locale,filename,config,ui):
             if not value or not value.startswith('/') or value.startswith('//'): continue
             relative=value.lstrip('/')
             leaf=relative.split('?',1)[0].split('#',1)[0]
-            if locale!='fr' and attr=='href' and leaf in PAGES:
-                relative=locale+'/'+relative
+            product_scope=filename in ('hgq.html','peaksolo.html')
+            if locale!='fr' and attr=='href' and (leaf in PAGES or product_scope and leaf=='hgq.html'):
+                import app_pages_i18n
+                if app_pages_i18n.available(locale,leaf):relative=locale+'/'+relative
+                elif n.tag=='a':
+                    n.set('hreflang','fr')
+                    n.children.append(Node('span',[('class','original-language'),('lang','fr')],[' · Français']))
+            elif product_scope and locale not in LOCALES and n.tag=='a' and attr=='href' and not leaf:
+                n.set('hreflang','fr');n.set('title','BB16 Studio · Français')
             elif locale!='fr' and relative.startswith(('assets/screens/convertair/','assets/screens/doccipher/',
                                       'assets/video/convertair/','assets/video/doccipher/')):
                 bits=relative.split('/'); bits.insert(3,locale); relative='/'.join(bits)
             n.set(attr,base+relative)
-            if locale!='fr' and n.tag=='a' and leaf.endswith('.html') and leaf not in PAGES and '/' not in leaf:
+            if locale!='fr' and n.tag=='a' and leaf.endswith('.html') and leaf not in PAGES and not (product_scope and leaf=='hgq.html') and '/' not in leaf:
                 n.set('hreflang','fr')
                 n.children.append(Node('span',[('class','original-language'),('lang','fr')],[' · Français']))
         # Bilingual source contains an English jump link; here use the localized policy.
