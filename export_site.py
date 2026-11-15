@@ -63,6 +63,8 @@ FONT_FILES = (
 )
 ASSET_FILES = tuple(sorted(set(CORE_ASSETS) | set(MEDIA_FILES) | set(localized_media()) | set(FONT_FILES) | set(presentation_media()) | set(PAD_MEDIA) | set(HGQ_RUNTIME_MEDIA) | {
     "assets/video/doccipher/presentation-v2-fr.mp4",
+    "assets/branding/convertair-share.jpg",
+    "assets/branding/press-share.jpg",
     "assets/video/convertair/pt-BR/teaser.mp4",
     "assets/downloads/kit-brasil.zip",
 }))

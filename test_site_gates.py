@@ -408,9 +408,10 @@ class SiteGateMutationTests(unittest.TestCase):
             path.relative_to(export_site.SITE).as_posix()
             for path in export_site.publication_files()
         }
-        self.assertEqual(len(names), 1037)
+        self.assertEqual(len(names), 1039)
         self.assertTrue(set(export_site.presentation_media()) <= names)
         self.assertTrue({"presse.html", "presse.json", "assets/video/doccipher/presentation-v2-fr.mp4"} <= names)
+        self.assertTrue({"assets/branding/convertair-share.jpg", "assets/branding/press-share.jpg"} <= names)
         self.assertTrue({"assets/video/convertair/pt-BR/teaser.mp4", "assets/downloads/kit-brasil.zip"} <= names)
         self.assertTrue({
             'assets/video/brand/peaksolo-presentation-fr.mp4',

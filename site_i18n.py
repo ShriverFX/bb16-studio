@@ -201,6 +201,10 @@ def decorate(tree,locale,filename,config,ui):
             relative=value.lstrip('/')
             leaf=relative.split('?',1)[0].split('#',1)[0]
             product_scope=filename in ('hgq.html','peaksolo.html')
+            if locale!='fr' and locale in LOCALES and n.tag=='a' and attr=='href' and leaf=='presse.html':
+                n.set('hreflang','en')
+                n.set(attr,base+'presse.html#english')
+                continue
             if locale!='fr' and attr=='href' and (leaf in PAGES or product_scope and leaf=='hgq.html'):
                 import app_pages_i18n
                 if app_pages_i18n.available(locale,leaf):relative=locale+'/'+relative

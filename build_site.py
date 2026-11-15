@@ -119,7 +119,7 @@ def footer(config: dict) -> str:
     socials = f'<nav class="footer-socials" aria-label="Réseaux du studio">{"".join(links)}</nav>' if links else ""
     return f'''<footer class="footer"><div class="container footer-grid">
   <span>© 2026 BB16 Studio · projets numériques indépendants</span>
-  <span class="footer-links"><a href="support.html">Support</a><a href="privacy.html">Confidentialité</a><a href="legal.html">Mentions légales</a><a href="contact.html">Contact</a></span>
+  <div class="footer-links"><span><a href="support.html">Support</a><a href="privacy.html">Confidentialité</a><a href="legal.html">Mentions légales</a><a href="contact.html">Contact</a></span><a href="presse.html">Kit presse</a></div>
   {socials}
 </div></footer>'''
 
@@ -134,9 +134,15 @@ def document(title: str, description: str, active: str, body: str, config: dict,
     canonical = page_url(filename, site_url, base_path)
     canonical_tag = f'<link rel="canonical" href="{escape(canonical)}">' if canonical else ""
     og_url = f'<meta property="og:url" content="{escape(canonical)}">' if canonical else ""
-    og_asset = {"convertair.html": "assets/branding/convertair-presentation.png", "doccipher.html": "assets/branding/doccipher-presentation.png", "hgq.html": "assets/apps/hgq-logo.png"}.get(filename, "assets/branding/bb16-studio-logo-dark.png")
+    og_asset = {"convertair.html": "assets/branding/convertair-share.jpg", "doccipher.html": "assets/branding/doccipher-presentation.png", "hgq.html": "assets/apps/hgq-logo.png"}.get(filename, "assets/branding/bb16-studio-logo-dark.png")
     og_image = page_url(og_asset, site_url, base_path)
     og_image_tag = f'<meta property="og:image" content="{escape(og_image)}">' if og_image else ""
+    if og_image and filename == "convertair.html":
+        og_image_tag += ('\n  <meta property="og:image:type" content="image/jpeg">'
+                         '\n  <meta property="og:image:width" content="1200">'
+                         '\n  <meta property="og:image:height" content="630">'
+                         '\n  <meta property="og:image:alt" content="ConvertAir">'
+                         '\n  <meta name="twitter:card" content="summary_large_image">')
     email = escape(config["contact_email"])
     asset_version = hashlib.sha256(CSS_PATH.read_bytes() + (SITE / "theme.js").read_bytes() + (SITE / "product.js").read_bytes()).hexdigest()[:12]
     extra_scripts = "".join(f'\n  <script src="{name}?v={asset_version}" defer></script>' for name in scripts)

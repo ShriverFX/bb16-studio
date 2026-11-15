@@ -258,6 +258,13 @@
       "pages": [
         "hgq.html"
       ]
+    },
+    "354720f7056d": {
+      "source": "Kit presse",
+      "markup": true,
+      "pages": [
+        "hgq.html"
+      ]
     }
   },
   "peaksolo": {
@@ -550,6 +557,13 @@
     },
     "f692b6396268": {
       "source": "LinkedIn · fondateur",
+      "markup": true,
+      "pages": [
+        "peaksolo.html"
+      ]
+    },
+    "354720f7056d": {
+      "source": "Kit presse",
       "markup": true,
       "pages": [
         "peaksolo.html"
