@@ -408,7 +408,11 @@ class SiteGateMutationTests(unittest.TestCase):
             path.relative_to(export_site.SITE).as_posix()
             for path in export_site.publication_files()
         }
-        self.assertEqual(len(names), 1039)
+        runtime = set(export_site.peaksolo_runtime_media.files())
+        self.assertEqual(len(names), 1039 + len(runtime))
+        self.assertEqual({name for name in names if name.startswith((
+            "assets/video/peaksolo/runtime-", "assets/screens/peaksolo/runtime-",
+        ))}, runtime)
         self.assertTrue(set(export_site.presentation_media()) <= names)
         self.assertTrue({"presse.html", "presse.json", "assets/video/doccipher/presentation-v2-fr.mp4"} <= names)
         self.assertTrue({"assets/branding/convertair-share.jpg", "assets/branding/press-share.jpg"} <= names)
@@ -445,6 +449,7 @@ class SiteGateMutationTests(unittest.TestCase):
             "content/hgq-privacy.html",
             "content/hgq-account-deletion.html",
             "content/brand-teaser-provenance-20261102.json",
+            "content/peaksolo-runtime-media.json",
             "locales/source.json",
             "locales/en.json",
             "I18N.md",

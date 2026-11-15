@@ -8,6 +8,7 @@ from pathlib import Path
 from html import escape,unescape
 import hashlib,json
 import hgq_runtime_media
+import peaksolo_runtime_media
 
 SITE=Path(__file__).resolve().parent
 APP_LANGUAGES={
@@ -23,7 +24,7 @@ LOCALIZED_BRAND_TEASERS={app:{code:{'video':f'assets/video/brand/{app}-presentat
 BRAND_TEASERS={app:spec['fr'] for app,spec in LOCALIZED_BRAND_TEASERS.items()}
 RETIRED_HGQ_MEDIA = frozenset(path for media in LOCALIZED_BRAND_TEASERS['hgq'].values() for path in media.values())
 MEDIA_FILES=[path for media in LOCALIZED_BRAND_TEASERS['peaksolo'].values() for path in media.values()]
-FRENCH_CAPTION='Présentation de marque — les démonstrations de l’application seront ajoutées après captation réelle.'
+FRENCH_CAPTION='Présentation de marque de PeakSolo.'
 
 def language_tag(code):return 'zh-Hans' if code=='zh' else code
 def direction(code):return 'rtl' if code in {'ar','he','fa','ur'} else 'ltr'
@@ -55,7 +56,8 @@ def peaksolo_media_section(site_locale):
 
 def inject_peaksolo(tree,site_locale):
  import site_i18n as i
- fragment=peaksolo_media_section(site_locale).replace('src="assets/','src="/assets/').replace('poster="assets/','poster="/assets/').replace('href="assets/','href="/assets/')
+ teaser=peaksolo_media_section(site_locale).replace('src="assets/','src="/assets/').replace('poster="assets/','poster="/assets/').replace('href="assets/','href="/assets/')
+ fragment=peaksolo_runtime_media.render(site_locale)+teaser
  for parent in i.walk(tree):
   for pos,child in enumerate(parent.children):
    if isinstance(child,i.Node) and child.tag=='section' and child.get('id')=='presentation':
@@ -80,7 +82,8 @@ def validate_media_nodes(nodes,key,site_locale='fr',base_path='/'):
   row=proof['files'][name];p=SITE/name
   if p.stat().st_size!=row['bytes'] or hashlib.sha256(p.read_bytes()).hexdigest()!=row['sha256']:raise ValueError('BRAND_MEDIA_HASH_CHANGED='+name)
  expected=[PS_PAGE_MEDIA[site_locale]] if site_locale in PS_PAGE_MEDIA else []
- videos=[n for n in nodes if n.tag=='video']
+ peaksolo_runtime_media.validate(nodes,site_locale,base_path)
+ videos=[n for n in nodes if n.tag=='video' and n.get('data-peaksolo-runtime') is None]
  if len(videos)!=len(expected):raise ValueError('BRAND_MEDIA_VIDEO_COUNT='+key+':'+site_locale)
  actual=[]
  for video in videos:

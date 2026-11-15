@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "language": "fr",
+  "media_kind": "RUNTIME_CAPTURE",
+  "synthetic_data": true,
+  "clips": [
+    {
+      "title_fr": "Ouvrir la sauvegarde chiffrée",
+      "title_en": "Open encrypted backup",
+      "video_sha256": "8f2c669e6db3258e26bff69a6822fa1def6394eeb68931eeaf73343253e8cf02",
+      "poster_sha256": "63db5a36e289a92921c2b774daeda5de64cc2589168ca732a98f4f66e7ec450f"
+    },
+    {
+      "title_fr": "Du disponible à dépenser aux mises de côté",
+      "title_en": "From spendable balance to reserves",
+      "video_sha256": "18530e9d06b400c6a9a7a7091abb24bcd2b919dbf5ee946f30ba3e2e219c6e20",
+      "poster_sha256": "c80d331520090c26caaea64f853b495900398fb6689cfb738d79536a538062ec"
+    }
+  ]
+}

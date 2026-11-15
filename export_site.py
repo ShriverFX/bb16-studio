@@ -19,6 +19,7 @@ from site_i18n import localized_files, localized_media, presentation_media
 from app_pages_i18n import extra_files
 from hgq_showcase import PAD_MEDIA
 from hgq_runtime_media import FILES as HGQ_RUNTIME_MEDIA
+import peaksolo_runtime_media
 
 
 SITE = Path(__file__).resolve().parent
@@ -76,7 +77,7 @@ ASSET_RULES = {
     "assets/video": frozenset({".mp4"}),
     "assets/downloads": frozenset({".zip"}),
 }
-HTML_LINK = re.compile(r'''(?:href|src|data-src|data-dark|data-light)="([^"]+)"''')
+HTML_LINK = re.compile(r'''(?:href|src|poster|data-src|data-dark|data-light)="([^"]+)"''')
 CSS_URL = re.compile(r'''url\(\s*["']?([^"')]+)''', re.IGNORECASE)
 CSS_IMPORT = re.compile(
     r'''@import\s+(?:url\(\s*)?["']?([^"')\s;]+)''', re.IGNORECASE
@@ -85,7 +86,7 @@ CSS_IMPORT = re.compile(
 
 def publication_files() -> list[Path]:
     validate_custom_domain(json.loads((SITE / "site.config.json").read_text(encoding="utf-8")))
-    relative_names = list(ROOT_FILES) + list(ASSET_FILES)
+    relative_names = list(ROOT_FILES) + list(ASSET_FILES) + peaksolo_runtime_media.files()
     retired = sorted(set(relative_names) & RETIRED_MEDIA)
     if retired:
         raise SystemExit("RETIRED_MEDIA_EXPORT=" + ",".join(retired))
