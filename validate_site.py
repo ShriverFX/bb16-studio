@@ -415,6 +415,7 @@ def validate_availability_markup(texts: dict[str, str], listings: dict) -> None:
 
 
 def validate_products(config: dict, base_path: str) -> None:
+    import hgq_runtime_media
     listings = config.get("store_listings") or {}
     for key in ("convertair", "doccipher", "hgq"):
         listing = listings.get(key) or {}
@@ -511,7 +512,8 @@ def validate_products(config: dict, base_path: str) -> None:
             raw = _local(base_path, link).read_bytes()
             if raw[4:8] != b"ftyp":
                 raise SystemExit(f"BAD_MP4={link}")
-            if len(raw) > VIDEO_MAX:
+            video_limit = hgq_runtime_media.VIDEO_MAX if page == 'hgq.html' else VIDEO_MAX
+            if len(raw) > video_limit:
                 raise SystemExit(f"VIDEO_TOO_HEAVY={link}:{len(raw)}")
             video_bytes += len(raw)
         if page=='doccipher.html':
@@ -549,7 +551,8 @@ def validate_products(config: dict, base_path: str) -> None:
             eager_bytes += poster_bytes  # Poster fetch is conservatively included in initial weight.
         # Product pages count both local header derivatives in their initial budget.
         initial = len(text.encode("utf-8")) + shared + eager_bytes + header_bytes
-        if video_bytes > PAGE_VIDEOS_MAX or image_bytes > PAGE_IMAGES_MAX or initial > PAGE_INITIAL_MAX:
+        video_limit = hgq_runtime_media.PAGE_VIDEOS_MAX if page == 'hgq.html' else PAGE_VIDEOS_MAX
+        if video_bytes > video_limit or image_bytes > PAGE_IMAGES_MAX or initial > PAGE_INITIAL_MAX:
             raise SystemExit(f"PAGE_TOO_HEAVY={page}:initial={initial},images={image_bytes},videos={video_bytes}")
         print(f"WEIGHT {page}: initial={initial} images={image_bytes} videos={video_bytes} ({len(video_files)}) header_logos={header_bytes}")
     print("PRODUCT_PAGES_OK")

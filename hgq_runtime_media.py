@@ -1,60 +1,162 @@
-"""Verified French gameplay excerpt from the Android QA application."""
+"""Curated Android gameplay clips and localized HGQ video presentation."""
 
+import json
 from hashlib import sha256
 from html import escape
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
-VIDEO = 'assets/video/hgq/pokemon-solo-fr.mp4'
-POSTER = 'assets/screens/hgq/pokemon-solo-fr.webp'
-FILES = {
-    VIDEO: 'bb4f0acfc4ca12ffd942d969cd0f3c12aaf0c671e205aae651ad71a688c4de1c',
-    POSTER: '2c9f588d75381d213a45c1b2745bbbdbd23596a1f77ca891c727a9e6000777d3',
+MANIFEST = json.loads((ROOT / "content/hgq-runtime-media.json").read_text(encoding="utf-8"))
+CLIPS = MANIFEST["clips"]
+FILES = {clip[kind]: clip[kind + "_sha256"] for clip in CLIPS for kind in ("video", "poster")}
+VIDEO_MAX = 2_500_000
+PAGE_VIDEOS_MAX = 6_000_000
+
+COPY = {
+    "fr": {
+        "watch": "Voir les parties", "try": "Tester une question",
+        "heading": "Le jeu, en action.",
+        "note": "Parties capturées sur Android, en français · version de test.",
+        "trailer": ("Entre dans la partie.", "FIGHT, la dernière question, GAME OVER. Et ton score."),
+        "answer": ("La bonne réponse.", "Le bon souvenir, les points qui tombent."),
+        "joker": ("Ton joker. Ton moment.", "Prépare tes jokers avant le départ."),
+        "miss": ("Le chrono a le dernier mot.", "Une question, une hésitation, puis le verdict."),
+    },
+    "en": {
+        "watch": "Watch the gameplay", "try": "Try a question",
+        "heading": "See it in action.",
+        "note": "Android gameplay captured in French · test version.",
+        "trailer": ("Step into the game.", "FIGHT, the last question, GAME OVER. Then your score."),
+        "answer": ("The right answer.", "Recall the detail. Watch the points land."),
+        "joker": ("Your joker. Your moment.", "Pick your jokers before the round begins."),
+        "miss": ("The clock has the last word.", "One question, a moment of hesitation, then the verdict."),
+    },
+    "es": {
+        "watch": "Ver las partidas", "try": "Probar una pregunta",
+        "heading": "El juego, en acción.",
+        "note": "Partidas grabadas en Android, en francés · versión de prueba.",
+        "trailer": ("Entra en la partida.", "FIGHT, la última pregunta, GAME OVER. Y tu puntuación."),
+        "answer": ("La respuesta correcta.", "Recuerda el detalle y suma puntos."),
+        "joker": ("Tu comodín. Tu momento.", "Elige tus comodines antes de empezar."),
+        "miss": ("El reloj tiene la última palabra.", "Una pregunta, una duda y el veredicto."),
+    },
+    "pt": {
+        "watch": "Ver as partidas", "try": "Experimentar uma pergunta",
+        "heading": "O jogo, em ação.",
+        "note": "Partidas captadas no Android, em francês · versão de teste.",
+        "trailer": ("Entra na partida.", "FIGHT, a última pergunta, GAME OVER. E a tua pontuação."),
+        "answer": ("A resposta certa.", "Lembra-te do detalhe e soma pontos."),
+        "joker": ("O teu joker. O teu momento.", "Escolhe os teus jokers antes de começar."),
+        "miss": ("O relógio tem a última palavra.", "Uma pergunta, uma hesitação e o veredito."),
+    },
+    "ja": {
+        "watch": "プレイ動画を見る", "try": "クイズに挑戦",
+        "heading": "実際のプレイをチェック。",
+        "note": "Androidテスト版の実際のプレイ映像です。表示言語はフランス語です。",
+        "trailer": ("さあ、勝負の時間。", "FIGHTから最後の問題、GAME OVER、そしてスコアへ。"),
+        "answer": ("正解の瞬間。", "ゲームの記憶を呼び起こしてポイント獲得。"),
+        "joker": ("ジョーカーで備えよう。", "スタート前に使うジョーカーを選ぼう。"),
+        "miss": ("制限時間との勝負。", "ひとつの問題、ためらう一瞬、そして結果。"),
+    },
+    "ko": {
+        "watch": "플레이 영상 보기", "try": "퀴즈에 도전",
+        "heading": "실제 플레이를 확인하세요.",
+        "note": "Android 테스트 버전의 실제 플레이 영상입니다. 프랑스어로 진행됩니다.",
+        "trailer": ("대결을 시작하세요.", "FIGHT부터 마지막 문제, GAME OVER, 그리고 점수까지."),
+        "answer": ("정답의 순간.", "게임 속 기억을 떠올리고 점수를 얻으세요."),
+        "joker": ("나만의 조커를 준비하세요.", "시작하기 전에 사용할 조커를 선택하세요."),
+        "miss": ("시간과의 승부.", "문제 하나, 망설이는 순간, 그리고 결과."),
+    },
 }
-CAPTIONS = {
-    'fr': 'Partie solo Pokémon sur Android, en français.',
-    'en': 'Pokémon solo gameplay on Android, in French.',
-    'es': 'Partida individual de Pokémon en Android, en francés.',
-    'pt': 'Partida a solo de Pokémon no Android, em francês.',
-    'ja': 'Android版のポケモン・ソロプレイ（フランス語）。',
-    'ko': '안드로이드 포켓몬 솔로 플레이 영상입니다. 프랑스어로 진행됩니다.',
+
+# The catalogue keeps its existing 22-language coverage. Product pages use six languages.
+CATALOGUE = {
+    "fr": ("Le quiz de ta culture jeu vidéo.", "FIGHT. Une question. GAME OVER. Jusqu’où iras-tu ?", "Découvrir HGQ", "Gameplay Android en français · version de test"),
+    "en": ("Put your gaming knowledge to the test.", "FIGHT. One question. GAME OVER. How far will you go?", "Discover HGQ", "Android gameplay in French · test version"),
+    "de": ("Teste dein Videospielwissen.", "FIGHT. Eine Frage. GAME OVER. Wie weit kommst du?", "HGQ entdecken", "Android-Gameplay auf Französisch · Testversion"),
+    "es": ("Pon a prueba tu cultura de videojuegos.", "FIGHT. Una pregunta. GAME OVER. ¿Hasta dónde llegarás?", "Descubrir HGQ", "Partida en Android en francés · versión de prueba"),
+    "it": ("Metti alla prova la tua cultura videoludica.", "FIGHT. Una domanda. GAME OVER. Fin dove arriverai?", "Scopri HGQ", "Gameplay Android in francese · versione di test"),
+    "pt": ("Põe à prova a tua cultura de videojogos.", "FIGHT. Uma pergunta. GAME OVER. Até onde vais chegar?", "Descobrir HGQ", "Partida no Android em francês · versão de teste"),
+    "pt-BR": ("Teste seus conhecimentos sobre videogames.", "FIGHT. Uma pergunta. GAME OVER. Até onde você vai?", "Conheça HGQ", "Partida no Android em francês · versão de teste"),
+    "nl": ("Test je kennis van videogames.", "FIGHT. Eén vraag. GAME OVER. Hoe ver kom jij?", "Ontdek HGQ", "Android-gameplay in het Frans · testversie"),
+    "pl": ("Sprawdź swoją wiedzę o grach.", "FIGHT. Jedno pytanie. GAME OVER. Jak daleko zajdziesz?", "Odkryj HGQ", "Rozgrywka na Androidzie po francusku · wersja testowa"),
+    "ru": ("Проверь свои знания о видеоиграх.", "FIGHT. Один вопрос. GAME OVER. Как далеко ты зайдёшь?", "Открой HGQ", "Игра на Android на французском · тестовая версия"),
+    "uk": ("Перевір свої знання про відеоігри.", "FIGHT. Одне запитання. GAME OVER. Як далеко ти зайдеш?", "Відкрий HGQ", "Гра на Android французькою · тестова версія"),
+    "tr": ("Video oyunu bilgini sına.", "FIGHT. Bir soru. GAME OVER. Ne kadar ileri gideceksin?", "HGQ’yu keşfet", "Android oynanışı Fransızca · test sürümü"),
+    "ar": ("اختبر معرفتك بألعاب الفيديو.", "FIGHT. سؤال واحد. GAME OVER. إلى أين ستصل؟", "اكتشف HGQ", "لعب على Android بالفرنسية · نسخة تجريبية"),
+    "hi": ("वीडियो गेम की अपनी जानकारी परखें।", "FIGHT. एक सवाल। GAME OVER. आप कितनी दूर पहुँचेंगे?", "HGQ देखें", "Android पर फ़्रेंच में गेमप्ले · परीक्षण संस्करण"),
+    "id": ("Uji pengetahuan video game kamu.", "FIGHT. Satu pertanyaan. GAME OVER. Sejauh mana kamu bisa?", "Kenali HGQ", "Gameplay Android dalam bahasa Prancis · versi uji coba"),
+    "ja": ("ゲームの知識で勝負しよう。", "FIGHT、ひとつの問題、GAME OVER。どこまでいける？", "HGQを見る", "Android版のプレイ映像・フランス語・テスト版"),
+    "ko": ("게임 지식으로 승부하세요.", "FIGHT. 문제 하나. GAME OVER. 어디까지 갈 수 있나요?", "HGQ 알아보기", "Android 플레이 영상 · 프랑스어 · 테스트 버전"),
+    "th": ("ทดสอบความรู้เรื่องวิดีโอเกมของคุณ", "FIGHT. หนึ่งคำถาม GAME OVER. คุณจะไปได้ไกลแค่ไหน?", "รู้จัก HGQ", "เกมเพลย์ Android ภาษาฝรั่งเศส · เวอร์ชันทดสอบ"),
+    "vi": ("Thử tài kiến thức trò chơi điện tử.", "FIGHT. Một câu hỏi. GAME OVER. Bạn sẽ tiến xa đến đâu?", "Khám phá HGQ", "Gameplay Android bằng tiếng Pháp · bản thử nghiệm"),
+    "zh": ("用你的游戏知识来挑战。", "FIGHT。一道问题。GAME OVER。你能走多远？", "了解 HGQ", "Android 实机游戏画面 · 法语 · 测试版"),
+    "zh-Hans": ("用你的游戏知识来挑战。", "FIGHT。一道问题。GAME OVER。你能走多远？", "了解 HGQ", "Android 实机游戏画面 · 法语 · 测试版"),
+    "zh-Hant": ("用你的遊戲知識來挑戰。", "FIGHT。一道問題。GAME OVER。你能走多遠？", "認識 HGQ", "Android 實際遊戲畫面 · 法語 · 測試版"),
 }
+
+
+def player(clip_id, locale, *, base="", caption=True):
+    clip = next(clip for clip in CLIPS if clip["id"] == clip_id)
+    title, description = map(escape, COPY[locale][clip_id])
+    content = (
+        f'<video class="hgq-video" src="{base}{clip["video"]}" poster="{base}{clip["poster"]}" '
+        f'controls playsinline preload="none" width="540" height="960" lang="fr" '
+        f'data-hgq-runtime="{clip_id}" aria-label="{title}"></video>'
+    )
+    text = f'<figcaption><h3>{title}</h3><p>{description}</p></figcaption>' if caption else ""
+    return f'<figure class="hgq-film" data-media-kind="RUNTIME_CAPTURE">{content}{text}</figure>'
 
 
 def render(locale):
-    caption = escape(CAPTIONS[locale])
+    copy = COPY[locale]
+    clips = "".join(player(clip["id"], locale) for clip in CLIPS if clip["id"] != "trailer")
     return (
-        '<section class="section" id="gameplay"><div class="container">'
-        '<figure class="hero-device" data-media-kind="RUNTIME_CAPTURE">'
-        f'<video src="{VIDEO}" poster="{POSTER}" controls playsinline '
-        'preload="none" width="360" height="640" lang="fr" '
-        'aria-describedby="hgq-gameplay-caption" style="max-width:100%;height:auto"></video>'
-        f'<figcaption id="hgq-gameplay-caption">{caption}</figcaption>'
-        '</figure></div></section>'
+        '<section class="section hgq-moments" id="gameplay" aria-labelledby="hgq-moments-title">'
+        '<div class="container"><div class="section-head">'
+        f'<div><h2 id="hgq-moments-title">{escape(copy["heading"])}</h2>'
+        f'<p class="section-note">{escape(copy["note"])}</p></div></div>'
+        f'<div class="hgq-film-grid">{clips}</div></div></section>'
+    )
+
+
+def render_catalogue(locale, base):
+    heading, description, cta, note = map(escape, CATALOGUE[locale])
+    target = (locale + "/" if locale in COPY and locale != "fr" else "") + "hgq.html"
+    language = ' hreflang="fr"' if locale not in COPY else ""
+    suffix = '<span lang="fr"> · Français</span>' if locale not in COPY else ""
+    clip = next(clip for clip in CLIPS if clip["id"] == "trailer")
+    return (
+        '<section class="section hgq-catalogue-feature"><div class="container hgq-catalogue-panel">'
+        '<div class="hgq-catalogue-copy"><div class="hgq-identity">'
+        f'<img src="{base}assets/apps/hgq-logo-192.webp" width="192" height="212" alt="" loading="lazy">'
+        '<p class="eyebrow">Hard Gamer Quiz</p></div>'
+        f'<h2>{heading}</h2><p class="lede">{description}</p><div class="actions">'
+        f'<a class="button" href="{base}{target}"{language}>{cta}{suffix}</a></div></div>'
+        '<figure class="hgq-film"><video class="hgq-video" '
+        f'src="{base}{clip["video"]}" poster="{base}{clip["poster"]}" controls playsinline preload="none" '
+        f'width="540" height="960" lang="fr" aria-label="Hard Gamer Quiz · FIGHT · GAME OVER"></video>'
+        f'<figcaption class="section-note">{note}</figcaption></figure></div></section>'
     )
 
 
 def validate(nodes, locale, base):
-    videos = [node for node in nodes if node.tag == 'video']
-    captures = [node for node in nodes if node.get('data-media-kind')]
-    captions = [node for node in nodes if node.get('id') == 'hgq-gameplay-caption']
-    if len(videos) != 1 or len(captures) != 1 or len(captions) != 1:
-        raise ValueError('HGQ_RUNTIME_CAPTURE_REQUIRED')
-    video = videos[0]
-    attrs = dict(video.attrs)
-    if (captures[0].get('data-media-kind') != 'RUNTIME_CAPTURE'
-            or captures[0].tag != 'figure'
-            or any(node.tag == 'source' for node in nodes)
-            or video.get('src') != base + VIDEO
-            or video.get('poster') != base + POSTER
-            or video.get('lang') != 'fr'
-            or video.get('aria-describedby') != 'hgq-gameplay-caption'
-            or video.get('preload') != 'none'
-            or not {'controls', 'playsinline'} <= attrs.keys()
-            or {'autoplay', 'loop'} & attrs.keys()
-            or captions[0].inner() != escape(CAPTIONS[locale])):
-        raise ValueError('HGQ_RUNTIME_CAPTURE_REQUIRED')
+    videos = [node for node in nodes if node.tag == "video"]
+    figures = [node for node in nodes if node.get("data-media-kind") == "RUNTIME_CAPTURE"]
+    if len(videos) != len(CLIPS) or len(figures) != len(CLIPS):
+        raise ValueError("HGQ_RUNTIME_CAPTURE_REQUIRED")
+    for clip in CLIPS:
+        found = [video for video in videos if video.get("data-hgq-runtime") == clip["id"]]
+        if len(found) != 1:
+            raise ValueError("HGQ_RUNTIME_CAPTURE_REQUIRED")
+        video = found[0]
+        attrs = dict(video.attrs)
+        if (video.get("src") != base + clip["video"] or video.get("poster") != base + clip["poster"]
+                or video.get("lang") != "fr" or video.get("preload") != "none"
+                or not {"controls", "playsinline"} <= attrs.keys()
+                or {"autoplay", "loop"} & attrs.keys()):
+            raise ValueError("HGQ_RUNTIME_CAPTURE_REQUIRED")
     for path, expected in FILES.items():
         asset = ROOT / path
         if not asset.is_file() or sha256(asset.read_bytes()).hexdigest() != expected:
-            raise ValueError('HGQ_RUNTIME_CAPTURE_HASH_CHANGED=' + path)
+            raise ValueError("HGQ_RUNTIME_CAPTURE_HASH_CHANGED=" + path)

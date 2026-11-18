@@ -157,6 +157,7 @@ def validate_catalog_content(locale, data, units):
 
 def product_weight(nodes, html_path, base):
     from validate_site import HEADER_LOGOS, PAGE_INITIAL_MAX, PAGE_IMAGES_MAX, PAGE_VIDEOS_MAX, VIDEO_MAX
+    import hgq_runtime_media
     def relative(value): return urlsplit(value).path[len(base):]
     def size(name): return (i.ROOT/name).stat().st_size
     shared=set(); stylesheets=set(); images={}; videos=set(); headers=set()
@@ -196,7 +197,8 @@ def product_weight(nodes, html_path, base):
     for target in images:
         if target.endswith('.webp'): assert (i.ROOT/target).read_bytes()[8:12]==b'WEBP', target
     for target in videos:
-        assert (i.ROOT/target).read_bytes()[4:8]==b'ftyp' and size(target)<=VIDEO_MAX, target
+        limit = hgq_runtime_media.VIDEO_MAX if target in hgq_runtime_media.FILES else VIDEO_MAX
+        assert (i.ROOT/target).read_bytes()[4:8]==b'ftyp' and size(target)<=limit, target
     presentations=[relative(n.get('src')) for n in nodes if n.tag=='source' and n.get('src','').endswith('/presentation-v2.mp4')]
     if html_path.name=='doccipher.html':
         assert len(presentations)==1, (html_path,'missing-localized-presentation')
@@ -206,7 +208,8 @@ def product_weight(nodes, html_path, base):
     initial=html_path.stat().st_size+sum(map(size,shared|headers))+sum(size(t) for t,eager in images.items() if eager and t not in headers)
     image_bytes=sum(size(t) for t in images if t not in headers)
     video_bytes=sum(map(size,videos))
-    assert initial<=PAGE_INITIAL_MAX and image_bytes<=PAGE_IMAGES_MAX and video_bytes<=PAGE_VIDEOS_MAX, (html_path,initial,image_bytes,video_bytes)
+    video_limit = hgq_runtime_media.PAGE_VIDEOS_MAX if html_path.name == 'hgq.html' else PAGE_VIDEOS_MAX
+    assert initial<=PAGE_INITIAL_MAX and image_bytes<=PAGE_IMAGES_MAX and video_bytes<=video_limit, (html_path,initial,image_bytes,video_bytes)
     return {'initial_bytes':initial,'image_bytes':image_bytes,'video_bytes':video_bytes}
 
 def validate():

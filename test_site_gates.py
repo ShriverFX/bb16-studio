@@ -409,7 +409,7 @@ class SiteGateMutationTests(unittest.TestCase):
             for path in export_site.publication_files()
         }
         runtime = set(export_site.peaksolo_runtime_media.files())
-        self.assertEqual(len(names), 1039 + len(runtime))
+        self.assertEqual(len(names), 1045 + len(runtime))
         self.assertEqual({name for name in names if name.startswith((
             "assets/video/peaksolo/runtime-", "assets/screens/peaksolo/runtime-",
         ))}, runtime)

@@ -243,6 +243,19 @@ def decorate(tree,locale,filename,config,ui):
         main = next(n for n in walk(tree) if n.tag=='main')
         hero = next((i for i,n in enumerate(main.children) if isinstance(n,Node) and n.get('id')=='presentation'),None)
         main.children.insert(hero+1 if hero is not None else 0,player)
+    if filename == 'apps.html':
+        import hgq_runtime_media
+        main = next(n for n in walk(tree) if n.tag == 'main')
+        original = next(n for n in main.children if isinstance(n, Node) and n.get('class') == 'section hgq-catalogue-feature')
+        main.children.remove(original)
+        fragment = parse(hgq_runtime_media.render_catalogue(locale, base))
+        panel = next(n for n in walk(fragment) if n.get('class') == 'container hgq-catalogue-panel')
+        panel.set('class', 'hgq-catalogue-panel')
+        container = next(n for n in walk(main) if n.get('class') == 'container')
+        intro = next(n for n in container.children if isinstance(n, Node) and n.get('class') == 'lede')
+        container.children.remove(intro)
+        grid = next(n for n in container.children if isinstance(n, Node) and n.get('class') == 'grid app-catalogue')
+        container.children.insert(container.children.index(grid), panel)
     return render(tree)
 
 def build(sources, config, *, preview_locales=None):

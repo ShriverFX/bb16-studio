@@ -9,6 +9,12 @@
   const videos = Array.from(document.querySelectorAll('video[data-src]'));
   const tours = [];
   const cards = [];
+  const gameplay = Array.from(document.querySelectorAll('video[data-hgq-runtime]'));
+  gameplay.forEach(video => video.addEventListener('play', () => {
+    gameplay.forEach(other => {
+      if (other !== video) other.pause();
+    });
+  }));
   let paused = false;
   const allowed = () => !reduce.matches && !paused && !document.hidden;
 

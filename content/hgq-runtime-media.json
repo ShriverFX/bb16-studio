@@ -1,0 +1,34 @@
+{
+  "language": "fr",
+  "media_kind": "RUNTIME_CAPTURE",
+  "clips": [
+    {
+      "id": "trailer",
+      "video": "assets/video/hgq/fight-game-over-fr.mp4",
+      "poster": "assets/screens/hgq/fight-game-over-fr.webp",
+      "video_sha256": "baf4d030048dd5310a3b54c9766ea1f9e940607cf643014f3dbc3edcac00ff14",
+      "poster_sha256": "7ba46488ec267c751a0fda5a0c523e5accb652508503c7f8b9ab35ce71d2dbd0"
+    },
+    {
+      "id": "answer",
+      "video": "assets/video/hgq/pokemon-solo-fr.mp4",
+      "poster": "assets/screens/hgq/pokemon-solo-fr.webp",
+      "video_sha256": "bb4f0acfc4ca12ffd942d969cd0f3c12aaf0c671e205aae651ad71a688c4de1c",
+      "poster_sha256": "00dc1570db75329c63f96272c0349b72334abd37a2de365573cef534301a8689"
+    },
+    {
+      "id": "joker",
+      "video": "assets/video/hgq/jokers-fight-fr.mp4",
+      "poster": "assets/screens/hgq/jokers-fight-fr.webp",
+      "video_sha256": "f632f24367d2b22f0b724892fc26f8ba685d055f9a087e13aedf7d5f0a1f94e0",
+      "poster_sha256": "20722d64351e5c79e16d2bb80423367d6abb375fae66c401a8e98d4f073c4a79"
+    },
+    {
+      "id": "miss",
+      "video": "assets/video/hgq/chrono-verdict-fr.mp4",
+      "poster": "assets/screens/hgq/chrono-verdict-fr.webp",
+      "video_sha256": "7bc89e50f278121b6074e926d179d102deb1ce01d5057662344f768a36ae9713",
+      "poster_sha256": "cd72d3cfed07a2d9f87feb707ebd09603d130b71972cb4c99377e06b3f02596c"
+    }
+  ]
+}

@@ -89,7 +89,7 @@ class SparseProductRouteMutationTests(unittest.TestCase):
                 for color in ('blue', 'green', 'yellow', 'red'):
                     self.assertIn(f'data-pad="{color}"', text)
                     self.assertIn(f'src="/assets/apps/hgq-pad-{color}.webp"', text)
-                self.assertEqual(text.count('<video'), 1)
+                self.assertEqual(text.count('<video'), 4)
                 self.assertIn('src="/assets/video/hgq/pokemon-solo-fr.mp4"', text)
                 illustrative = text.replace('</main>', '<video src="/assets/video/brand/hgq-presentation-fr.mp4"></video></main>')
                 with self.assertRaisesRegex(ValueError, 'HGQ_RUNTIME_CAPTURE_REQUIRED'):
