@@ -9,62 +9,70 @@ ROOT = Path(__file__).resolve().parent
 MANIFEST = json.loads((ROOT / "content/hgq-runtime-media.json").read_text(encoding="utf-8"))
 CLIPS = MANIFEST["clips"]
 FILES = {clip[kind]: clip[kind + "_sha256"] for clip in CLIPS for kind in ("video", "poster")}
+ARTWORK = MANIFEST.get("joker_artwork", {})
+FILES.update({item["image"]: item["sha256"] for item in ARTWORK.values()})
 VIDEO_MAX = 2_500_000
 PAGE_VIDEOS_MAX = 6_000_000
 
 COPY = {
     "fr": {
-        "watch": "Voir les parties", "try": "Tester une question",
-        "heading": "Le jeu, en action.",
+        "watch": "Voir l’extrait Fortnite", "try": "Tester une question",
+        "heading": "Un autre univers. Le même défi.",
         "note": "Parties capturées sur Android, en français · version de test.",
         "trailer": ("Entre dans la partie.", "FIGHT, la dernière question, GAME OVER. Et ton score."),
         "answer": ("La bonne réponse.", "Le bon souvenir, les points qui tombent."),
-        "joker": ("Ton joker. Ton moment.", "Prépare tes jokers avant le départ."),
+        "fortnite": ("Fortnite, à toi de jouer.", "Une vraie question, une réponse et les points. Musique du jeu incluse."),
+        "joker": ("Tous tes jokers, en un coup d’œil.", "Leurs effets et leur coût en Hegos, la monnaie du jeu."),
         "miss": ("Le chrono a le dernier mot.", "Une question, une hésitation, puis le verdict."),
     },
     "en": {
-        "watch": "Watch the gameplay", "try": "Try a question",
-        "heading": "See it in action.",
+        "watch": "Watch the Fortnite clip", "try": "Try a question",
+        "heading": "Another universe. The same challenge.",
         "note": "Android gameplay captured in French · test version.",
         "trailer": ("Step into the game.", "FIGHT, the last question, GAME OVER. Then your score."),
         "answer": ("The right answer.", "Recall the detail. Watch the points land."),
-        "joker": ("Your joker. Your moment.", "Pick your jokers before the round begins."),
+        "fortnite": ("Fortnite. Your turn.", "A real question, an answer and points, with music from the game."),
+        "joker": ("Every joker at a glance.", "Their effects and prices in Hegos, the in-game currency."),
         "miss": ("The clock has the last word.", "One question, a moment of hesitation, then the verdict."),
     },
     "es": {
-        "watch": "Ver las partidas", "try": "Probar una pregunta",
-        "heading": "El juego, en acción.",
+        "watch": "Ver el vídeo de Fortnite", "try": "Probar una pregunta",
+        "heading": "Otro universo. El mismo desafío.",
         "note": "Partidas grabadas en Android, en francés · versión de prueba.",
         "trailer": ("Entra en la partida.", "FIGHT, la última pregunta, GAME OVER. Y tu puntuación."),
         "answer": ("La respuesta correcta.", "Recuerda el detalle y suma puntos."),
-        "joker": ("Tu comodín. Tu momento.", "Elige tus comodines antes de empezar."),
+        "fortnite": ("Fortnite. Te toca jugar.", "Una pregunta real, una respuesta y puntos, con música del juego."),
+        "joker": ("Todos tus comodines de un vistazo.", "Sus efectos y precios en Hegos, la moneda del juego."),
         "miss": ("El reloj tiene la última palabra.", "Una pregunta, una duda y el veredicto."),
     },
     "pt": {
-        "watch": "Ver as partidas", "try": "Experimentar uma pergunta",
-        "heading": "O jogo, em ação.",
+        "watch": "Ver o vídeo de Fortnite", "try": "Experimentar uma pergunta",
+        "heading": "Outro universo. O mesmo desafio.",
         "note": "Partidas captadas no Android, em francês · versão de teste.",
         "trailer": ("Entra na partida.", "FIGHT, a última pergunta, GAME OVER. E a tua pontuação."),
         "answer": ("A resposta certa.", "Lembra-te do detalhe e soma pontos."),
-        "joker": ("O teu joker. O teu momento.", "Escolhe os teus jokers antes de começar."),
+        "fortnite": ("Fortnite. É a tua vez.", "Uma pergunta real, uma resposta e pontos, com música do jogo."),
+        "joker": ("Todos os teus jokers num relance.", "Os seus efeitos e preços em Hegos, a moeda do jogo."),
         "miss": ("O relógio tem a última palavra.", "Uma pergunta, uma hesitação e o veredito."),
     },
     "ja": {
-        "watch": "プレイ動画を見る", "try": "クイズに挑戦",
-        "heading": "実際のプレイをチェック。",
+        "watch": "Fortniteのプレイ動画を見る", "try": "クイズに挑戦",
+        "heading": "別の世界でも、知識で勝負。",
         "note": "Androidテスト版の実際のプレイ映像です。表示言語はフランス語です。",
         "trailer": ("さあ、勝負の時間。", "FIGHTから最後の問題、GAME OVER、そしてスコアへ。"),
         "answer": ("正解の瞬間。", "ゲームの記憶を呼び起こしてポイント獲得。"),
-        "joker": ("ジョーカーで備えよう。", "スタート前に使うジョーカーを選ぼう。"),
+        "fortnite": ("Fortniteで、いざ勝負。", "実際の問題、解答、ポイント獲得。ゲーム内の音楽とともに。"),
+        "joker": ("すべてのジョーカーを一覧で。", "効果とゲーム内通貨Hegosでの価格を確認しよう。"),
         "miss": ("制限時間との勝負。", "ひとつの問題、ためらう一瞬、そして結果。"),
     },
     "ko": {
-        "watch": "플레이 영상 보기", "try": "퀴즈에 도전",
-        "heading": "실제 플레이를 확인하세요.",
+        "watch": "Fortnite 플레이 영상 보기", "try": "퀴즈에 도전",
+        "heading": "다른 세계에서도 지식으로 승부하세요.",
         "note": "Android 테스트 버전의 실제 플레이 영상입니다. 프랑스어로 진행됩니다.",
         "trailer": ("대결을 시작하세요.", "FIGHT부터 마지막 문제, GAME OVER, 그리고 점수까지."),
         "answer": ("정답의 순간.", "게임 속 기억을 떠올리고 점수를 얻으세요."),
-        "joker": ("나만의 조커를 준비하세요.", "시작하기 전에 사용할 조커를 선택하세요."),
+        "fortnite": ("Fortnite. 이제 내 차례.", "실제 문제와 답변, 점수 획득까지. 게임 음악과 함께 확인하세요."),
+        "joker": ("모든 조커를 한눈에.", "효과와 게임 내 화폐 Hegos 가격을 확인하세요."),
         "miss": ("시간과의 승부.", "문제 하나, 망설이는 순간, 그리고 결과."),
     },
 }
@@ -116,7 +124,19 @@ def render(locale):
         '<div class="container"><div class="section-head">'
         f'<div><h2 id="hgq-moments-title">{escape(copy["heading"])}</h2>'
         f'<p class="section-note">{escape(copy["note"])}</p></div></div>'
-        f'<div class="hgq-film-grid">{clips}</div></div></section>'
+        f'<div class="hgq-film-grid">{clips}{joker_image(locale)}</div></div></section>'
+    )
+
+
+def joker_image(locale):
+    artwork = ARTWORK[locale]
+    title, description = map(escape, COPY[locale]["joker"])
+    return (
+        '<figure class="hgq-joker-guide" data-media-kind="JOKER_GUIDE">'
+        f'<a href="{artwork["image"]}" aria-label="{title}">'
+        f'<img src="{artwork["image"]}" width="720" height="1470" '
+        f'loading="lazy" decoding="async" alt="{escape(artwork["alt"], quote=True)}"></a>'
+        f'<figcaption><h3>{title}</h3><p>{description}</p></figcaption></figure>'
     )
 
 
@@ -156,6 +176,11 @@ def validate(nodes, locale, base):
                 or not {"controls", "playsinline"} <= attrs.keys()
                 or {"autoplay", "loop"} & attrs.keys()):
             raise ValueError("HGQ_RUNTIME_CAPTURE_REQUIRED")
+    guides = [node for node in nodes if node.get("data-media-kind") == "JOKER_GUIDE"]
+    artwork = ARTWORK[locale]
+    images = [node for node in nodes if node.tag == "img" and node.get("src") == base + artwork["image"]]
+    if len(guides) != 1 or len(images) != 1 or images[0].get("alt") != artwork["alt"]:
+        raise ValueError("HGQ_JOKER_GUIDE_REQUIRED")
     for path, expected in FILES.items():
         asset = ROOT / path
         if not asset.is_file() or sha256(asset.read_bytes()).hexdigest() != expected:

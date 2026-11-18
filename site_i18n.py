@@ -21,6 +21,8 @@ VOID = set('area base br col embed hr img input link meta param source track wbr
 BLOCK = set('div section article nav ul ol dl table header footer main p li h1 h2 h3 h4 details summary'.split())
 UNITS = set('p li h1 h2 h3 h4 summary a button label title span figcaption legend option dt dd'.split())
 ATTRS = {'alt','title','aria-label','placeholder'}
+APP_RUNTIME_CAPTION_FR = 'Capture Android réelle en français, avec des PDF de démonstration.'
+APP_RUNTIME_LABEL_FR = 'ConvertAir : fusion de PDF de démonstration sur Android, en français.'
 
 @dataclass
 class Node:
@@ -146,8 +148,10 @@ def localized_media():
             for app in ('convertair','doccipher') if '/'+app+'/' in name]
 
 def presentation_media():
-    return [f'assets/{kind}/doccipher/'+('' if code=='fr' else code+'/')+'presentation-v2.'+ext
-            for code in LOCALES for kind,ext in [('video','mp4'),('screens','webp')]]
+    # The former DocCipher presentation clips were illustrations, not attested
+    # app runtime. Keep the export hook empty until a pinned runtime capture is
+    # available through app_runtime_media.
+    return []
 
 def url(config, locale, filename):
     base=config.get('base_path','/')
@@ -213,8 +217,9 @@ def decorate(tree,locale,filename,config,ui):
                     n.children.append(Node('span',[('class','original-language'),('lang','fr')],[' · Français']))
             elif product_scope and locale not in LOCALES and n.tag=='a' and attr=='href' and not leaf:
                 n.set('hreflang','fr');n.set('title','BB16 Studio · Français')
-            elif locale!='fr' and relative.startswith(('assets/screens/convertair/','assets/screens/doccipher/',
-                                      'assets/video/convertair/','assets/video/doccipher/')):
+            elif (locale!='fr' and n.get('data-app-runtime') is None
+                  and relative.startswith(('assets/screens/convertair/','assets/screens/doccipher/',
+                                            'assets/video/convertair/','assets/video/doccipher/'))):
                 bits=relative.split('/'); bits.insert(3,locale); relative='/'.join(bits)
             n.set(attr,base+relative)
             if locale!='fr' and n.tag=='a' and leaf.endswith('.html') and leaf not in PAGES and not (product_scope and leaf=='hgq.html') and '/' not in leaf:
@@ -230,19 +235,19 @@ def decorate(tree,locale,filename,config,ui):
                 if para: para.children=[ui['capture_note']]
         if locale!='fr' and filename in ('convertair.html','doccipher.html') and n.tag=='figcaption':
             n.children=[ui['capture_note']]
-    if filename == 'doccipher.html':
-        media = base+'assets/video/doccipher/'+('' if locale=='fr' else locale+'/')
-        poster = base+'assets/screens/doccipher/'+('' if locale=='fr' else locale+'/')+'presentation-v2.webp'
-        title = 'DocCipher · '+LOCALES[locale]
-        player = parse('<section class="section" aria-labelledby="launch-video-title"><div class="container">'
-            '<h2 id="launch-video-title">'+escape(title)+'</h2>'
-            '<video data-launch-presentation controls playsinline preload="none" poster="'+escape(poster,quote=True)+'" '
-            'aria-label="'+escape(title,quote=True)+'" style="display:block;width:100%;max-width:360px;max-height:75vh;margin:24px auto;background:#0b1220">'
-            '<source src="'+escape(media+'presentation-v2.mp4',quote=True)+'" type="video/mp4"></video>'
-            '<p class="section-note">'+escape(ui['capture_note'])+'</p></div></section>').children[0]
-        main = next(n for n in walk(tree) if n.tag=='main')
-        hero = next((i for i,n in enumerate(main.children) if isinstance(n,Node) and n.get('id')=='presentation'),None)
-        main.children.insert(hero+1 if hero is not None else 0,player)
+    # The sole standard-app runtime clip is French source footage. Preserve its
+    # pinned paths in every locale and state that language/scope explicitly
+    # after generic text localization has run.
+    runtime_players=[n for n in walk(tree) if n.tag=='video' and n.get('data-app-runtime') is not None]
+    for player in runtime_players:
+        player.set('lang','fr')
+        player.set('aria-label',APP_RUNTIME_LABEL_FR)
+        caption_id=player.get('aria-describedby')
+        captions=[n for n in walk(tree) if n.get('id')==caption_id]
+        if len(captions)!=1 or captions[0].tag!='figcaption':
+            raise ValueError('APP_RUNTIME_CAPTION_MISSING:'+str(caption_id))
+        captions[0].set('lang','fr')
+        captions[0].children=[APP_RUNTIME_CAPTION_FR]
     if filename == 'apps.html':
         import hgq_runtime_media
         main = next(n for n in walk(tree) if n.tag == 'main')

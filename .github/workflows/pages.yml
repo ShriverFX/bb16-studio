@@ -34,7 +34,7 @@ jobs:
         run: python3 validate_i18n.py
 
       - name: Test publication gates
-        run: python3 -m unittest -v test_site_gates.py test_i18n.py test_brand_media.py test_zh_hant_repair.py test_app_pages_i18n.py
+        run: python3 -m unittest -v test_site_gates.py test_i18n.py test_brand_media.py test_zh_hant_repair.py test_app_pages_i18n.py test_apps_runtime_media.py test_hgq_warmup.py
 
       - name: Set up Node for feedback form tests
         uses: actions/setup-node@v4

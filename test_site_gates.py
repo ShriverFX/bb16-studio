@@ -16,6 +16,7 @@ from unittest.mock import patch
 import export_site
 import validate_site
 import build_site
+import app_runtime_media
 
 
 class SiteGateMutationTests(unittest.TestCase):
@@ -403,24 +404,27 @@ class SiteGateMutationTests(unittest.TestCase):
                 with self.assertRaisesRegex(SystemExit, "UNSAFE_EXPORT_OUTPUT"):
                     export_site.resolve_output(unsafe)
 
-    def test_export_manifest_is_exact_and_contains_branding_webp(self) -> None:
+    def test_export_manifest_contains_only_attested_app_runtime_media(self) -> None:
         names = {
             path.relative_to(export_site.SITE).as_posix()
             for path in export_site.publication_files()
         }
         runtime = set(export_site.peaksolo_runtime_media.files())
-        self.assertEqual(len(names), 1045 + len(runtime))
         self.assertEqual({name for name in names if name.startswith((
             "assets/video/peaksolo/runtime-", "assets/screens/peaksolo/runtime-",
         ))}, runtime)
-        self.assertTrue(set(export_site.presentation_media()) <= names)
-        self.assertTrue({"presse.html", "presse.json", "assets/video/doccipher/presentation-v2-fr.mp4"} <= names)
+        app_runtime=set(app_runtime_media.files())
+        self.assertEqual({name for name in names if name.startswith((
+            "assets/video/convertair/runtime-", "assets/screens/convertair/runtime-",
+            "assets/video/doccipher/runtime-", "assets/screens/doccipher/runtime-",
+        ))},app_runtime)
+        self.assertEqual(export_site.presentation_media(),[])
+        self.assertFalse(any('doccipher/presentation-v2' in name for name in names))
+        self.assertTrue({"presse.html", "presse.json"} <= names)
         self.assertTrue({"assets/branding/convertair-share.jpg", "assets/branding/press-share.jpg"} <= names)
         self.assertTrue({"assets/video/convertair/pt-BR/teaser.mp4", "assets/downloads/kit-brasil.zip"} <= names)
-        self.assertTrue({
-            'assets/video/brand/peaksolo-presentation-fr.mp4',
-            'assets/branding/peaksolo-presentation-fr.webp',
-        } <= names)
+        self.assertNotIn('assets/video/brand/peaksolo-presentation-fr.mp4',names)
+        self.assertNotIn('assets/branding/peaksolo-presentation-fr.webp',names)
         self.assertNotIn('assets/video/brand/hgq-presentation-fr.mp4', names)
         self.assertNotIn('assets/branding/hgq-presentation-fr.webp', names)
         self.assertNotIn('assets/branding/hgq-presentation-fr.png', names)

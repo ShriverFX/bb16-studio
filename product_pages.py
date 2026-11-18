@@ -23,6 +23,7 @@ from html import escape
 from pathlib import Path
 import json
 import brand_media
+import app_runtime_media
 
 SITE = Path(__file__).resolve().parent
 STUDIO = SITE.parent  # C:\BB16\10_STUDIO
@@ -90,10 +91,11 @@ SCREENS: dict[str, tuple[str, Path]] = {
     "assets/screens/doccipher/ajout.webp": ("doccipher", DC_FR / "08-photo.png"),
 }
 
-# Vidéo publiée -> segments (capture, mouvement). « scroll » : zoom marqué et
-# défilement vertical, comme un pouce qui parcourt l'écran ; « drift » : zoom
-# léger et glissement lent. Les segments s'enchaînent en fondu.
-VIDEOS: dict[str, list[tuple[str, str]]] = {
+# Anciennes animations de captures fixes. Elles ne sont plus présentées comme
+# des vidéos d'application : les aperçus actifs utilisent les images sources.
+VIDEOS: dict[str, list[tuple[str, str]]] = {}
+
+ANIMATED_SCREEN_PREVIEWS: dict[str, list[tuple[str, str]]] = {
     "assets/video/convertair/scan.mp4": [("assets/screens/convertair/accueil.webp", "scroll")],
     "assets/video/convertair/outils.mp4": [("assets/screens/convertair/catalogue.webp", "scroll"), ("assets/screens/convertair/catalogue-ocr.webp", "drift")],
     "assets/video/convertair/fusion.mp4": [("assets/screens/convertair/fusion.webp", "drift")],
@@ -111,6 +113,7 @@ VIDEOS: dict[str, list[tuple[str, str]]] = {
 
 # Preserved source mappings, deliberately absent from the active export/generator.
 HISTORICAL_VIDEOS: dict[str, list[tuple[str, str]]] = {
+    **ANIMATED_SCREEN_PREVIEWS,
     "assets/video/convertair/reglages.mp4": [("assets/screens/convertair/reglages.webp", "scroll")],
     "assets/video/convertair/premium.mp4": [("assets/screens/convertair/paywall.webp", "scroll")],
     "assets/video/hgq/creer.mp4": [("assets/screens/hgq/creer.webp", "scroll")],
@@ -131,7 +134,8 @@ ICONS: dict[str, tuple[str, tuple[int, int]]] = {
 
 # These title-card films contain no application UI and are never runtime proof.
 BRAND_TEASERS = brand_media.BRAND_TEASERS
-MEDIA_FILES = sorted(SCREENS) + sorted(VIDEOS) + sorted(ICONS) + brand_media.MEDIA_FILES
+MEDIA_FILES = (sorted(SCREENS) + sorted(VIDEOS) + sorted(ICONS)
+               + brand_media.MEDIA_FILES + app_runtime_media.files())
 RETIRED_MEDIA = frozenset(HISTORICAL_SCREENS) | frozenset(HISTORICAL_VIDEOS) | brand_media.RETIRED_HGQ_MEDIA
 
 
@@ -414,11 +418,11 @@ def product_body(key: str, config: dict) -> str:
     layers = []
     total = len(p["tour"])
     for i, (sid, title, text, src, video, alt) in enumerate(p["tour"], start=1):
-        device = f'<div class="step-device">{phone(key, src, alt, video, extra_class="step-phone")}</div>' if src else ""
+        device = f'<div class="step-device">{phone(key, src, alt, extra_class="step-phone")}</div>' if src else ""
         steps.append(f'''<li class="tour-step" data-step id="etape-{sid}"><div class="step-copy"><p class="step-index">{i:02d} <span>/ {total:02d}</span></p><h3>{escape(title)}</h3><p>{escape(text)}</p></div>{device}</li>''')
         if src:
             active = " is-active" if not layers else ""
-            layers.append(f'<div class="layer{active}" data-layer>{screen_img(key, src, "")}{video_tag(video) if video else ""}</div>')
+            layers.append(f'<div class="layer{active}" data-layer>{screen_img(key, src, "")}</div>')
     tour_layout = (
         f'''<div class="tour" data-tour>
     <ol class="tour-steps">{"".join(steps)}</ol>
@@ -426,16 +430,16 @@ def product_body(key: str, config: dict) -> str:
   </div>'''
         if layers else f'<div class="prose"><ol class="tour-steps">{"".join(steps)}</ol></div>'
     )
-    has_video = any(row[4] for row in p["tour"]) or any(row[3] for row in p["grid"])
+    has_video = False
     motion_button = '<button class="motion-toggle" type="button" data-motion-toggle aria-pressed="false" hidden>Mettre les aperçus en pause</button>' if has_video else ""
-    preview_label = "02 · En mouvement" if has_video else "02 · Aperçus"
-    preview_hint = '<p class="hover-hint">Survolez une carte ou lancez son aperçu animé.</p><p class="touch-hint">Les aperçus s\'animent lorsqu\'ils apparaissent à l\'écran. Vous pouvez les mettre en pause.</p><p class="motion-hint">Animations désactivées : explorez les captures à votre rythme.</p>' if has_video else f'<p>{captures_note}</p>'
+    preview_label = "02 · En mouvement" if has_video else "Aperçus"
+    preview_hint = '<p class="hover-hint">Survolez une carte ou lancez son aperçu animé.</p><p class="touch-hint">Les aperçus s\'animent lorsqu\'ils apparaissent à l\'écran. Vous pouvez les mettre en pause.</p><p class="motion-hint">Animations désactivées : explorez les captures à votre rythme.</p>' if has_video else '<p>Animations désactivées : explorez les captures à votre rythme.</p>'
 
     cards = []
     for title, text, src, video, alt in p["grid"]:
-        device = f'<div class="feature-device">{phone(key, src, alt, video)}</div>' if src else ""
-        hover = " data-hover-video" if video else ""
-        toggle = f'<button class="preview-toggle" type="button" data-preview-toggle aria-pressed="false" hidden><span data-preview-label>Voir l\'aperçu animé</span><span class="sr-only"> : {escape(title)}</span></button>' if video else ""
+        device = f'<div class="feature-device">{phone(key, src, alt)}</div>' if src else ""
+        hover = ""
+        toggle = ""
         cards.append(f'''<article class="feature-card"{hover}><div class="feature-copy"><h3>{escape(title)}</h3><p>{escape(text)}</p></div>{device}{toggle}</article>''')
     also = ""
     if p["also"]:
@@ -459,6 +463,9 @@ def product_body(key: str, config: dict) -> str:
         if key == "hgq" else
         "Références France en euros. La langue du site ne détermine pas votre pays d'achat. Les prix, devises et offres disponibles dépendent de votre compte Google Play ; vérifiez le prix final dans l'application avant de confirmer l'achat.")
 
+    runtime_hero = app_runtime_media.render(key, hero_alt, f"Capture réelle de {name}")
+    hero_media = runtime_hero or f'<figure class="hero-device">{phone(key, hero_src, hero_alt, eager=True)}<figcaption>Capture réelle de {name}</figcaption></figure>'
+
     return f'''<nav class="product-nav" aria-label="Dans cette page"><div class="container product-nav-inner"><a class="product-nav-name" href="#presentation">{name}</a><div class="product-nav-links"><a href="#fonctions">Fonctions</a><a href="#apercus">Aperçus</a><a href="#prix">Prix</a><a href="#confidentialite">Confidentialité</a><a href="#faq">FAQ</a></div></div></nav>
 <section class="product-hero" id="presentation"><div class="container product-hero-grid">
   <div class="product-hero-copy">
@@ -469,7 +476,7 @@ def product_body(key: str, config: dict) -> str:
     <div class="actions">{hero_cta}<a class="button{secondary}" href="#fonctions">Voir les fonctions</a><a class="button secondary" href="#prix">Prix</a></div>
     <p class="hero-status"><span class="{status_class}">{status}</span></p>
   </div>
-  <figure class="hero-device">{phone(key, hero_src, hero_alt, eager=True)}<figcaption>Capture réelle de {name}</figcaption></figure>
+  {hero_media}
 </div></section>
 <section class="section tour-section" id="fonctions"><div class="container">
   <div class="section-head"><div><p class="eyebrow">01 · Visite guidée</p><h2>{tour_title}</h2></div><div class="section-intro"><p>Découvrez chaque fonction au fil de la page. {captures_note}</p>{motion_button}</div></div>

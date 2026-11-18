@@ -9,14 +9,134 @@
   const videos = Array.from(document.querySelectorAll('video[data-src]'));
   const tours = [];
   const cards = [];
-  const gameplay = Array.from(document.querySelectorAll('video[data-hgq-runtime]'));
+  const gameplay = Array.from(document.querySelectorAll('video[data-hgq-runtime], video[data-peaksolo-runtime], video[data-app-runtime]'));
+  let stopHgqWarmupAudio = () => {};
   gameplay.forEach(video => video.addEventListener('play', () => {
+    stopHgqWarmupAudio();
     gameplay.forEach(other => {
       if (other !== video) other.pause();
     });
   }));
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) gameplay.forEach(video => video.pause());
+  });
   let paused = false;
   const allowed = () => !reduce.matches && !paused && !document.hidden;
+
+  const warmup = document.querySelector('[data-hgq-warmup]');
+  if (warmup) {
+    const start = warmup.querySelector('[data-warmup-start]');
+    const sound = warmup.querySelector('[data-warmup-sound]');
+    const restart = warmup.querySelector('[data-warmup-restart]');
+    const question = warmup.querySelector('[data-warmup-question]');
+    const heading = warmup.querySelector('#hgq-question');
+    const callout = warmup.querySelector('[data-warmup-callout]');
+    const result = warmup.querySelector('[data-warmup-result]');
+    const score = warmup.querySelector('[data-warmup-score]');
+    const answers = Array.from(warmup.querySelectorAll('[data-warmup-answer]'));
+    const audio = Object.fromEntries(Array.from(warmup.querySelectorAll('[data-warmup-audio]'))
+      .map(player => [player.dataset.warmupAudio, player]));
+    let warmupState = 'idle';
+    let muted = false;
+    let fightTimer = null;
+
+    const setWarmupState = state => {
+      warmupState = state;
+      warmup.dataset.state = state;
+    };
+    const stopAudio = player => {
+      if (!player) return;
+      player.pause();
+      if (player.readyState > 0) {
+        try { player.currentTime = 0; } catch (_) { /* Audio may not be ready. */ }
+      }
+    };
+    const stopWarmupAudio = () => Object.values(audio).forEach(stopAudio);
+    stopHgqWarmupAudio = stopWarmupAudio;
+    const playAudio = (player, volume) => {
+      if (!player || muted || document.hidden) return;
+      if (!player.getAttribute('src') && player.dataset.src) player.src = player.dataset.src;
+      player.muted = false;
+      player.volume = volume;
+      if (player.readyState > 0) {
+        try { player.currentTime = 0; } catch (_) { /* Audio may not be ready. */ }
+      }
+      const attempt = player.play();
+      if (attempt && attempt.catch) attempt.catch(() => { /* The quiz remains usable without audio. */ });
+    };
+    const resetAnswers = () => answers.forEach(answer => {
+      answer.open = false;
+      answer.classList.remove('is-picked', 'is-right', 'is-wrong');
+      answer.querySelector('[data-warmup-option]').removeAttribute('aria-disabled');
+    });
+    const beginWarmup = () => {
+      if (fightTimer !== null) window.clearTimeout(fightTimer);
+      gameplay.forEach(video => video.pause());
+      stopWarmupAudio();
+      resetAnswers();
+      result.hidden = true;
+      question.hidden = true;
+      start.hidden = true;
+      callout.textContent = 'FIGHT';
+      callout.hidden = false;
+      callout.setAttribute('aria-hidden', 'false');
+      setWarmupState('fight');
+      playAudio(audio.music, .28);
+      playAudio(audio.fight, .78);
+      fightTimer = window.setTimeout(() => {
+        fightTimer = null;
+        callout.hidden = true;
+        callout.setAttribute('aria-hidden', 'true');
+        question.hidden = false;
+        setWarmupState('question');
+        heading.focus({ preventScroll: true });
+      }, reduce.matches ? 0 : 700);
+    };
+    const finishWarmup = answer => {
+      if (warmupState !== 'question') return;
+      const correct = answer.dataset.correct === 'true';
+      answers.forEach(item => { if (item !== answer) item.open = false; });
+      answer.open = true;
+      answer.classList.add('is-picked', correct ? 'is-right' : 'is-wrong');
+      answers.forEach(item => item.querySelector('[data-warmup-option]').setAttribute('aria-disabled', 'true'));
+      stopAudio(audio.music);
+      stopAudio(audio.fight);
+      playAudio(audio.gameover, .82);
+      score.textContent = correct ? warmup.dataset.scoreWon : warmup.dataset.scoreLost;
+      result.hidden = false;
+      setWarmupState('finished');
+      if (typeof result.scrollIntoView === 'function') {
+        result.scrollIntoView({ block: 'nearest', behavior: reduce.matches ? 'instant' : 'smooth' });
+      }
+    };
+
+    question.hidden = true;
+    result.hidden = true;
+    start.hidden = false;
+    sound.hidden = false;
+    start.addEventListener('click', beginWarmup);
+    restart.addEventListener('click', beginWarmup);
+    answers.forEach(answer => answer.querySelector('[data-warmup-option]').addEventListener('click', event => {
+      if (warmupState !== 'question') {
+        event.preventDefault();
+        return;
+      }
+      event.preventDefault();
+      finishWarmup(answer);
+    }));
+    sound.addEventListener('click', () => {
+      muted = !muted;
+      sound.setAttribute('aria-pressed', String(muted));
+      sound.textContent = muted ? warmup.dataset.labelUnmute : warmup.dataset.labelMute;
+      Object.values(audio).forEach(player => { player.muted = muted; });
+      if (muted) stopWarmupAudio();
+      else if (warmupState === 'question') playAudio(audio.music, .28);
+    });
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) stopWarmupAudio();
+    });
+    window.addEventListener('pagehide', stopWarmupAudio);
+  }
 
   function play(video) {
     if (!video || !allowed()) return;

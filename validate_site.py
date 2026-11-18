@@ -415,6 +415,7 @@ def validate_availability_markup(texts: dict[str, str], listings: dict) -> None:
 
 
 def validate_products(config: dict, base_path: str) -> None:
+    import app_runtime_media
     import hgq_runtime_media
     listings = config.get("store_listings") or {}
     for key in ("convertair", "doccipher", "hgq"):
@@ -493,20 +494,28 @@ def validate_products(config: dict, base_path: str) -> None:
         videos = re.findall(r"<video[^>]*>", text)
         if page == "hgq.html":
             validate_brand_teaser(text, 'hgq', base_path)
-        if not videos and page != "hgq.html":
-            raise SystemExit(f"MISSING_VIDEOS={page}")
+        if page in {'convertair.html','doccipher.html'}:
+            nodes=list(site_i18n.walk(site_i18n.parse(text)))
+            app=page[:-5]
+            try:
+                app_runtime_media.validate(nodes,app,base_path)
+            except ValueError as error:
+                raise SystemExit(f'BAD_APP_RUNTIME={page}:{error}') from error
+            expected=len(app_runtime_media.load(app))
+            if len(videos)!=expected or any('data-app-runtime' not in tag for tag in videos):
+                raise SystemExit(f'UNATTESTED_APP_VIDEO={page}')
         for tag in videos:
-            if 'data-launch-presentation' in tag:
-                if page!='doccipher.html' or ' controls' not in tag or 'autoplay' in tag or 'preload="none"' not in tag or ' playsinline' not in tag:
-                    raise SystemExit(f'BAD_PRESENTATION_PLAYER={page}')
-                continue
-            if page == 'hgq.html':
+            if page == 'hgq.html' or 'data-app-runtime' in tag:
                 continue  # Exact branded figure, controls, caption and hashes checked above.
             if re.search(r"\ssrc=|autoplay|poster=", tag) or not all(a in tag for a in ('preload="none"', " muted", " playsinline", 'aria-hidden="true"', "data-src=")):
                 raise SystemExit(f"BAD_VIDEO_TAG={page}:{tag}")
         video_files = sorted(set(re.findall(r'data-src="([^"]+\.mp4)"', text)))
         if page == 'hgq.html' and videos:
             video_files.extend(re.findall(r'<video\b[^>]*\bsrc="([^"]+\.mp4)"', text))
+        if page == 'convertair.html':
+            video_files.extend(re.findall(r'<video\b[^>]*\bdata-app-runtime[^>]*\bsrc="([^"]+\.mp4)"',text))
+            if not video_files:
+                video_files.extend(re.findall(r'<video\b[^>]*\bsrc="([^"]+\.mp4)"[^>]*\bdata-app-runtime',text))
         video_bytes = 0
         for link in video_files:
             raw = _local(base_path, link).read_bytes()
@@ -516,16 +525,6 @@ def validate_products(config: dict, base_path: str) -> None:
             if len(raw) > video_limit:
                 raise SystemExit(f"VIDEO_TOO_HEAVY={link}:{len(raw)}")
             video_bytes += len(raw)
-        if page=='doccipher.html':
-            if sum('data-launch-presentation' in tag for tag in videos)!=1:
-                raise SystemExit('MISSING_PRESENTATION_PLAYER')
-            launch=f'{base_path}assets/video/doccipher/presentation-v2.mp4'
-            if f'<source src="{launch}" type="video/mp4">' not in text:
-                raise SystemExit('MISSING_PRESENTATION_SOURCE')
-            raw=_local(base_path,launch).read_bytes()
-            if raw[4:8]!=b'ftyp' or len(raw)>400_000:
-                raise SystemExit('BAD_PRESENTATION_MP4')
-            video_bytes+=len(raw)
         image_bytes = 0
         eager_bytes = 0
         header_bytes = 0
@@ -545,7 +544,7 @@ def validate_products(config: dict, base_path: str) -> None:
             image_bytes += size
             if 'loading="lazy"' not in tag:
                 eager_bytes += size
-        if page == 'hgq.html' and videos:
+        if (page == 'hgq.html' or page == 'convertair.html') and videos:
             poster_bytes = sum(_local(base_path,link).stat().st_size for link in set(re.findall(r'<video\b[^>]*\bposter="([^"]+)"',text)))
             image_bytes += poster_bytes
             eager_bytes += poster_bytes  # Poster fetch is conservatively included in initial weight.

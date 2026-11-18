@@ -4,31 +4,49 @@
   "clips": [
     {
       "id": "trailer",
-      "video": "assets/video/hgq/fight-game-over-fr.mp4",
+      "video": "assets/video/hgq/fight-game-over-music-fr.mp4",
       "poster": "assets/screens/hgq/fight-game-over-fr.webp",
-      "video_sha256": "baf4d030048dd5310a3b54c9766ea1f9e940607cf643014f3dbc3edcac00ff14",
+      "video_sha256": "5cc3b4c7963a18bc85803be6266e3c3a6a0559e346661d59643261060d911535",
       "poster_sha256": "7ba46488ec267c751a0fda5a0c523e5accb652508503c7f8b9ab35ce71d2dbd0"
     },
     {
-      "id": "answer",
-      "video": "assets/video/hgq/pokemon-solo-fr.mp4",
-      "poster": "assets/screens/hgq/pokemon-solo-fr.webp",
-      "video_sha256": "bb4f0acfc4ca12ffd942d969cd0f3c12aaf0c671e205aae651ad71a688c4de1c",
-      "poster_sha256": "00dc1570db75329c63f96272c0349b72334abd37a2de365573cef534301a8689"
-    },
-    {
-      "id": "joker",
-      "video": "assets/video/hgq/jokers-fight-fr.mp4",
-      "poster": "assets/screens/hgq/jokers-fight-fr.webp",
-      "video_sha256": "f632f24367d2b22f0b724892fc26f8ba685d055f9a087e13aedf7d5f0a1f94e0",
-      "poster_sha256": "20722d64351e5c79e16d2bb80423367d6abb375fae66c401a8e98d4f073c4a79"
-    },
-    {
-      "id": "miss",
-      "video": "assets/video/hgq/chrono-verdict-fr.mp4",
-      "poster": "assets/screens/hgq/chrono-verdict-fr.webp",
-      "video_sha256": "7bc89e50f278121b6074e926d179d102deb1ce01d5057662344f768a36ae9713",
-      "poster_sha256": "cd72d3cfed07a2d9f87feb707ebd09603d130b71972cb4c99377e06b3f02596c"
+      "id": "fortnite",
+      "video": "assets/video/hgq/fortnite-solo-music-fr.mp4",
+      "poster": "assets/screens/hgq/fortnite-solo-music-fr.webp",
+      "video_sha256": "e85455732fc7d0b7f8a5450741322056bc97c018e84f6d3e6b0bee975df5a0f7",
+      "poster_sha256": "0fda9be8fbb3741728911f16828e05d8ca0cb3b5443b16795522fa63448e3763"
     }
-  ]
+  ],
+  "joker_artwork": {
+    "fr": {
+      "image": "assets/screens/hgq/jokers-guide-fr.webp",
+      "sha256": "a25d589cd4c89d4a0c178efd2588998216d66482b23e9a224829cafe362237e3",
+      "alt": "Infographie Hard Gamer Quiz présentant les six jokers, leur coût en Hegos et leur effet. +5 secondes : 15 Hegos. Ajoute 5 secondes au chrono de la question. Élimine 1 mauvaise : 5 Hegos. Retire une mauvaise réponse. +10 secondes : 25 Hegos. Ajoute 10 secondes au chrono de la question. Vote public : 15 Hegos. Affiche une tendance simulée des réponses. 50/50 : 20 Hegos. Retire deux mauvaises réponses : il reste 2 choix. Double points : 18 Hegos. Double les points si la réponse est correcte."
+    },
+    "en": {
+      "image": "assets/screens/hgq/jokers-guide-en.webp",
+      "sha256": "a47bbf7e87faf1333f42c0d3548ea711ff145c0098f2459403bd8732b270d691",
+      "alt": "Hard Gamer Quiz infographic showing all six jokers, their Hego cost and their effect. +5 seconds : 15 Hegos. Adds 5 seconds to the question timer. Remove 1 wrong answer : 5 Hegos. Removes one wrong answer. +10 seconds : 25 Hegos. Adds 10 seconds to the question timer. Audience vote : 15 Hegos. Shows a simulated answer trend. 50/50 : 20 Hegos. Removes two wrong answers, leaving 2 choices. Double points : 18 Hegos. Doubles points when the answer is correct."
+    },
+    "es": {
+      "image": "assets/screens/hgq/jokers-guide-es.webp",
+      "sha256": "d08ba17a5a21f3da6005f20428944fc93fa460056104474ea8a845604283491a",
+      "alt": "Infografía de Hard Gamer Quiz con los seis comodines, su coste en Hegos y su efecto. +5 segundos : 15 Hegos. Añade 5 segundos al cronómetro de la pregunta. Elimina 1 incorrecta : 5 Hegos. Elimina una respuesta incorrecta. +10 segundos : 25 Hegos. Añade 10 segundos al cronómetro de la pregunta. Voto del público : 15 Hegos. Muestra una tendencia simulada de respuestas. 50/50 : 20 Hegos. Elimina dos respuestas incorrectas: quedan 2 opciones. Puntos dobles : 18 Hegos. Duplica los puntos si la respuesta es correcta."
+    },
+    "pt": {
+      "image": "assets/screens/hgq/jokers-guide-pt.webp",
+      "sha256": "b9e74f9af14a4dd13b058e007fa39dcfadb4b89c86aa8a300e34f2341e4dd7b9",
+      "alt": "Infografia do Hard Gamer Quiz com os seis jokers, o custo em Hegos e o respetivo efeito. +5 segundos : 15 Hegos. Adiciona 5 segundos ao tempo da pergunta. Elimina 1 errada : 5 Hegos. Elimina uma resposta errada. +10 segundos : 25 Hegos. Adiciona 10 segundos ao tempo da pergunta. Voto do público : 15 Hegos. Mostra uma tendência simulada das respostas. 50/50 : 20 Hegos. Elimina duas respostas erradas: ficam 2 opções. Pontos a dobrar : 18 Hegos. Duplica os pontos se a resposta estiver certa."
+    },
+    "ja": {
+      "image": "assets/screens/hgq/jokers-guide-ja.webp",
+      "sha256": "3469c37cd983190127da817dc240d5d51c3365db9474dc0b9144726653e6b0e8",
+      "alt": "Hard Gamer Quizの6種類のジョーカーと、Hegoでのコスト、効果をまとめた画像。 +5秒 : 15 Hegos. 問題の制限時間を5秒追加します。 不正解を1つ消去 : 5 Hegos. 不正解の選択肢を1つ消します。 +10秒 : 25 Hegos. 問題の制限時間を10秒追加します。 オーディエンス投票 : 15 Hegos. 回答の傾向をシミュレーション表示します。 50/50 : 20 Hegos. 不正解を2つ消し、選択肢を2つにします。 ポイント2倍 : 18 Hegos. 正解したときのポイントが2倍になります。"
+    },
+    "ko": {
+      "image": "assets/screens/hgq/jokers-guide-ko.webp",
+      "sha256": "dea3747836d5b8cc97cabe853b6423b441ecf5626d31e194177a4c51835c4c8f",
+      "alt": "Hard Gamer Quiz의 조커 6종과 Hego 비용, 효과를 보여 주는 인포그래픽. +5초 : 15 Hegos. 문제 제한 시간을 5초 늘립니다. 오답 1개 제거 : 5 Hegos. 오답 선택지 하나를 제거합니다. +10초 : 25 Hegos. 문제 제한 시간을 10초 늘립니다. 대중 투표 : 15 Hegos. 답변 경향을 시뮬레이션해 보여 줍니다. 50/50 : 20 Hegos. 오답 2개를 제거해 선택지 2개만 남깁니다. 포인트 2배 : 18 Hegos. 정답이면 획득 포인트가 2배가 됩니다."
+    }
+  }
 }

@@ -1,6 +1,7 @@
 import unittest
 import json
 import site_i18n as i
+import product_pages
 from validate_i18n import validate_catalog_content, validate_commercial
 
 class LocalizationTests(unittest.TestCase):
@@ -83,7 +84,53 @@ class LocalizationTests(unittest.TestCase):
         self.assertEqual(len(i.localized_files()),21*14)
         self.assertIn('en/peaksolo.html',i.localized_files())
         self.assertIn('en/peaksolo-privacy.html',i.localized_files())
-        self.assertEqual(len(set(i.localized_media())),21*26)
+        localized_source_media=[name for name in product_pages.SCREENS
+                                if '/convertair/' in name or '/doccipher/' in name]
+        self.assertEqual(len(set(i.localized_media())),(len(i.LOCALES)-1)*len(localized_source_media))
+
+    def test_french_runtime_capture_is_not_falsely_localized(self):
+        tree=i.parse('<html><head></head><body><header><nav class="nav"></nav></header><main>'
+                     '<figure class="app-runtime" data-media-kind="RUNTIME_CAPTURE">'
+                     '<video src="/assets/video/convertair/runtime-merge-fr.mp4" '
+                     'poster="/assets/screens/convertair/runtime-merge-fr.webp" '
+                     'data-app-runtime="convertair-runtime-merge" aria-describedby="runtime-caption"></video>'
+                     '<figcaption id="runtime-caption">Translated placeholder</figcaption></figure>'
+                     '</main></body></html>')
+        rendered=i.decorate(tree,'en','convertair.html',{'base_path':'/','site_url':'https://example.org'},
+                            json.loads((i.ROOT/'locales/ui.json').read_text(encoding='utf-8'))['en'])
+        self.assertIn('src="/assets/video/convertair/runtime-merge-fr.mp4"',rendered)
+        self.assertIn('poster="/assets/screens/convertair/runtime-merge-fr.webp"',rendered)
+        self.assertNotIn('/convertair/en/runtime-',rendered)
+        self.assertIn('lang="fr"',rendered)
+        self.assertIn(i.APP_RUNTIME_LABEL_FR,rendered)
+        self.assertIn(i.APP_RUNTIME_CAPTION_FR,rendered)
+
+    def test_doccipher_localization_does_not_inject_illustrated_video(self):
+        tree=i.parse('<html><head></head><body><header><nav class="nav"></nav></header><main></main></body></html>')
+        rendered=i.decorate(tree,'en','doccipher.html',{'base_path':'/','site_url':'https://example.org'},
+                            json.loads((i.ROOT/'locales/ui.json').read_text(encoding='utf-8'))['en'])
+        self.assertNotIn('<video',rendered)
+        self.assertNotIn('data-launch-presentation',rendered)
+        self.assertEqual(i.presentation_media(),[])
+
+    def test_actual_app_runtime_contract_survives_every_standard_locale(self):
+        import app_runtime_media
+        import build_site
+        config=build_site.read_config()
+        config['base_path']='/'
+        sources=build_site.pages(config)
+        units=json.loads((i.ROOT/'locales/source.json').read_text(encoding='utf-8'))
+        ui=json.loads((i.ROOT/'locales/ui.json').read_text(encoding='utf-8'))
+        for locale in i.LOCALES:
+            translated=None if locale=='fr' else i.catalog(locale,units)
+            for name in ('convertair.html','doccipher.html'):
+                tree=i.parse(sources[name]) if locale=='fr' else i.prepared(sources[name],name)
+                if translated is not None:
+                    i.text_units(tree,lambda value,markup:translated[i.unit_id(value)])
+                rendered=i.decorate(tree,locale,name,config,ui[locale])
+                nodes=list(i.walk(i.parse(rendered)))
+                with self.subTest(locale=locale,page=name):
+                    app_runtime_media.validate(nodes,name[:-5],'/')
 
     def test_convertair_revenuecat_rights_tokens_and_meaning_are_guarded(self):
         units=json.loads((i.ROOT/'locales/source.json').read_text(encoding='utf-8'))

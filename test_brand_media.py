@@ -1,72 +1,20 @@
-"""Negative tests for localized brand selection and explicit script/region gaps."""
-import unittest
+"""Fail-closed tests for the two attested PeakSolo Android captures."""
+
 import json
 import tempfile
+import unittest
 from hashlib import sha256
 from pathlib import Path
 from unittest.mock import patch
 
-import brand_media as b
+import brand_media as brand
 import peaksolo_runtime_media as runtime
 import site_i18n as i
 
-def nodes(text):return list(i.walk(i.parse(text)))
-def rooted(text):
- return text.replace('src="assets/','src="/assets/').replace('poster="assets/','poster="/assets/').replace('href="assets/','href="/assets/')
 
-class BrandMediaLocaleTests(unittest.TestCase):
- def test_english_page_cannot_silently_get_french_video(self):
-  text=runtime.render('en') + rooted(b.peaksolo_media_section('en'))
-  b.validate_media_nodes(nodes(text),'peaksolo','en')
-  with self.assertRaisesRegex(ValueError,'WRONG_SOURCE'):
-   b.validate_media_nodes(nodes(text.replace('peaksolo-presentation-en.mp4','peaksolo-presentation-fr.mp4')),'peaksolo','en')
+def nodes(text):
+    return list(i.walk(i.parse(text)))
 
- def test_region_and_script_gaps_are_explicit_links_not_french_fallback(self):
-  for locale,destination in [('pt-BR','/pt/peaksolo.html#presentation-video'),('zh-Hant','/zh-Hans/peaksolo.html#presentation-video')]:
-   text=runtime.render(locale) + rooted(b.peaksolo_media_section(locale));b.validate_media_nodes(nodes(text),'peaksolo',locale)
-   self.assertNotIn('<video',rooted(b.peaksolo_media_section(locale)));self.assertIn(destination,text)
-   with self.assertRaisesRegex(ValueError,'EXPLICIT_ALTERNATE'):
-    b.validate_media_nodes(nodes(text.replace(destination,'/peaksolo.html#presentation-video')),'peaksolo',locale)
-
- def test_chinese_simplified_media_keeps_script_identity(self):
-  for locale in ('zh','zh-Hans'):
-   text=runtime.render(locale) + rooted(b.peaksolo_media_section(locale));self.assertIn('lang="zh-Hans"',text)
-   b.validate_media_nodes(nodes(text),'peaksolo',locale)
-
- def test_hgq_cannot_publish_a_brand_teaser(self):
-  with self.assertRaisesRegex(ValueError,'HGQ_RUNTIME_CAPTURE_REQUIRED'):
-   b.brand_teaser('hgq','ja')
-  text='<video src="/assets/video/brand/hgq-presentation-ja.mp4"></video>'
-  with self.assertRaisesRegex(ValueError,'HGQ_RUNTIME_CAPTURE_REQUIRED'):
-   b.validate_media_nodes(nodes(text),'hgq','ja')
-
- def test_all_app_languages_have_product_routes_instead_of_media_only_links(self):
-  import app_pages_i18n as app
-  self.assertEqual(b.PS_EXTRA_LANGUAGES,())
-  text=runtime.render('fr') + rooted(b.peaksolo_media_section('fr'));result=b.validate_media_nodes(nodes(text),'peaksolo')
-  self.assertEqual(result['media_only_links'],[])
-  self.assertEqual(len([n for n in nodes(text) if n.tag=='video' and n.get('data-peaksolo-runtime') is None]),1)
-  self.assertEqual(set(b.PS_PAGE_MEDIA.values()),set(b.APP_LANGUAGES['peaksolo']))
-  self.assertTrue(set(b.APP_LANGUAGES['peaksolo']).issubset(app.page_locales('peaksolo')))
-
- def test_unknown_locale_fails_without_default_french_master(self):
-  with self.assertRaises(KeyError):b.brand_teaser('peaksolo','zz')
-  with self.assertRaisesRegex(ValueError,'NO_EXPLICIT'):
-   b.peaksolo_media_section('unsupported')
-
- def test_decorate_is_repeatable_from_sources_and_does_not_change_units(self):
-  import build_site
-  config=build_site.read_config();sources=build_site.pages(config)
-  original=i.extract(sources)
-  frozen=__import__('json').loads((i.ROOT/'locales/source.json').read_text(encoding='utf-8'))
-  self.assertEqual(original,frozen)
-  first=i.build(sources,config,preview_locales=['fr','en','ar','pt-BR','zh-Hant'])
-  second=i.build(sources,config,preview_locales=['fr','en','ar','pt-BR','zh-Hant'])
-  self.assertEqual(first,second)
-  for locale in ['fr','en','ar','pt-BR','zh-Hant']:
-   name=('' if locale=='fr' else locale+'/')+'peaksolo.html'
-   self.assertIn('id="presentation-video"',first[name])
-   b.validate_media_nodes(nodes(first[name]),'peaksolo',locale)
 
 class PeakSoloRuntimeTests(unittest.TestCase):
     def setUp(self):
@@ -77,27 +25,27 @@ class PeakSoloRuntimeTests(unittest.TestCase):
         self.addCleanup(root_patch.stop)
         root_patch.start()
 
-    def write_capture_fixture(self, count=1):
-        # Minimal container headers exercise verification only. They never leave this fixture.
+    def write_capture_fixture(self, count=2):
+        """Minimal container headers exercise byte verification only."""
         clips = []
         for index in range(1, count + 1):
             stem = f'runtime-demo-{index}-fr'
             paths = [
-                (f'assets/video/peaksolo/{stem}.mp4', b'\x00\x00\x00\x18ftypfixture'),
-                (f'assets/screens/peaksolo/{stem}.webp', b'RIFF0000WEBPfixture'),
+                (f'assets/video/peaksolo/{stem}.mp4', b'\x00\x00\x00\x18ftypfixture' + bytes([index])),
+                (f'assets/screens/peaksolo/{stem}.webp', b'RIFF0000WEBPfixture' + bytes([index])),
             ]
             for name, payload in paths:
                 target = self.root / name
                 target.parent.mkdir(parents=True, exist_ok=True)
                 target.write_bytes(payload)
             clips.append({
-                'title_fr': 'Suivi du solde',
-                'title_en': 'Balance overview',
+                'title_fr': f'Capture réelle {index}',
+                'title_en': f'Real capture {index}',
                 'video_sha256': sha256(paths[0][1]).hexdigest(),
                 'poster_sha256': sha256(paths[1][1]).hexdigest(),
             })
         manifest = self.root / runtime.MANIFEST
-        manifest.parent.mkdir(parents=True)
+        manifest.parent.mkdir(parents=True, exist_ok=True)
         manifest.write_text(json.dumps({
             'schema': 1,
             'language': 'fr',
@@ -106,39 +54,132 @@ class PeakSoloRuntimeTests(unittest.TestCase):
             'clips': clips,
         }), encoding='utf-8')
 
-    def test_no_manifest_hides_section_and_rejects_injected_runtime(self):
-        self.assertEqual(runtime.render('fr'), '')
-        self.assertEqual(runtime.files(), [])
-        b.validate_media_nodes(nodes(rooted(b.peaksolo_media_section('fr'))), 'peaksolo')
-        with self.assertRaisesRegex(ValueError, 'PEAKSOLO_RUNTIME_COMPOSITION_CHANGED'):
-            runtime.validate(nodes('<video data-peaksolo-runtime="unverified"></video>'), 'fr', '/')
+    def composition(self, locale='fr'):
+        return runtime.hero_player(locale) + runtime.render(locale)
 
-    def test_verified_runtime_and_brand_players_have_separate_proofs(self):
-        self.write_capture_fixture(2)
+    def test_exactly_two_runtime_players_each_appear_once(self):
+        self.write_capture_fixture()
         self.assertEqual(len(runtime.files()), 4)
-        for locale in ('fr', 'en', 'ar', 'pt-BR'):
+        for locale in ('fr', 'en', 'ar', 'pt-BR', 'zh-Hant'):
             with self.subTest(locale=locale):
-                text = runtime.render(locale) + rooted(b.peaksolo_media_section(locale))
-                b.validate_media_nodes(nodes(text), 'peaksolo', locale)
+                hero = runtime.hero_player(locale)
+                section = runtime.render(locale)
+                text = hero + section
+                result = brand.validate_media_nodes(nodes(text), 'peaksolo', locale)
+                self.assertEqual(result, {'player_locales': ['fr'], 'media_only_links': []})
                 self.assertEqual(text.count('data-media-kind="RUNTIME_CAPTURE"'), 2)
+                self.assertEqual(text.count('data-peaksolo-runtime='), 2)
+                self.assertIn('peaksolo-runtime-demo-1-fr', hero)
+                self.assertNotIn('peaksolo-runtime-demo-2-fr', hero)
+                self.assertNotIn('peaksolo-runtime-demo-1-fr', section)
+                self.assertIn('peaksolo-runtime-demo-2-fr', section)
                 self.assertIn('lang="fr" data-peaksolo-runtime=', text)
                 self.assertNotIn('autoplay', text)
-                with self.assertRaisesRegex(ValueError, 'PEAKSOLO_RUNTIME_PLAYER_CHANGED'):
-                    b.validate_media_nodes(nodes(text.replace('preload="none"', 'preload="auto"', 1)),
-                                           'peaksolo', locale)
+                self.assertNotIn('BRAND_TEASER', text)
+                self.assertNotIn('presentation-video', text)
 
-    def test_media_hash_and_missing_poster_fail_closed(self):
+    def test_injection_preserves_hero_copy_and_places_first_player_on_right(self):
         self.write_capture_fixture()
+        tree = i.parse(
+            '<main><section class="product-hero planned-product" id="presentation">'
+            '<div class="container"><div class="peaksolo-identity" data-reveal><img src="/logo.webp" alt=""></div>'
+            '<p class="eyebrow">Suite BB16</p><h1>Titre légal</h1>'
+            '<p class="hero-status"><span>En préparation</span></p>'
+            '<p>Disponibilité non annoncée.</p><div class="actions">'
+            '<a href="#fonctions">Projet</a><a href="/support.html">Support</a>'
+            '</div></div></section><section class="section" id="presentation-video">'
+            '<figure class="hero-device brand-teaser" data-media-kind="BRAND_TEASER"></figure>'
+            '</section><section id="fonctions"><p>Après</p></section></main>'
+        )
+        container = next(node for node in i.walk(tree) if node.get('class') == 'container')
+        original = container.inner()
+        brand.inject_peaksolo(tree, 'fr')
+        hero = next(node for node in i.walk(tree) if node.get('id') == 'presentation')
+        container = next(node for node in hero.children if isinstance(node, i.Node))
+        self.assertEqual(container.get('class'), 'container product-hero-grid')
+        self.assertEqual(len(container.children), 2)
+        copy, player = container.children
+        self.assertEqual(copy.get('class'), 'product-hero-copy')
+        self.assertEqual(copy.inner(), original.replace(' data-reveal', ''))
+        identity = next(node for node in i.walk(copy) if node.get('class') == 'peaksolo-identity')
+        self.assertIsNone(identity.get('data-reveal'))
+        self.assertEqual(player.tag, 'figure')
+        self.assertEqual(player.get('class'), 'hero-device')
+        main = next(node for node in i.walk(tree) if node.tag == 'main')
+        self.assertEqual([node.get('id') for node in main.children],
+                         ['presentation', runtime.SECTION_ID, 'fonctions'])
+        rendered = i.render(tree)
+        self.assertEqual(rendered.count('data-peaksolo-runtime='), 2)
+        self.assertNotIn('presentation-video', rendered)
+        self.assertNotIn('brand-teaser', rendered)
+        brand.validate_media_nodes(list(i.walk(tree)), 'peaksolo', 'fr')
+
+    def test_all_peaksolo_locale_layouts_include_rtl_and_runtime_only(self):
+        import app_pages_i18n as app
+
+        self.write_capture_fixture()
+        locales = app.page_locales('peaksolo')
+        self.assertEqual(len(locales), 31)
+        self.assertEqual(brand.language_tag('zh'), 'zh-Hans')
+        self.assertEqual({code for code in locales if brand.direction(code) == 'rtl'},
+                         {'ar', 'he', 'fa', 'ur'})
+        for locale in locales:
+            with self.subTest(locale=locale):
+                tree = i.parse(
+                    f'<html lang="{locale}" dir="{brand.direction(locale)}"><body><main>'
+                    '<section class="product-hero planned-product" id="presentation">'
+                    '<div class="container"><div class="peaksolo-identity" data-reveal>'
+                    '<img src="/logo.webp" alt=""></div><h1>PeakSolo</h1>'
+                    '<p>Statut conservé.</p><a href="/support.html">Support</a></div></section>'
+                    '</main></body></html>'
+                )
+                brand.inject_peaksolo(tree, locale)
+                all_nodes = list(i.walk(tree))
+                html = next(node for node in all_nodes if node.tag == 'html')
+                hero_grid = next(node for node in all_nodes
+                                 if node.get('class') == 'container product-hero-grid')
+                brand.validate_media_nodes(all_nodes, 'peaksolo', locale)
+                self.assertEqual(html.get('dir'), brand.direction(locale))
+                self.assertEqual(len(hero_grid.children), 2)
+                rendered = i.render(tree)
+                self.assertEqual(rendered.count('data-peaksolo-runtime='), 2)
+                self.assertNotIn('BRAND_TEASER', rendered)
+                self.assertNotIn('data-reveal', rendered)
+
+    def test_brand_teasers_and_unattested_video_are_rejected(self):
+        self.write_capture_fixture()
+        with self.assertRaisesRegex(ValueError, 'PEAKSOLO_RUNTIME_CAPTURE_REQUIRED'):
+            brand.brand_teaser('peaksolo', 'fr')
+        with self.assertRaisesRegex(ValueError, 'PEAKSOLO_RUNTIME_CAPTURE_REQUIRED'):
+            brand.peaksolo_media_section('fr')
+        old = '<video src="/assets/video/brand/peaksolo-presentation-fr.mp4"></video>'
+        with self.assertRaisesRegex(ValueError, 'PEAKSOLO_RUNTIME_CAPTURE_REQUIRED'):
+            brand.validate_media_nodes(nodes(self.composition() + old), 'peaksolo', 'fr')
+        extra = '<video src="/unattested.mp4"></video>'
+        with self.assertRaisesRegex(ValueError, 'PEAKSOLO_UNATTESTED_VIDEO'):
+            brand.validate_media_nodes(nodes(self.composition() + extra), 'peaksolo', 'fr')
+
+    def test_missing_or_partial_manifest_fails_closed(self):
+        self.assertEqual(runtime.hero_player('fr'), '')
+        self.assertEqual(runtime.render('fr'), '')
+        self.assertEqual(runtime.files(), [])
+        with self.assertRaisesRegex(ValueError, 'PEAKSOLO_RUNTIME_COMPOSITION_CHANGED'):
+            brand.validate_media_nodes(nodes(''), 'peaksolo', 'fr')
+        self.write_capture_fixture(count=1)
+        with self.assertRaisesRegex(ValueError, 'PEAKSOLO_RUNTIME_CLIP_COUNT'):
+            runtime.load()
+
+    def test_playback_attributes_hashes_and_manifest_schema_fail_closed(self):
+        self.write_capture_fixture()
+        changed = self.composition().replace('preload="none"', 'preload="auto"', 1)
+        with self.assertRaisesRegex(ValueError, 'PEAKSOLO_RUNTIME_PLAYER_CHANGED'):
+            brand.validate_media_nodes(nodes(changed), 'peaksolo', 'fr')
+
         poster = self.root / 'assets/screens/peaksolo/runtime-demo-1-fr.webp'
         poster.write_bytes(b'RIFF0000WEBPtampered')
         with self.assertRaisesRegex(ValueError, 'PEAKSOLO_RUNTIME_MEDIA_INVALID'):
             runtime.render('fr')
-        poster.unlink()
-        with self.assertRaisesRegex(ValueError, 'PEAKSOLO_RUNTIME_MEDIA_MISSING'):
-            runtime.files()
 
-
-    def test_public_manifest_refuses_extra_metadata(self):
         self.write_capture_fixture()
         manifest = self.root / runtime.MANIFEST
         data = json.loads(manifest.read_text(encoding='utf-8'))
@@ -147,4 +188,6 @@ class PeakSoloRuntimeTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'PEAKSOLO_RUNTIME_MANIFEST_INVALID'):
             runtime.files()
 
-if __name__=='__main__':unittest.main()
+
+if __name__ == '__main__':
+    unittest.main()

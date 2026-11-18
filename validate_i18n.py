@@ -199,12 +199,6 @@ def product_weight(nodes, html_path, base):
     for target in videos:
         limit = hgq_runtime_media.VIDEO_MAX if target in hgq_runtime_media.FILES else VIDEO_MAX
         assert (i.ROOT/target).read_bytes()[4:8]==b'ftyp' and size(target)<=limit, target
-    presentations=[relative(n.get('src')) for n in nodes if n.tag=='source' and n.get('src','').endswith('/presentation-v2.mp4')]
-    if html_path.name=='doccipher.html':
-        assert len(presentations)==1, (html_path,'missing-localized-presentation')
-    for target in presentations:
-        assert (i.ROOT/target).read_bytes()[4:8]==b'ftyp' and size(target)<=400_000, target
-        videos.add(target)
     initial=html_path.stat().st_size+sum(map(size,shared|headers))+sum(size(t) for t,eager in images.items() if eager and t not in headers)
     image_bytes=sum(size(t) for t in images if t not in headers)
     video_bytes=sum(map(size,videos))
@@ -253,7 +247,9 @@ def validate():
                     assert not any(x=='..' for x in Path(target).parts) and '\\' not in target
                     assert (i.ROOT/target).is_file(), (locale,name,'missing',value)
                     if re.match(r'assets/(screens|video)/(convertair|doccipher)/',target):
-                        if locale!='fr': assert target.split('/')[3]==locale, (locale,name,'wrong-media-locale',value)
+                        if n.get('data-app-runtime') is not None:
+                            assert target.split('/')[3].startswith('runtime-'), (locale,name,'runtime-media-rewritten',value)
+                        elif locale!='fr': assert target.split('/')[3]==locale, (locale,name,'wrong-media-locale',value)
                         media.append(target)
             weights={}
             if name=='peaksolo.html':
@@ -261,6 +257,16 @@ def validate():
                 brand_media.validate_media_nodes(nodes,'peaksolo',locale,base)
             if name in ('convertair.html','doccipher.html','peaksolo.html','peaksolo-privacy.html'):
                 if name in ('convertair.html','doccipher.html'):
+                    import app_runtime_media
+                    app=name[:-5]
+                    app_runtime_media.validate(nodes,app,base)
+                    players=[n for n in nodes if n.tag=='video' and n.get('data-app-runtime') is not None]
+                    assert len(players)==len(app_runtime_media.load(app)), (locale,name,'runtime-count')
+                    for player in players:
+                        caption=[n for n in nodes if n.get('id')==player.get('aria-describedby')]
+                        assert player.get('lang')=='fr' and player.get('aria-label')==i.APP_RUNTIME_LABEL_FR, (locale,name,'runtime-language')
+                        assert len(caption)==1 and caption[0].tag=='figcaption', (locale,name,'runtime-caption')
+                        assert caption[0].get('lang')=='fr' and caption[0].inner()==i.APP_RUNTIME_CAPTION_FR, (locale,name,'runtime-caption-language')
                     assert media, (locale,name,'no-media')
                     assert all(html.get('data-'+key) for key in ('pause-all','resume-all','pause-one','play-one'))
                 weights=product_weight(nodes,path,base)

@@ -1,10 +1,10 @@
 {
   "publisher": "BB16 Studio",
-  "updated": "2026-11-15",
+  "updated": "2026-11-18",
   "contact": "bb16studio@gmail.com",
   "press_url": "https://bb16studio.com/presse.html",
   "share_image": "https://bb16studio.com/assets/branding/press-share.jpg",
-  "media_classification": "PRESENTATION_VISUALS_NOT_DEVICE_RUNTIME_RECORDINGS",
+  "media_classification": "ANDROID_EMULATOR_CAPTURE_AND_APP_SCREENSHOTS",
   "products": [
     {
       "premium": "Optional; offers and local prices shown on Google Play",
@@ -17,12 +17,14 @@
       "name": "ConvertAir",
       "play": "https://play.google.com/store/apps/details?id=com.bb16studio.convertair",
       "product_url": "https://bb16studio.com/convertair.html",
-      "presentation": "https://bb16studio.com/assets/video/convertair/fusion.mp4",
+      "presentation": "https://bb16studio.com/assets/video/convertair/runtime-merge-fr.mp4",
       "share_image": "https://bb16studio.com/assets/branding/convertair-share.jpg",
       "policy": "https://bb16studio.com/convertair-privacy.html",
       "free": "3 operations/day, no ads",
       "platform": "Android",
-      "privacy": "Core document processing on device; purchases use Google Play and RevenueCat"
+      "privacy": "Core document processing on device; purchases use Google Play and RevenueCat",
+      "media_kind": "RUNTIME_CAPTURE",
+      "capture_scope": "REUSED_DEMONSTRATION"
     },
     {
       "play": "https://play.google.com/store/apps/details?id=com.bb16studio.doccipher",
@@ -32,13 +34,14 @@
       "premium": "Optional one-time purchase, no subscription; local prices on Google Play",
       "policy": "https://bb16studio.com/doccipher-privacy.html",
       "platform": "Android",
-      "presentation": "https://bb16studio.com/assets/video/doccipher/presentation-v2-fr.mp4",
       "privacy": "No DocCipher account; document content processed locally; purchases use Google Play and RevenueCat",
       "features": [
         "encrypted local document vault",
         "name and content search",
         "expiry dates"
-      ]
+      ],
+      "screenshot": "https://bb16studio.com/assets/screens/doccipher/coffre.webp",
+      "media_kind": "APP_SCREENSHOT"
     }
   ]
 }

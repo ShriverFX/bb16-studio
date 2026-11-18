@@ -19,6 +19,7 @@ from site_i18n import localized_files, localized_media, presentation_media
 from app_pages_i18n import extra_files
 from hgq_showcase import PAD_MEDIA
 from hgq_runtime_media import FILES as HGQ_RUNTIME_MEDIA
+from hgq_warmup_media import FILES as HGQ_WARMUP_MEDIA
 import peaksolo_runtime_media
 
 
@@ -62,8 +63,7 @@ FONT_FILES = (
     "assets/fonts/manrope-bold.ttf",
     "assets/fonts/OFL-Manrope.txt",
 )
-ASSET_FILES = tuple(sorted(set(CORE_ASSETS) | set(MEDIA_FILES) | set(localized_media()) | set(FONT_FILES) | set(presentation_media()) | set(PAD_MEDIA) | set(HGQ_RUNTIME_MEDIA) | {
-    "assets/video/doccipher/presentation-v2-fr.mp4",
+ASSET_FILES = tuple(sorted(set(CORE_ASSETS) | set(MEDIA_FILES) | set(localized_media()) | set(FONT_FILES) | set(presentation_media()) | set(PAD_MEDIA) | set(HGQ_RUNTIME_MEDIA) | set(HGQ_WARMUP_MEDIA) | {
     "assets/branding/convertair-share.jpg",
     "assets/branding/press-share.jpg",
     "assets/video/convertair/pt-BR/teaser.mp4",
@@ -75,6 +75,7 @@ ASSET_RULES = {
     "assets/fonts": frozenset({".ttf", ".txt"}),
     "assets/screens": frozenset({".webp"}),
     "assets/video": frozenset({".mp4"}),
+    "assets/audio": frozenset({".ogg"}),
     "assets/downloads": frozenset({".zip"}),
 }
 HTML_LINK = re.compile(r'''(?:href|src|poster|data-src|data-dark|data-light)="([^"]+)"''')

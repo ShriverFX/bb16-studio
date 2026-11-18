@@ -103,7 +103,8 @@ def inject_hgq(tree,locale):
     for parent in i.walk(tree):
         for index, child in enumerate(parent.children):
             if isinstance(child,i.Node) and child.get('id')=='hgq-showcase':
-                fragment = hgq_showcase.render(locale).replace('src="assets/','src="/assets/').replace('poster="assets/','poster="/assets/')
+                fragment = (hgq_showcase.render(locale).replace('src="assets/','src="/assets/')
+                    .replace('poster="assets/','poster="/assets/').replace('href="assets/','href="/assets/'))
                 parent.children[index:index+1] = i.parse(fragment).children
                 return
     raise ValueError('HGQ_SHOWCASE_ANCHOR_MISSING')

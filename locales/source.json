@@ -841,14 +841,6 @@
       "convertair.html"
     ]
   },
-  "adbf22b84deb": {
-    "source": "Mettre les aperçus en pause",
-    "markup": true,
-    "pages": [
-      "convertair.html",
-      "doccipher.html"
-    ]
-  },
   "a7127f2cb33c": {
     "source": "Scanner un document",
     "markup": true,
@@ -933,32 +925,8 @@
       "convertair.html"
     ]
   },
-  "5304f22d9e50": {
-    "source": "02 · En mouvement",
-    "markup": true,
-    "pages": [
-      "convertair.html",
-      "doccipher.html"
-    ]
-  },
   "da46f0b96d07": {
     "source": "Et dans le détail.",
-    "markup": true,
-    "pages": [
-      "convertair.html",
-      "doccipher.html"
-    ]
-  },
-  "3a8e20a31c49": {
-    "source": "Survolez une carte ou lancez son aperçu animé.",
-    "markup": true,
-    "pages": [
-      "convertair.html",
-      "doccipher.html"
-    ]
-  },
-  "c7d397f142e3": {
-    "source": "Les aperçus s'animent lorsqu'ils apparaissent à l'écran. Vous pouvez les mettre en pause.",
     "markup": true,
     "pages": [
       "convertair.html",
@@ -990,13 +958,6 @@
   "94ac7f8032aa": {
     "source": "Outils de reconnaissance de texte de ConvertAir",
     "markup": false,
-    "pages": [
-      "convertair.html"
-    ]
-  },
-  "b37471538070": {
-    "source": "<span data-preview-label>Voir l'aperçu animé</span><span class=\"sr-only\"> : Le texte, reconnu sur place</span>",
-    "markup": true,
     "pages": [
       "convertair.html"
     ]
@@ -1498,13 +1459,6 @@
       "doccipher.html"
     ]
   },
-  "5d0f887dd9ca": {
-    "source": "<span data-preview-label>Voir l'aperçu animé</span><span class=\"sr-only\"> : Chercher et filtrer</span>",
-    "markup": true,
-    "pages": [
-      "doccipher.html"
-    ]
-  },
   "7dba6bbe67ed": {
     "source": "Importer par lots",
     "markup": true,
@@ -1522,13 +1476,6 @@
   "2d98d67fbe36": {
     "source": "Bilan d'import de plusieurs fichiers",
     "markup": false,
-    "pages": [
-      "doccipher.html"
-    ]
-  },
-  "ddc1eea57e90": {
-    "source": "<span data-preview-label>Voir l'aperçu animé</span><span class=\"sr-only\"> : Importer par lots</span>",
-    "markup": true,
     "pages": [
       "doccipher.html"
     ]
@@ -1554,13 +1501,6 @@
       "doccipher.html"
     ]
   },
-  "a616859464c2": {
-    "source": "<span data-preview-label>Voir l'aperçu animé</span><span class=\"sr-only\"> : Ce que DocCipher envoie</span>",
-    "markup": true,
-    "pages": [
-      "doccipher.html"
-    ]
-  },
   "0f9c194388c1": {
     "source": "Premium en un seul paiement",
     "markup": true,
@@ -1578,13 +1518,6 @@
   "b58447a53885": {
     "source": "Offre DocCipher Premium à 19,99 €",
     "markup": false,
-    "pages": [
-      "doccipher.html"
-    ]
-  },
-  "867c3f7c31a0": {
-    "source": "<span data-preview-label>Voir l'aperçu animé</span><span class=\"sr-only\"> : Premium en un seul paiement</span>",
-    "markup": true,
     "pages": [
       "doccipher.html"
     ]

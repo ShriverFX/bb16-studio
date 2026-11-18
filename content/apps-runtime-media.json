@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "apps": {
+    "convertair": {
+      "clips": [
+        {
+          "id": "merge",
+          "media_kind": "RUNTIME_CAPTURE",
+          "capture_environment": "ANDROID_EMULATOR",
+          "capture_scope": "REUSED_DEMONSTRATION",
+          "synthetic_data": true,
+          "language": "fr",
+          "source_filename": "ConvertAir_CA01_ordre_FR_15s_LOCAL_DRAFT.mp4",
+          "source_sha256": "47fda9698962b5596d22cc99b2caf83d63651cf6d093d7a301bee83b2fae9f86",
+          "source_review": "CONTACT_SHEET_INSPECTED; CHROME_PLAYBACK_OBSERVED_2026-11-18_FROM_0.46S_TO_15S_ENDED_READYSTATE_4; REUSED_CAPTURE_NOT_FRESH_DEVICE_RECORDING",
+          "video": "assets/video/convertair/runtime-merge-fr.mp4",
+          "video_sha256": "21ca6025c72810b83be3bcaeec93ace017f69a27f651e4adbbee3b294a7ac35b",
+          "poster": "assets/screens/convertair/runtime-merge-fr.webp",
+          "poster_sha256": "da02ec785097b323549585607a2eedbf780f324178da7f7023ac6f44b12a1a8b",
+          "width": 540,
+          "height": 960,
+          "duration_seconds": 15.0
+        }
+      ]
+    },
+    "doccipher": {
+      "clips": []
+    }
+  }
+}

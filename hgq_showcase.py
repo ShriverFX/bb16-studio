@@ -1,10 +1,20 @@
 """Localized web quiz and presentation copy for Hard Gamer Quiz."""
 from html import escape
 import hgq_runtime_media
+import hgq_warmup_media
 
 PAD_COLORS = ("blue", "green", "yellow", "red")
 PAD_MEDIA = tuple(f"assets/apps/hgq-pad-{color}.webp" for color in PAD_COLORS)
 ANSWERS = ("Shigeru Miyamoto", "Markus Persson", "Hideo Kojima", "Gabe Newell")
+
+WARMUP_COPY = {
+    "fr": ("Lancer l’échauffement", "Rejouer", "Couper le son", "Activer le son", "1 / 1 · Bonne réponse", "0 / 1 · Réessaie", "Musique principale : Quartier Arcade"),
+    "en": ("Start the warm-up", "Play again", "Mute sound", "Turn sound on", "1 / 1 · Correct", "0 / 1 · Try again", "Main theme: Quartier Arcade"),
+    "es": ("Empezar el calentamiento", "Volver a jugar", "Silenciar", "Activar el sonido", "1 / 1 · Respuesta correcta", "0 / 1 · Inténtalo de nuevo", "Tema principal: Quartier Arcade"),
+    "pt": ("Começar o aquecimento", "Jogar de novo", "Desligar o som", "Ativar o som", "1 / 1 · Resposta certa", "0 / 1 · Tenta de novo", "Tema principal: Quartier Arcade"),
+    "ja": ("ウォームアップ開始", "もう一度プレイ", "音を消す", "音を出す", "1 / 1 · 正解", "0 / 1 · もう一度", "メインテーマ：Quartier Arcade"),
+    "ko": ("몸풀기 시작", "다시 플레이", "소리 끄기", "소리 켜기", "1 / 1 · 정답", "0 / 1 · 다시 도전", "메인 테마: Quartier Arcade"),
+}
 
 
 COPY = {
@@ -74,10 +84,11 @@ COPY = {
 def render(locale):
     (first, second, lead, status, warmup, question, correct, retry, explanation, credits,
      modes, solo, solo_copy, multi, multi_copy, jokers, joker_copy) = map(escape, COPY[locale])
+    play, replay, mute, unmute, won, lost, music = map(escape, WARMUP_COPY[locale])
     options = []
     for index, name in enumerate(ANSWERS):
         answer = f"<strong>{correct}</strong> {explanation} <a href='https://www.minecraft.net/fr-fr/credits'>{credits}</a>" if index == 1 else retry
-        options.append(f'<details name="hgq-warmup" class="hgq-answer{" is-correct" if index == 1 else ""}"><summary data-pad="{PAD_COLORS[index]}"><img src="{PAD_MEDIA[index]}" width="160" height="145" alt="" loading="lazy" decoding="async"><span>{name}</span></summary><p>{answer}</p></details>')
+        options.append(f'<details name="hgq-warmup" class="hgq-answer{" is-correct" if index == 1 else ""}" data-warmup-answer data-correct="{str(index == 1).lower()}"><summary data-pad="{PAD_COLORS[index]}" data-warmup-option><img src="{PAD_MEDIA[index]}" width="160" height="145" alt="" loading="lazy" decoding="async"><span>{name}</span></summary><p>{answer}</p></details>')
     cards = ''.join(
         f'<article class="card hgq-mode"><h3>{title}</h3><p>{description}</p></article>'
         for index, (title, description) in enumerate(((solo, solo_copy), (multi, multi_copy), (jokers, joker_copy)), 1)
@@ -97,10 +108,26 @@ def render(locale):
 </section>
 {hgq_runtime_media.render(locale)}
 <section class="section hgq-try"><div class="container">
-    <aside class="hgq-quiz" id="apercus" aria-labelledby="hgq-question">
-      <p class="hgq-quiz-kicker">{warmup} <span aria-hidden="true">01 / 01</span></p>
-      <h2 id="hgq-question">{question}</h2>
-      <div class="hgq-answers">{''.join(options)}</div>
+    <aside class="hgq-quiz" id="apercus" aria-labelledby="hgq-question" data-hgq-warmup data-state="idle"
+      data-label-mute="{mute}" data-label-unmute="{unmute}" data-score-won="{won}" data-score-lost="{lost}">
+      <div class="hgq-warmup-head">
+        <p class="hgq-quiz-kicker">{warmup} <span aria-hidden="true">01 / 01</span></p>
+        <p class="hgq-warmup-music">{music}</p>
+        <div class="actions hgq-warmup-actions">
+          <button class="button" type="button" data-warmup-start hidden>{play}</button>
+          <button class="button secondary" type="button" data-warmup-sound aria-pressed="false" hidden>{mute}</button>
+        </div>
+      </div>
+      <div class="hgq-warmup-callout" data-warmup-callout hidden aria-hidden="true" role="status" aria-live="assertive">FIGHT</div>
+      <div data-warmup-question>
+        <h2 id="hgq-question" tabindex="-1">{question}</h2>
+        <div class="hgq-answers">{''.join(options)}</div>
+      </div>
+      <div class="hgq-warmup-result" data-warmup-result hidden role="status" aria-live="polite">
+        <strong>GAME OVER</strong><p data-warmup-score></p>
+        <button class="button" type="button" data-warmup-restart>{replay}</button>
+      </div>
+      {hgq_warmup_media.render()}
     </aside>
   </div></section>
 <section class="section" id="univers"><div class="container">
