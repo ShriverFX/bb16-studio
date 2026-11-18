@@ -277,8 +277,8 @@
       "index.html"
     ]
   },
-  "c737e49bff2d": {
-    "source": "Bientôt sur Android",
+  "bdec3d7a0b61": {
+    "source": "Disponible sur Google Play",
     "markup": true,
     "pages": [
       "apps.html",
@@ -302,6 +302,14 @@
   },
   "9f2ade324b8d": {
     "source": "Gestion d'activité en préparation : clients, documents et trésorerie.",
+    "markup": true,
+    "pages": [
+      "apps.html",
+      "index.html"
+    ]
+  },
+  "c737e49bff2d": {
+    "source": "Bientôt sur Android",
     "markup": true,
     "pages": [
       "apps.html",
@@ -396,6 +404,20 @@
       "index.html"
     ]
   },
+  "70efb96d5b3f": {
+    "source": "<img class=\"app-icon\" src=\"/assets/apps/convertair-icon-192.webp\" alt=\"\" width=\"192\" height=\"192\" loading=\"lazy\"><a class=\"rate-name\" href=\"/convertair.html\">ConvertAir</a><a class=\"button store-button\" href=\"https://play.google.com/store/apps/details?id=com.bb16studio.convertair\" rel=\"noopener\">Noter ConvertAir sur Google Play</a>",
+    "markup": true,
+    "pages": [
+      "index.html"
+    ]
+  },
+  "dcc74d3b13d9": {
+    "source": "<img class=\"app-icon\" src=\"/assets/apps/doccipher-icon-192.webp\" alt=\"\" width=\"192\" height=\"192\" loading=\"lazy\"><a class=\"rate-name\" href=\"/doccipher.html\">DocCipher</a><a class=\"button store-button\" href=\"https://play.google.com/store/apps/details?id=com.bb16studio.doccipher\" rel=\"noopener\">Noter DocCipher sur Google Play</a>",
+    "markup": true,
+    "pages": [
+      "index.html"
+    ]
+  },
   "0e2d585e2f3f": {
     "source": "<img class=\"app-icon hgq-icon\" src=\"/assets/apps/hgq-logo-192.webp\" alt=\"\" width=\"192\" height=\"212\" loading=\"lazy\"><a class=\"rate-name\" href=\"/hgq.html\">HGQ</a><span class=\"store-pending\">Bientôt sur Google Play</span>",
     "markup": true,
@@ -446,6 +468,26 @@
   },
   "48f2f7302f46": {
     "source": "<a href=\"/support.html\">Support</a><a href=\"/privacy.html\">Confidentialité</a><a href=\"/legal.html\">Mentions légales</a><a href=\"/contact.html\">Contact</a>",
+    "markup": true,
+    "pages": [
+      "404.html",
+      "apps.html",
+      "contact.html",
+      "convertair-privacy.html",
+      "convertair.html",
+      "doccipher-privacy.html",
+      "doccipher.html",
+      "index.html",
+      "legal.html",
+      "peaksolo-privacy.html",
+      "peaksolo.html",
+      "privacy.html",
+      "studio.html",
+      "support.html"
+    ]
+  },
+  "354720f7056d": {
+    "source": "Kit presse",
     "markup": true,
     "pages": [
       "404.html",
@@ -708,7 +750,6 @@
       "convertair.html",
       "doccipher-privacy.html",
       "doccipher.html",
-      "peaksolo-privacy.html",
       "peaksolo.html",
       "privacy.html"
     ]
@@ -790,6 +831,13 @@
       "convertair.html"
     ]
   },
+  "a8efb5731903": {
+    "source": "Télécharger ConvertAir sur Google Play",
+    "markup": true,
+    "pages": [
+      "convertair.html"
+    ]
+  },
   "7007b367163c": {
     "source": "Voir les fonctions",
     "markup": true,
@@ -798,11 +846,12 @@
       "doccipher.html"
     ]
   },
-  "30c4bf7ecfb8": {
-    "source": "<span class=\"status pending\">Bientôt sur Android</span>",
+  "db4a0704486a": {
+    "source": "<span class=\"status\">Disponible sur Google Play</span>",
     "markup": true,
     "pages": [
-      "peaksolo.html"
+      "convertair.html",
+      "doccipher.html"
     ]
   },
   "c9be31677363": {
@@ -1239,6 +1288,20 @@
       "convertair.html"
     ]
   },
+  "0d65a3927fc8": {
+    "source": "Où télécharger ConvertAir ?",
+    "markup": true,
+    "pages": [
+      "convertair.html"
+    ]
+  },
+  "695a93b2c90c": {
+    "source": "ConvertAir est disponible sur Google Play pour Android. Consultez sa fiche pour vérifier la disponibilité pour votre compte et la compatibilité de votre appareil. Une version iOS est à l'étude.",
+    "markup": true,
+    "pages": [
+      "convertair.html"
+    ]
+  },
   "19728695c3f4": {
     "source": "Une autre question ? <a href=\"/contact.html\">Écrivez-nous</a>.",
     "markup": true,
@@ -1255,6 +1318,13 @@
       "doccipher.html"
     ]
   },
+  "e0577eafd9d6": {
+    "source": "Vous utilisez ConvertAir ? Une note et quelques mots sur Google Play aident d'autres personnes à trouver l'application et nous disent quoi améliorer.",
+    "markup": true,
+    "pages": [
+      "convertair.html"
+    ]
+  },
   "dfd3f3dcd13e": {
     "source": "Un avis honnête, rien en échange : pas de parrainage, pas de récompense.",
     "markup": true,
@@ -1263,11 +1333,11 @@
       "doccipher.html"
     ]
   },
-  "558a7da9d4e5": {
-    "source": "Bientôt sur Google Play",
+  "a0f267df4d00": {
+    "source": "Noter ConvertAir sur Google Play",
     "markup": true,
     "pages": [
-      "peaksolo.html"
+      "convertair.html"
     ]
   },
   "6922785fb07f": {
@@ -1321,6 +1391,13 @@
   },
   "e14adf8db73d": {
     "source": "Premium : 19,99 € une seule fois",
+    "markup": true,
+    "pages": [
+      "doccipher.html"
+    ]
+  },
+  "92e9becbc1f7": {
+    "source": "Télécharger DocCipher sur Google Play",
     "markup": true,
     "pages": [
       "doccipher.html"
@@ -1550,6 +1627,27 @@
       "doccipher.html"
     ]
   },
+  "9b1ffe7d8f10": {
+    "source": "Offre présentée sur Google Play",
+    "markup": true,
+    "pages": [
+      "doccipher.html"
+    ]
+  },
+  "5f497bb414e3": {
+    "source": "Deux protections décrites dans l’offre Premium.",
+    "markup": true,
+    "pages": [
+      "doccipher.html"
+    ]
+  },
+  "ba2801afceb1": {
+    "source": "La fiche Google Play de DocCipher 1.0.1 présente ces protections dans l’offre Premium à vie, sans supplément. Les descriptions ci-dessous précisent leur conception et leurs limites ; elles ne constituent pas une validation de sécurité sur tous les appareils. Les options proposées dépendent de la version installée.",
+    "markup": true,
+    "pages": [
+      "doccipher.html"
+    ]
+  },
   "0e0d26467d8e": {
     "source": "Code de panique",
     "markup": true,
@@ -1629,6 +1727,13 @@
   },
   "f2737ecaf8fc": {
     "source": "Des documents dans plusieurs coffres",
+    "markup": true,
+    "pages": [
+      "doccipher.html"
+    ]
+  },
+  "eafb13bc8d55": {
+    "source": "Codes d’urgence inclus dans l’offre Premium présentée sur Google Play.",
     "markup": true,
     "pages": [
       "doccipher.html"
@@ -1741,6 +1846,48 @@
   },
   "9b90d00c6900": {
     "source": "Quelles données servent aux achats ?",
+    "markup": true,
+    "pages": [
+      "doccipher.html"
+    ]
+  },
+  "1b48878472b5": {
+    "source": "Que sont le PIN de panique et le coffre leurre annoncés sur Google Play ?",
+    "markup": true,
+    "pages": [
+      "doccipher.html"
+    ]
+  },
+  "4a62214a55da": {
+    "source": "La fiche Google Play de DocCipher 1.0.1 présente ces deux protections dans l’offre Premium à vie, sans supplément. Le PIN de panique est conçu pour supprimer logiquement les coffres sélectionnés présents sur l’appareil ; vos sauvegardes externes restent en place. Cette suppression ne garantit pas l’effacement physique du stockage. Le PIN leurre ouvre un coffre local séparé : il vise à protéger contre un regard occasionnel et ne garantit pas que son existence soit indétectable. La configuration est volontaire ; les options proposées dépendent de la version installée.",
+    "markup": true,
+    "pages": [
+      "doccipher.html"
+    ]
+  },
+  "268dda95c840": {
+    "source": "Où télécharger DocCipher ?",
+    "markup": true,
+    "pages": [
+      "doccipher.html"
+    ]
+  },
+  "44453177dab9": {
+    "source": "DocCipher est disponible sur Google Play pour Android. Consultez sa fiche pour vérifier la disponibilité pour votre compte et la compatibilité de votre appareil.",
+    "markup": true,
+    "pages": [
+      "doccipher.html"
+    ]
+  },
+  "b998575e6745": {
+    "source": "Vous utilisez DocCipher ? Une note et quelques mots sur Google Play aident d'autres personnes à trouver l'application et nous disent quoi améliorer.",
+    "markup": true,
+    "pages": [
+      "doccipher.html"
+    ]
+  },
+  "c804bba108ab": {
+    "source": "Noter DocCipher sur Google Play",
     "markup": true,
     "pages": [
       "doccipher.html"
@@ -1921,7 +2068,6 @@
     "pages": [
       "convertair-privacy.html",
       "doccipher-privacy.html",
-      "peaksolo-privacy.html",
       "privacy.html"
     ]
   },
@@ -2250,11 +2396,109 @@
       "convertair-privacy.html"
     ]
   },
-  "7e8ea34ede90": {
-    "source": "<a href=\"#policy-17\">Modifications</a>",
+  "56489150c7d9": {
+    "source": "<a href=\"#policy-04\">Accès d'examen en ligne facultatif</a>",
     "markup": true,
     "pages": [
-      "doccipher-privacy.html"
+      "convertair-privacy.html"
+    ]
+  },
+  "b8354631df13": {
+    "source": "<a href=\"#policy-05\">Connexions réseau : achats et diagnostics techniques Google</a>",
+    "markup": true,
+    "pages": [
+      "convertair-privacy.html"
+    ]
+  },
+  "966e015e9dc4": {
+    "source": "<a href=\"#policy-06\">Finalité et base légale</a>",
+    "markup": true,
+    "pages": [
+      "convertair-privacy.html"
+    ]
+  },
+  "5117e5be61a2": {
+    "source": "<a href=\"#policy-07\">Transfert hors de l'Union européenne</a>",
+    "markup": true,
+    "pages": [
+      "convertair-privacy.html"
+    ]
+  },
+  "c0f81d1b36a5": {
+    "source": "<a href=\"#policy-08\">Durée de conservation</a>",
+    "markup": true,
+    "pages": [
+      "convertair-privacy.html"
+    ]
+  },
+  "75efa0631f7f": {
+    "source": "<a href=\"#policy-09\">Ce que l'application ne fait pas</a>",
+    "markup": true,
+    "pages": [
+      "convertair-privacy.html"
+    ]
+  },
+  "91f25fc90b26": {
+    "source": "<a href=\"#policy-10\">Rapports de plantage d'Android</a>",
+    "markup": true,
+    "pages": [
+      "convertair-privacy.html"
+    ]
+  },
+  "affc74580715": {
+    "source": "<a href=\"#policy-11\">Avis dans Google Play</a>",
+    "markup": true,
+    "pages": [
+      "convertair-privacy.html"
+    ]
+  },
+  "06694f4739b6": {
+    "source": "<a href=\"#policy-12\">Permissions Android</a>",
+    "markup": true,
+    "pages": [
+      "convertair-privacy.html"
+    ]
+  },
+  "76169886d53e": {
+    "source": "<a href=\"#policy-13\">Sauvegarde et transfert d'appareil</a>",
+    "markup": true,
+    "pages": [
+      "convertair-privacy.html"
+    ]
+  },
+  "7b4eb80be9d0": {
+    "source": "<a href=\"#policy-14\">Ce qui est conservé sur votre appareil</a>",
+    "markup": true,
+    "pages": [
+      "convertair-privacy.html"
+    ]
+  },
+  "bd650df10d0a": {
+    "source": "<a href=\"#policy-15\">Polices supplémentaires, téléchargées par Google Play</a>",
+    "markup": true,
+    "pages": [
+      "convertair-privacy.html"
+    ]
+  },
+  "1130bf1a6b33": {
+    "source": "<a href=\"#policy-16\">Enfants</a>",
+    "markup": true,
+    "pages": [
+      "convertair-privacy.html"
+    ]
+  },
+  "6d88bb3ad9f3": {
+    "source": "<a href=\"#policy-17\">Vos droits</a>",
+    "markup": true,
+    "pages": [
+      "convertair-privacy.html"
+    ]
+  },
+  "cff6c023062f": {
+    "source": "<a href=\"#policy-18\">Modifications</a>",
+    "markup": true,
+    "pages": [
+      "convertair-privacy.html"
     ]
   },
   "f7869be6bba2": {
@@ -2270,6 +2514,13 @@
     "pages": [
       "convertair-privacy.html",
       "doccipher-privacy.html"
+    ]
+  },
+  "ec800d29572b": {
+    "source": "Le responsable du traitement est BB16 Studio, éditeur de ConvertAir. Pour toute question ou demande sur vos données, écrivez à <a href=\"mailto:bb16studio@gmail.com\">bb16studio@gmail.com</a>. Cette politique couvre la version Android de ConvertAir disponible sur Google Play.",
+    "markup": true,
+    "pages": [
+      "convertair-privacy.html"
     ]
   },
   "3884d9f46946": {
@@ -2302,6 +2553,27 @@
   },
   "574b70d6ac5d": {
     "source": "Un fichier ne quitte ConvertAir que lorsque vous le décidez : partage par la feuille de partage d'Android, enregistrement à l'emplacement que vous choisissez, ou impression. Il part alors vers l'application, le dossier ou le service d'impression que vous avez désigné, qui le traite selon ses propres règles. BB16 Studio n'en reçoit aucune copie.",
+    "markup": true,
+    "pages": [
+      "convertair-privacy.html"
+    ]
+  },
+  "695ac140be0a": {
+    "source": "Accès d'examen en ligne facultatif",
+    "markup": true,
+    "pages": [
+      "convertair-privacy.html"
+    ]
+  },
+  "22a8b87a0c8b": {
+    "source": "L'accès réservé à l'examen est facultatif et nécessite une connexion. Lorsque vous l'activez, ConvertAir envoie au service de vérification le code d'accès que vous avez saisi et un identifiant de requête aléatoire. Le service conserve dans D1 une empreinte du code et son état d'autorisation. Cloudflare traite l'adresse IP et les métadonnées réseau nécessaires à l'acheminement, à la protection et au fonctionnement de la requête. Aucun document, aucune image ni aucun texte reconnu n'est envoyé à ce service. Vous pouvez retirer cet accès depuis son écran ; son retrait ne modifie pas un achat Google Play.",
+    "markup": true,
+    "pages": [
+      "convertair-privacy.html"
+    ]
+  },
+  "cf6065bf88fa": {
+    "source": "Cloudflare peut aussi traiter des journaux opérationnels et de sécurité selon sa politique de confidentialité et la configuration appliquée au service. Leurs catégories et durées de conservation varient selon ces règles et cette configuration.",
     "markup": true,
     "pages": [
       "convertair-privacy.html"
@@ -2547,6 +2819,13 @@
       "convertair-privacy.html"
     ]
   },
+  "6cca0139b842": {
+    "source": "<code>android.permission.INTERNET</code> — l'accès d'examen en ligne facultatif, les achats via RevenueCat et les diagnostics techniques ML Kit décrits ci-dessus ;",
+    "markup": true,
+    "pages": [
+      "convertair-privacy.html"
+    ]
+  },
   "14e1732ca03a": {
     "source": "<code>com.android.vending.BILLING</code> — la facturation Google Play ;",
     "markup": true,
@@ -2636,6 +2915,13 @@
   },
   "539e43e51fbf": {
     "source": "Enfants",
+    "markup": true,
+    "pages": [
+      "convertair-privacy.html"
+    ]
+  },
+  "461f0ef7c388": {
+    "source": "ConvertAir est destiné aux personnes âgées de 13 ans ou plus et ne s'adresse pas aux enfants de moins de 13 ans. Les traitements techniques et d'achat décrits dans cette politique s'appliquent de la même manière lorsqu'une personne mineure utilise l'application.",
     "markup": true,
     "pages": [
       "convertair-privacy.html"
@@ -2798,6 +3084,13 @@
       "doccipher-privacy.html"
     ]
   },
+  "278ce52225ae": {
+    "source": "<a href=\"#policy-07\">Code de panique et coffre leurre présentés dans l’offre Premium</a>",
+    "markup": true,
+    "pages": [
+      "doccipher-privacy.html"
+    ]
+  },
   "c435ca1a93bb": {
     "source": "<a href=\"#policy-08\">Achats facultatifs</a>",
     "markup": true,
@@ -2861,8 +3154,22 @@
       "doccipher-privacy.html"
     ]
   },
+  "7e8ea34ede90": {
+    "source": "<a href=\"#policy-17\">Modifications</a>",
+    "markup": true,
+    "pages": [
+      "doccipher-privacy.html"
+    ]
+  },
   "36534da6b5ef": {
     "source": "Dernière mise à jour : 3 novembre 2026 · <a href=\"/en/doccipher-privacy.html#main\">Read this page in English</a>",
+    "markup": true,
+    "pages": [
+      "doccipher-privacy.html"
+    ]
+  },
+  "ec5695b6c494": {
+    "source": "Le responsable du traitement est BB16 Studio, éditeur de DocCipher. Pour toute question ou demande sur vos données, écrivez à <a href=\"mailto:bb16studio@gmail.com\">bb16studio@gmail.com</a>. Cette politique couvre la version Android de DocCipher disponible sur Google Play.",
     "markup": true,
     "pages": [
       "doccipher-privacy.html"
@@ -2954,6 +3261,13 @@
   },
   "2d309a7727d3": {
     "source": "Si vous l'activez, le déverrouillage biométrique passe par l'invite du système Android. DocCipher ne reçoit que sa réponse, identité confirmée ou non : il n'accède à aucune empreinte, à aucune image de visage ni à aucun gabarit biométrique, qui restent dans la zone sécurisée de l'appareil. La biométrie ne remplace pas votre code PIN, qui reste nécessaire.",
+    "markup": true,
+    "pages": [
+      "doccipher-privacy.html"
+    ]
+  },
+  "27580a28efe3": {
+    "source": "Code de panique et coffre leurre présentés dans l’offre Premium",
     "markup": true,
     "pages": [
       "doccipher-privacy.html"
@@ -3190,6 +3504,13 @@
       "peaksolo.html"
     ]
   },
+  "30c4bf7ecfb8": {
+    "source": "<span class=\"status pending\">Bientôt sur Android</span>",
+    "markup": true,
+    "pages": [
+      "peaksolo.html"
+    ]
+  },
   "ec5671fcd024": {
     "source": "Présentation du projet : aucune disponibilité, conformité nationale ou date de sortie n'est annoncée.",
     "markup": true,
@@ -3317,184 +3638,16 @@
       "peaksolo.html"
     ]
   },
-  "0485cd512f17": {
-    "source": "PeakSolo : politique préparatoire, données métier, achats et limites avant la sortie.",
-    "markup": false,
+  "558a7da9d4e5": {
+    "source": "Bientôt sur Google Play",
+    "markup": true,
     "pages": [
-      "peaksolo-privacy.html"
+      "peaksolo.html"
     ]
   },
   "5d5e392713bd": {
     "source": "Politique de confidentialité PeakSolo · BB16 Studio",
     "markup": false,
-    "pages": [
-      "peaksolo-privacy.html"
-    ]
-  },
-  "c8b36a7cc5d6": {
-    "source": "PeakSolo · en préparation",
-    "markup": true,
-    "pages": [
-      "peaksolo-privacy.html"
-    ]
-  },
-  "08b84aaa2cfa": {
-    "source": "Politique préparatoire : PeakSolo n'est pas publié. Les limites actuelles et les traitements prévus sont distingués ci-dessous ; cette politique sera finalisée avant la sortie.",
-    "markup": true,
-    "pages": [
-      "peaksolo-privacy.html"
-    ]
-  },
-  "aa00d325f330": {
-    "source": "PeakSolo est en préparation ; cette politique n'est pas une validation de sortie.",
-    "markup": true,
-    "pages": [
-      "peaksolo-privacy.html"
-    ]
-  },
-  "81b93bfd38e3": {
-    "source": "Le projet vise à conserver les données métier sur l'appareil.",
-    "markup": true,
-    "pages": [
-      "peaksolo-privacy.html"
-    ]
-  },
-  "2c83a320ff63": {
-    "source": "Les achats prévus passent par Google Play et RevenueCat.",
-    "markup": true,
-    "pages": [
-      "peaksolo-privacy.html"
-    ]
-  },
-  "5c1b72adf13c": {
-    "source": "Sauvegarde par export volontaire ; composants Google à vérifier sur appareil.",
-    "markup": true,
-    "pages": [
-      "peaksolo-privacy.html"
-    ]
-  },
-  "cbff4e7639a3": {
-    "source": "Les futurs envois réglementaires devront être confirmés un par un.",
-    "markup": true,
-    "pages": [
-      "peaksolo-privacy.html"
-    ]
-  },
-  "f51a4032688c": {
-    "source": "<a href=\"#policy-01\">Données métier et stockage</a>",
-    "markup": true,
-    "pages": [
-      "peaksolo-privacy.html"
-    ]
-  },
-  "eb5dcaa86f46": {
-    "source": "<a href=\"#policy-02\">Achats et accès Premium</a>",
-    "markup": true,
-    "pages": [
-      "peaksolo-privacy.html"
-    ]
-  },
-  "d1f0cdacf754": {
-    "source": "<a href=\"#policy-03\">Limites de la version en préparation</a>",
-    "markup": true,
-    "pages": [
-      "peaksolo-privacy.html"
-    ]
-  },
-  "e18b49950115": {
-    "source": "<a href=\"#policy-04\">Exports et transmissions futures</a>",
-    "markup": true,
-    "pages": [
-      "peaksolo-privacy.html"
-    ]
-  },
-  "db8ff850bc79": {
-    "source": "<a href=\"#policy-05\">Vos demandes</a>",
-    "markup": true,
-    "pages": [
-      "peaksolo-privacy.html"
-    ]
-  },
-  "ae098fbb513d": {
-    "source": "Données métier et stockage",
-    "markup": true,
-    "pages": [
-      "peaksolo-privacy.html"
-    ]
-  },
-  "1049d9e7825b": {
-    "source": "Le code en préparation utilise une base chiffrée SQLCipher pour les données métier. Les anciennes bases Isar et les fichiers hors base restent à traiter séparément. Migration, stockage et clés doivent encore être vérifiés sur appareil.",
-    "markup": true,
-    "pages": [
-      "peaksolo-privacy.html"
-    ]
-  },
-  "93bba21a45ec": {
-    "source": "Achats et accès Premium",
-    "markup": true,
-    "pages": [
-      "peaksolo-privacy.html"
-    ]
-  },
-  "98a49f7f045e": {
-    "source": "Google Play et RevenueCat sont prévus pour afficher les offres, acheter, restaurer et vérifier l'accès Premium. Cela peut transmettre un identifiant pseudonyme, des informations techniques, l'adresse IP ainsi que les jetons et l'historique des achats. Les montants des achats de l'application servent à sa gestion commerciale.",
-    "markup": true,
-    "pages": [
-      "peaksolo-privacy.html"
-    ]
-  },
-  "47e96e69a325": {
-    "source": "Les clients, factures et montants de votre activité ne doivent pas être transmis à RevenueCat. La vérification du trafic réel et de la configuration des achats reste nécessaire avant la sortie.",
-    "markup": true,
-    "pages": [
-      "peaksolo-privacy.html"
-    ]
-  },
-  "8e7b105c5958": {
-    "source": "Limites de la version en préparation",
-    "markup": true,
-    "pages": [
-      "peaksolo-privacy.html"
-    ]
-  },
-  "445bf39e4666": {
-    "source": "La sauvegarde actuelle est un fichier chiffré exporté à votre demande via le sélecteur système. Il n’y a pas de connexion Drive intégrée ni de synchronisation automatique dans ce parcours. Si vous choisissez un service externe, ses règles s’appliquent. L’OCR utilise ML Kit sur l’appareil ; les échanges des composants Google restent à vérifier avant la sortie.",
-    "markup": true,
-    "pages": [
-      "peaksolo-privacy.html"
-    ]
-  },
-  "9673d141846c": {
-    "source": "Exports et transmissions futures",
-    "markup": true,
-    "pages": [
-      "peaksolo-privacy.html"
-    ]
-  },
-  "7b6bc52aad2d": {
-    "source": "Un export vers une autre application ou un service que vous choisissez relève aussi de ses règles. Les futures transmissions réglementaires devront nommer le destinataire et demander votre confirmation à chaque envoi. Masquer l'explication ne devra jamais supprimer la confirmation. Ce parcours n'est pas annoncé comme disponible.",
-    "markup": true,
-    "pages": [
-      "peaksolo-privacy.html"
-    ]
-  },
-  "b83b6f489430": {
-    "source": "Vos demandes",
-    "markup": true,
-    "pages": [
-      "peaksolo-privacy.html"
-    ]
-  },
-  "1b300e6ea97f": {
-    "source": "Pour toute question sur vos données, contactez BB16 Studio à <a href=\"mailto:bb16studio@gmail.com\">bb16studio@gmail.com</a>. Ne transmettez aucun document privé ni secret dans votre demande.",
-    "markup": true,
-    "pages": [
-      "peaksolo-privacy.html"
-    ]
-  },
-  "7fa57545f1bd": {
-    "source": "L'identité légale complète, les durées de conservation et les réglages définitifs des prestataires seront précisés avant la publication de l'application.",
-    "markup": true,
     "pages": [
       "peaksolo-privacy.html"
     ]
@@ -3539,336 +3692,6 @@
     "markup": true,
     "pages": [
       "404.html"
-    ]
-  },
-  "bdec3d7a0b61": {
-    "source": "Disponible sur Google Play",
-    "markup": true,
-    "pages": [
-      "apps.html",
-      "index.html"
-    ]
-  },
-  "70efb96d5b3f": {
-    "source": "<img class=\"app-icon\" src=\"/assets/apps/convertair-icon-192.webp\" alt=\"\" width=\"192\" height=\"192\" loading=\"lazy\"><a class=\"rate-name\" href=\"/convertair.html\">ConvertAir</a><a class=\"button store-button\" href=\"https://play.google.com/store/apps/details?id=com.bb16studio.convertair\" rel=\"noopener\">Noter ConvertAir sur Google Play</a>",
-    "markup": true,
-    "pages": [
-      "index.html"
-    ]
-  },
-  "dcc74d3b13d9": {
-    "source": "<img class=\"app-icon\" src=\"/assets/apps/doccipher-icon-192.webp\" alt=\"\" width=\"192\" height=\"192\" loading=\"lazy\"><a class=\"rate-name\" href=\"/doccipher.html\">DocCipher</a><a class=\"button store-button\" href=\"https://play.google.com/store/apps/details?id=com.bb16studio.doccipher\" rel=\"noopener\">Noter DocCipher sur Google Play</a>",
-    "markup": true,
-    "pages": [
-      "index.html"
-    ]
-  },
-  "a8efb5731903": {
-    "source": "Télécharger ConvertAir sur Google Play",
-    "markup": true,
-    "pages": [
-      "convertair.html"
-    ]
-  },
-  "db4a0704486a": {
-    "source": "<span class=\"status\">Disponible sur Google Play</span>",
-    "markup": true,
-    "pages": [
-      "convertair.html",
-      "doccipher.html"
-    ]
-  },
-  "0d65a3927fc8": {
-    "source": "Où télécharger ConvertAir ?",
-    "markup": true,
-    "pages": [
-      "convertair.html"
-    ]
-  },
-  "695a93b2c90c": {
-    "source": "ConvertAir est disponible sur Google Play pour Android. Consultez sa fiche pour vérifier la disponibilité pour votre compte et la compatibilité de votre appareil. Une version iOS est à l'étude.",
-    "markup": true,
-    "pages": [
-      "convertair.html"
-    ]
-  },
-  "e0577eafd9d6": {
-    "source": "Vous utilisez ConvertAir ? Une note et quelques mots sur Google Play aident d'autres personnes à trouver l'application et nous disent quoi améliorer.",
-    "markup": true,
-    "pages": [
-      "convertair.html"
-    ]
-  },
-  "a0f267df4d00": {
-    "source": "Noter ConvertAir sur Google Play",
-    "markup": true,
-    "pages": [
-      "convertair.html"
-    ]
-  },
-  "92e9becbc1f7": {
-    "source": "Télécharger DocCipher sur Google Play",
-    "markup": true,
-    "pages": [
-      "doccipher.html"
-    ]
-  },
-  "9b1ffe7d8f10": {
-    "source": "Offre présentée sur Google Play",
-    "markup": true,
-    "pages": [
-      "doccipher.html"
-    ]
-  },
-  "5f497bb414e3": {
-    "source": "Deux protections décrites dans l’offre Premium.",
-    "markup": true,
-    "pages": [
-      "doccipher.html"
-    ]
-  },
-  "ba2801afceb1": {
-    "source": "La fiche Google Play de DocCipher 1.0.1 présente ces protections dans l’offre Premium à vie, sans supplément. Les descriptions ci-dessous précisent leur conception et leurs limites ; elles ne constituent pas une validation de sécurité sur tous les appareils. Les options proposées dépendent de la version installée.",
-    "markup": true,
-    "pages": [
-      "doccipher.html"
-    ]
-  },
-  "eafb13bc8d55": {
-    "source": "Codes d’urgence inclus dans l’offre Premium présentée sur Google Play.",
-    "markup": true,
-    "pages": [
-      "doccipher.html"
-    ]
-  },
-  "1b48878472b5": {
-    "source": "Que sont le PIN de panique et le coffre leurre annoncés sur Google Play ?",
-    "markup": true,
-    "pages": [
-      "doccipher.html"
-    ]
-  },
-  "4a62214a55da": {
-    "source": "La fiche Google Play de DocCipher 1.0.1 présente ces deux protections dans l’offre Premium à vie, sans supplément. Le PIN de panique est conçu pour supprimer logiquement les coffres sélectionnés présents sur l’appareil ; vos sauvegardes externes restent en place. Cette suppression ne garantit pas l’effacement physique du stockage. Le PIN leurre ouvre un coffre local séparé : il vise à protéger contre un regard occasionnel et ne garantit pas que son existence soit indétectable. La configuration est volontaire ; les options proposées dépendent de la version installée.",
-    "markup": true,
-    "pages": [
-      "doccipher.html"
-    ]
-  },
-  "268dda95c840": {
-    "source": "Où télécharger DocCipher ?",
-    "markup": true,
-    "pages": [
-      "doccipher.html"
-    ]
-  },
-  "44453177dab9": {
-    "source": "DocCipher est disponible sur Google Play pour Android. Consultez sa fiche pour vérifier la disponibilité pour votre compte et la compatibilité de votre appareil.",
-    "markup": true,
-    "pages": [
-      "doccipher.html"
-    ]
-  },
-  "b998575e6745": {
-    "source": "Vous utilisez DocCipher ? Une note et quelques mots sur Google Play aident d'autres personnes à trouver l'application et nous disent quoi améliorer.",
-    "markup": true,
-    "pages": [
-      "doccipher.html"
-    ]
-  },
-  "c804bba108ab": {
-    "source": "Noter DocCipher sur Google Play",
-    "markup": true,
-    "pages": [
-      "doccipher.html"
-    ]
-  },
-  "ec800d29572b": {
-    "source": "Le responsable du traitement est BB16 Studio, éditeur de ConvertAir. Pour toute question ou demande sur vos données, écrivez à <a href=\"mailto:bb16studio@gmail.com\">bb16studio@gmail.com</a>. Cette politique couvre la version Android de ConvertAir disponible sur Google Play.",
-    "markup": true,
-    "pages": [
-      "convertair-privacy.html"
-    ]
-  },
-  "278ce52225ae": {
-    "source": "<a href=\"#policy-07\">Code de panique et coffre leurre présentés dans l’offre Premium</a>",
-    "markup": true,
-    "pages": [
-      "doccipher-privacy.html"
-    ]
-  },
-  "ec5695b6c494": {
-    "source": "Le responsable du traitement est BB16 Studio, éditeur de DocCipher. Pour toute question ou demande sur vos données, écrivez à <a href=\"mailto:bb16studio@gmail.com\">bb16studio@gmail.com</a>. Cette politique couvre la version Android de DocCipher disponible sur Google Play.",
-    "markup": true,
-    "pages": [
-      "doccipher-privacy.html"
-    ]
-  },
-  "27580a28efe3": {
-    "source": "Code de panique et coffre leurre présentés dans l’offre Premium",
-    "markup": true,
-    "pages": [
-      "doccipher-privacy.html"
-    ]
-  },
-  "06694f4739b6": {
-    "source": "<a href=\"#policy-12\">Permissions Android</a>",
-    "markup": true,
-    "pages": [
-      "convertair-privacy.html"
-    ]
-  },
-  "1130bf1a6b33": {
-    "source": "<a href=\"#policy-16\">Enfants</a>",
-    "markup": true,
-    "pages": [
-      "convertair-privacy.html"
-    ]
-  },
-  "22a8b87a0c8b": {
-    "source": "L'accès réservé à l'examen est facultatif et nécessite une connexion. Lorsque vous l'activez, ConvertAir envoie au service de vérification le code d'accès que vous avez saisi et un identifiant de requête aléatoire. Le service conserve dans D1 une empreinte du code et son état d'autorisation. Cloudflare traite l'adresse IP et les métadonnées réseau nécessaires à l'acheminement, à la protection et au fonctionnement de la requête. Aucun document, aucune image ni aucun texte reconnu n'est envoyé à ce service. Vous pouvez retirer cet accès depuis son écran ; son retrait ne modifie pas un achat Google Play.",
-    "markup": true,
-    "pages": [
-      "convertair-privacy.html"
-    ]
-  },
-  "461f0ef7c388": {
-    "source": "ConvertAir est destiné aux personnes âgées de 13 ans ou plus et ne s'adresse pas aux enfants de moins de 13 ans. Les traitements techniques et d'achat décrits dans cette politique s'appliquent de la même manière lorsqu'une personne mineure utilise l'application.",
-    "markup": true,
-    "pages": [
-      "convertair-privacy.html"
-    ]
-  },
-  "5117e5be61a2": {
-    "source": "<a href=\"#policy-07\">Transfert hors de l'Union européenne</a>",
-    "markup": true,
-    "pages": [
-      "convertair-privacy.html"
-    ]
-  },
-  "56489150c7d9": {
-    "source": "<a href=\"#policy-04\">Accès d'examen en ligne facultatif</a>",
-    "markup": true,
-    "pages": [
-      "convertair-privacy.html"
-    ]
-  },
-  "695ac140be0a": {
-    "source": "Accès d'examen en ligne facultatif",
-    "markup": true,
-    "pages": [
-      "convertair-privacy.html"
-    ]
-  },
-  "6cca0139b842": {
-    "source": "<code>android.permission.INTERNET</code> — l'accès d'examen en ligne facultatif, les achats via RevenueCat et les diagnostics techniques ML Kit décrits ci-dessus ;",
-    "markup": true,
-    "pages": [
-      "convertair-privacy.html"
-    ]
-  },
-  "6d88bb3ad9f3": {
-    "source": "<a href=\"#policy-17\">Vos droits</a>",
-    "markup": true,
-    "pages": [
-      "convertair-privacy.html"
-    ]
-  },
-  "75efa0631f7f": {
-    "source": "<a href=\"#policy-09\">Ce que l'application ne fait pas</a>",
-    "markup": true,
-    "pages": [
-      "convertair-privacy.html"
-    ]
-  },
-  "76169886d53e": {
-    "source": "<a href=\"#policy-13\">Sauvegarde et transfert d'appareil</a>",
-    "markup": true,
-    "pages": [
-      "convertair-privacy.html"
-    ]
-  },
-  "7b4eb80be9d0": {
-    "source": "<a href=\"#policy-14\">Ce qui est conservé sur votre appareil</a>",
-    "markup": true,
-    "pages": [
-      "convertair-privacy.html"
-    ]
-  },
-  "91f25fc90b26": {
-    "source": "<a href=\"#policy-10\">Rapports de plantage d'Android</a>",
-    "markup": true,
-    "pages": [
-      "convertair-privacy.html"
-    ]
-  },
-  "966e015e9dc4": {
-    "source": "<a href=\"#policy-06\">Finalité et base légale</a>",
-    "markup": true,
-    "pages": [
-      "convertair-privacy.html"
-    ]
-  },
-  "affc74580715": {
-    "source": "<a href=\"#policy-11\">Avis dans Google Play</a>",
-    "markup": true,
-    "pages": [
-      "convertair-privacy.html"
-    ]
-  },
-  "b8354631df13": {
-    "source": "<a href=\"#policy-05\">Connexions réseau : achats et diagnostics techniques Google</a>",
-    "markup": true,
-    "pages": [
-      "convertair-privacy.html"
-    ]
-  },
-  "bd650df10d0a": {
-    "source": "<a href=\"#policy-15\">Polices supplémentaires, téléchargées par Google Play</a>",
-    "markup": true,
-    "pages": [
-      "convertair-privacy.html"
-    ]
-  },
-  "c0f81d1b36a5": {
-    "source": "<a href=\"#policy-08\">Durée de conservation</a>",
-    "markup": true,
-    "pages": [
-      "convertair-privacy.html"
-    ]
-  },
-  "cf6065bf88fa": {
-    "source": "Cloudflare peut aussi traiter des journaux opérationnels et de sécurité selon sa politique de confidentialité et la configuration appliquée au service. Leurs catégories et durées de conservation varient selon ces règles et cette configuration.",
-    "markup": true,
-    "pages": [
-      "convertair-privacy.html"
-    ]
-  },
-  "cff6c023062f": {
-    "source": "<a href=\"#policy-18\">Modifications</a>",
-    "markup": true,
-    "pages": [
-      "convertair-privacy.html"
-    ]
-  },
-  "354720f7056d": {
-    "source": "Kit presse",
-    "markup": true,
-    "pages": [
-      "404.html",
-      "apps.html",
-      "contact.html",
-      "convertair-privacy.html",
-      "convertair.html",
-      "doccipher-privacy.html",
-      "doccipher.html",
-      "index.html",
-      "legal.html",
-      "peaksolo-privacy.html",
-      "peaksolo.html",
-      "privacy.html",
-      "studio.html",
-      "support.html"
     ]
   }
 }

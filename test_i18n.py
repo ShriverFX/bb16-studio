@@ -72,6 +72,20 @@ class LocalizationTests(unittest.TestCase):
         i.text_units(tree,lambda text,markup: seen.append((text,markup)) or text)
         self.assertEqual(seen,[('Lire <a href="/contact.html">le support</a>.',True)])
 
+    def test_approved_legal_original_keeps_its_language_and_text(self):
+        import suite_pages
+        original=suite_pages.peaksolo_privacy_body('bb16studio@gmail.com')
+        tree=i.parse(original)
+        i.text_units(tree,lambda text,markup: 'TRANSLATED')
+        self.assertEqual(i.render(tree),original)
+        self.assertIn('lang="fr" dir="ltr"',original)
+        self.assertIn('French original',original)
+        self.assertIn('Lorsque les achats sont activés',original)
+        # Ordinary content still requires translation, even inside lang=fr.
+        tree=i.parse('<div lang="fr"><p>Contenu ordinaire</p></div>')
+        i.text_units(tree,lambda text,markup: 'Translated content')
+        self.assertIn('Translated content',i.render(tree))
+
     def test_locale_urls_respect_subdirectory_and_french_roots(self):
         config={'site_url':'https://example.org','base_path':'/studio/'}
         self.assertEqual(i.url(config,'fr','index.html'),'https://example.org/studio/')

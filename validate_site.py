@@ -341,13 +341,21 @@ def validate_prelaunch_pages(texts: dict[str, str]) -> None:
         raise SystemExit('PEAKSOLO_MISSING_PENDING')
     policy = texts['peaksolo-privacy.html']
     for phrase in (
-        'Politique préparatoire', 'RevenueCat', 'ML Kit',
-        'base chiffrée SQLCipher', 'anciennes bases Isar',
-        'fichiers hors base', 'clés doivent encore être vérifiés sur appareil',
-        'fichier chiffré exporté à', 'via le sélecteur système',
-        'pas de connexion Drive intégrée ni de synchronisation automatique',
-        'échanges des composants Google restent à vérifier avant la sortie',
-        'confirmation à chaque envoi',
+        'BB16 Studio',
+        'bb16studio@gmail.com',
+        'SQLCipher',
+        'ML Kit',
+        'sur votre appareil',
+        'sauvegarde portable',
+        'pas de connexion Google Drive intégrée ni de synchronisation automatique',
+        'Lorsque les achats sont activés dans la version distribuée',
+        'RevenueCat',
+        "historique d'achat",
+        'États-Unis',
+        'ne résilie pas un abonnement',
+        'Conservation et suppression',
+        'Vos droits',
+        'CNIL',
     ):
         if phrase not in policy:
             raise SystemExit('PEAKSOLO_MISSING_BOUNDARY=' + phrase)

@@ -701,7 +701,7 @@ def pages(config: dict) -> dict[str, str]:
         "convertair.html": product_page("convertair", config)[1],
         "doccipher.html": product_page("doccipher", config)[1],
         "peaksolo.html": document("PeakSolo", "PeakSolo : un projet de gestion d’activité complémentaire à ConvertAir et DocCipher, en préparation.", "apps.html", suite_pages.peaksolo_body(), config, "peaksolo.html", scripts=("product.js",)),
-        "peaksolo-privacy.html": document("Politique de confidentialité PeakSolo", "PeakSolo : politique préparatoire, données métier, achats et limites avant la sortie.", "apps.html", suite_pages.peaksolo_privacy_body(config["contact_email"]), config, "peaksolo-privacy.html"),
+        "peaksolo-privacy.html": document("Politique de confidentialité PeakSolo", "Politique de confidentialité PeakSolo", "apps.html", suite_pages.peaksolo_privacy_body(config["contact_email"]), config, "peaksolo-privacy.html"),
         "hgq.html": product_page("hgq", config)[1],
         "hgq-privacy.html": hgq_legal_page("privacy", config),
         "hgq-account-deletion.html": hgq_legal_page("account-deletion", config),

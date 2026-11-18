@@ -377,18 +377,21 @@ class SiteGateMutationTests(unittest.TestCase):
                     )
 
         for phrase in (
-            "Politique préparatoire",
-            "RevenueCat",
-            "ML Kit",
-            "base chiffrée SQLCipher",
-            "anciennes bases Isar",
-            "fichiers hors base",
-            "clés doivent encore être vérifiés sur appareil",
-            "fichier chiffré exporté à",
-            "via le sélecteur système",
-            "pas de connexion Drive intégrée ni de synchronisation automatique",
-            "échanges des composants Google restent à vérifier avant la sortie",
-            "confirmation à chaque envoi",
+            'BB16 Studio',
+            'bb16studio@gmail.com',
+            'SQLCipher',
+            'ML Kit',
+            'sur votre appareil',
+            'sauvegarde portable',
+            'pas de connexion Google Drive intégrée ni de synchronisation automatique',
+            'Lorsque les achats sont activés dans la version distribuée',
+            'RevenueCat',
+            "historique d'achat",
+            'États-Unis',
+            'ne résilie pas un abonnement',
+            'Conservation et suppression',
+            'Vos droits',
+            'CNIL',
         ):
             with self.subTest(page="peaksolo-privacy.html", phrase=phrase):
                 edited = texts["peaksolo-privacy.html"].replace(phrase, "")

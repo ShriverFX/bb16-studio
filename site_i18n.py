@@ -91,6 +91,8 @@ def prepared(text, filename):
 def text_units(tree, callback):
     def visit(n):
         if not isinstance(n, Node) or n.tag in {'script','style','!raw'}: return
+        # Legal originals are shown verbatim, with their declared language.
+        if n.get('data-original-policy') == 'peaksolo-20261118' and n.get('lang') == 'fr': return
         for k,v in list(n.attrs):
             if v and k in ATTRS and needs_translation(v): n.set(k,callback(v,False))
             if n.tag=='meta' and k=='content' and n.get('name',n.get('property')) in {'description','og:title','og:description'}:

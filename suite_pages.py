@@ -20,12 +20,11 @@ def peaksolo_body():
 
 
 def peaksolo_privacy_body(email):
-    return f'''<section class="section"><div class="container prose"><p class="eyebrow">PeakSolo · en préparation</p><h1>Politique de confidentialité PeakSolo</h1><p class="lede">Politique préparatoire : PeakSolo n'est pas publié. Les limites actuelles et les traitements prévus sont distingués ci-dessous ; cette politique sera finalisée avant la sortie.</p>
-<h2>Données métier et stockage</h2><p>Le code en préparation utilise une base chiffrée SQLCipher pour les données métier. Les anciennes bases Isar et les fichiers hors base restent à traiter séparément. Migration, stockage et clés doivent encore être vérifiés sur appareil.</p>
-<h2>Achats et accès Premium</h2><p>Google Play et RevenueCat sont prévus pour afficher les offres, acheter, restaurer et vérifier l'accès Premium. Cela peut transmettre un identifiant pseudonyme, des informations techniques, l'adresse IP ainsi que les jetons et l'historique des achats. Les montants des achats de l'application servent à sa gestion commerciale.</p><p>Les clients, factures et montants de votre activité ne doivent pas être transmis à RevenueCat. La vérification du trafic réel et de la configuration des achats reste nécessaire avant la sortie.</p>
-<h2>Limites de la version en préparation</h2><p>La sauvegarde actuelle est un fichier chiffré exporté à votre demande via le sélecteur système. Il n’y a pas de connexion Drive intégrée ni de synchronisation automatique dans ce parcours. Si vous choisissez un service externe, ses règles s’appliquent. L’OCR utilise ML Kit sur l’appareil ; les échanges des composants Google restent à vérifier avant la sortie.</p>
-<h2>Exports et transmissions futures</h2><p>Un export vers une autre application ou un service que vous choisissez relève aussi de ses règles. Les futures transmissions réglementaires devront nommer le destinataire et demander votre confirmation à chaque envoi. Masquer l'explication ne devra jamais supprimer la confirmation. Ce parcours n'est pas annoncé comme disponible.</p>
-<h2>Vos demandes</h2><p>Pour toute question sur vos données, contactez BB16 Studio à <a href="mailto:{escape(email)}">{escape(email)}</a>. Ne transmettez aucun document privé ni secret dans votre demande.</p><p>L'identité légale complète, les durées de conservation et les réglages définitifs des prestataires seront précisés avant la publication de l'application.</p></div></section>'''
+    # Keep the approved French legal original identical on every locale route.
+    # Navigation remains localized; the body declares its original language.
+    from pathlib import Path
+    body = (Path(__file__).parent / 'content' / 'peaksolo-privacy.html').read_text(encoding='utf-8')
+    return '<section class="section"><div class="container prose" lang="fr" dir="ltr" data-original-policy="peaksolo-20261118"><p class="meta">Version originale en français · French original</p>' + body + '</div></section>'
 
 
 SUMMARIES = {
@@ -49,13 +48,6 @@ SUMMARIES = {
         "Les formulaires testeurs préparent un fichier local, sans envoi automatique.",
         "Si vous nous écrivez, nous recevons les informations que vous choisissez de transmettre.",
         "L'hébergeur peut traiter les données techniques nécessaires à la consultation du site.",
-    ],
-    'peaksolo-privacy.html': [
-        "PeakSolo est en préparation ; cette politique n'est pas une validation de sortie.",
-        "Le projet vise à conserver les données métier sur l'appareil.",
-        "Les achats prévus passent par Google Play et RevenueCat.",
-        "Sauvegarde par export volontaire ; composants Google à vérifier sur appareil.",
-        "Les futurs envois réglementaires devront être confirmés un par un.",
     ],
 }
 
